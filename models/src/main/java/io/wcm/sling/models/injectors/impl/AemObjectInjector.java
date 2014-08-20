@@ -144,7 +144,7 @@ import com.day.cq.wcm.commons.WCMUtils;
  * otherwise the generic XSSAPI service would be injected from the OSGi Service Registry instead of the
  * pre-configured from the current request.
  */
-@Property(name = Constants.SERVICE_RANKING, intValue = 4500)
+@Property(name = Constants.SERVICE_RANKING, intValue = 600)
 public final class AemObjectInjector implements Injector, InjectAnnotationProcessorFactory, AcceptsNullName {
 
   /**

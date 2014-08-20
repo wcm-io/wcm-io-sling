@@ -94,7 +94,7 @@ import org.osgi.framework.Constants;
  */
 @Component
 @Service
-@Property(name = Constants.SERVICE_RANKING, intValue = 4400)
+@Property(name = Constants.SERVICE_RANKING, intValue = 500)
 public final class SlingObjectInjector implements Injector, InjectAnnotationProcessorFactory, AcceptsNullName {
 
   /**
