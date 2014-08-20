@@ -27,6 +27,8 @@ import java.lang.reflect.AnnotatedElement;
 
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
+import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.scripting.SlingBindings;
 import org.apache.sling.api.scripting.SlingScriptHelper;
 import org.junit.Before;
@@ -37,7 +39,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 @SuppressWarnings("javadoc")
-public class SlingObjectInjectorTest {
+public class SlingObjectInjectorRequestTest {
 
   private final SlingObjectInjector injector = new SlingObjectInjector();
 
@@ -49,13 +51,37 @@ public class SlingObjectInjectorTest {
   private SlingHttpServletResponse response;
   @Mock
   private SlingScriptHelper scriptHelper;
+  @Mock
+  private ResourceResolver resourceResolver;
+  @Mock
+  private Resource resource;
 
   @Before
   public void setUp() {
     SlingBindings bindings = new SlingBindings();
     bindings.put(SlingBindings.SLING, this.scriptHelper);
+    when(this.request.getResourceResolver()).thenReturn(this.resourceResolver);
+    when(this.request.getResource()).thenReturn(this.resource);
     when(this.request.getAttribute(SlingBindings.class.getName())).thenReturn(bindings);
     when(this.scriptHelper.getResponse()).thenReturn(this.response);
+  }
+
+  @Test
+  public void testResourceResolver() {
+    Object result = this.injector.getValue(this.request, null, ResourceResolver.class, this.annotatedElement, null);
+    assertSame(this.resourceResolver, result);
+  }
+
+  @Test
+  public void testResource() {
+    Object result = this.injector.getValue(this.request, null, Resource.class, this.annotatedElement, null);
+    assertSame(this.resource, result);
+  }
+
+  @Test
+  public void testRequest() {
+    Object result = this.injector.getValue(this.request, null, SlingHttpServletResponse.class, this.annotatedElement, null);
+    assertSame(this.response, result);
   }
 
   @Test
