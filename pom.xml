@@ -54,7 +54,7 @@
         </configuration>
       </plugin>
 
-      <!-- do not generate github site for this hierarchy pom -->
+      <!-- do not generate site for this hierarchy pom -->
       <plugin>
         <groupId>com.github.github</groupId>
         <artifactId>site-maven-plugin</artifactId>
