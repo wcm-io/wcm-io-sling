@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -144,7 +144,7 @@ import com.day.cq.wcm.commons.WCMUtils;
  * otherwise the generic XSSAPI service would be injected from the OSGi Service Registry instead of the
  * pre-configured from the current request.
  */
-@Property(name = Constants.SERVICE_RANKING, intValue = 600)
+@Property(name = Constants.SERVICE_RANKING, intValue = 4500)
 public final class AemObjectInjector implements Injector, InjectAnnotationProcessorFactory, AcceptsNullName {
 
   /**
