@@ -35,7 +35,7 @@
   <packaging>bundle</packaging>
 
   <name>Sling Models Extensions</name>
-  <description>Extensions for Sling Models.</description>
+  <description>AEM-specific Sling Models Injector.</description>
 
   <scm>
     <connection>scm:git:git@github.com:wcm-io/wcm-io.git</connection>
