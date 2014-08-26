@@ -279,7 +279,7 @@ public final class AemObjectInjector implements Injector, InjectAnnotationProces
     return WCMUtils.getComponentContext(request);
   }
 
-  protected Design getCurrentDesign(final Object adaptable) {
+  private Design getCurrentDesign(final Object adaptable) {
     Page currentPage = getCurrentPage(adaptable);
     Designer designer = getDesigner(adaptable);
     if (currentPage != null && designer != null) {

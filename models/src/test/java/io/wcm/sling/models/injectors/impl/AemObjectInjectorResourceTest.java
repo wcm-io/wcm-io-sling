@@ -45,7 +45,6 @@ import com.day.cq.wcm.api.designer.Designer;
 import com.day.cq.wcm.api.designer.Style;
 
 @RunWith(MockitoJUnitRunner.class)
-@SuppressWarnings("javadoc")
 public class AemObjectInjectorResourceTest {
 
   private final AemObjectInjector injector = new AemObjectInjector();
