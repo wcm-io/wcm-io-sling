@@ -129,7 +129,7 @@
         <configuration>
           <instructions>
             <Export-Package>
-              io.wcm.sling.models.annotations;version=${project.version}
+              io.wcm.sling.commons.*;version=${project.version}
             </Export-Package>
           </instructions>
         </configuration>
