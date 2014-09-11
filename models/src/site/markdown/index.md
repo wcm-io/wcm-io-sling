@@ -33,7 +33,7 @@ See [Injector API documentation][apidocs-aemobjectinjector] for details.
 ### Comparison to ACS Commons
 
 The [ACS AEM Commons][acs-commons] project also contains an implementation of an [AEM Object Injector][acs-commons-aem-object-injrecotr].
-It has basically the same feature-set as the wcm.io version, but it uses name-based injection based on the property names.
+It has basically the same feature-set as the wcm.io version, but it uses name-based injection based on property names.
 
 The wcm.io AEM Object injector use class-based injection, making it easier to use independently from the property name.
 

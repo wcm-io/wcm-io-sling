@@ -4,4 +4,4 @@ wcm.io extensions for Sling features.
 
 ### Overview
 
-* [Models](models/): AEM-specific Sling Models Injector
+* [Models](models/): AEM Object Injector for Sling Models
