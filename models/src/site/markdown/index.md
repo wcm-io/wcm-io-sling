@@ -40,7 +40,7 @@ The wcm.io AEM Object injector use class-based injection, making it easier to us
 
 [usage]: usage.html
 [apidocs]: apidocs/
-[apidocs-aemobjectinjector]: apidocs/io/wcm/sling/models/injectors/impl/AemObjectInjector.html
+[apidocs-aemobjectinjector]: apidocs/io/wcm/sling/models/annotations/AemObject.html
 [changelog]: changes-report.html
 [acs-commons]: http://adobe-consulting-services.github.io/acs-aem-commons/
 [acs-commons-aem-object-injrecotr]: http://adobe-consulting-services.github.io/acs-aem-commons/features/aem-sling-models-injectors.html
