@@ -44,3 +44,18 @@ The wcm.io AEM Object injector use class-based injection, making it easier to us
 [changelog]: changes-report.html
 [acs-commons]: http://adobe-consulting-services.github.io/acs-aem-commons/
 [acs-commons-aem-object-injrecotr]: http://adobe-consulting-services.github.io/acs-aem-commons/features/aem-sling-models-injectors.html
+
+
+### Maven Dependency for CQ5
+
+Although wcm.io generally targets only AEM6, for this package a version for CQ55 and CQ56 is available as well:
+
+```xml
+<dependency>
+  <groupId>io.wcm.cq5</groupId>
+  <artifactId>io.wcm.cq5.sling.models</artifactId>
+  <version>1.0.0</version>
+</dependency>
+```
+
+It supports the same features, only the Authoring UI mode detection is missing.
