@@ -21,6 +21,9 @@ package io.wcm.sling.commons.osgi;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import io.wcm.sling.commons.osgi.RankedServices.ChangeListener;
 
 import java.util.Map;
 
@@ -67,6 +70,15 @@ public class RankedServicesTest {
     assertSame(SERVICE_1, services[0]);
     assertSame(SERVICE_3, services[1]);
 
+  }
+
+  @Test
+  public void testChangeListener() {
+    ChangeListener changeListener = mock(ChangeListener.class);
+
+    RankedServices<Comparable> underTest = new RankedServices<>(changeListener);
+    underTest.bind(SERVICE_1, SERVICE_1_PROPS);
+    verify(changeListener).changed();
   }
 
 }

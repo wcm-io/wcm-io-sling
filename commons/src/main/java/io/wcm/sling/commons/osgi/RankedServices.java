@@ -37,8 +37,24 @@ import org.apache.sling.commons.osgi.ServiceUtil;
  */
 public final class RankedServices<T> implements Iterable<T> {
 
+  private final ChangeListener changeListener;
   private final SortedMap<Comparable<Object>, T> serviceMap = new TreeMap<>();
   private volatile Collection<T> sortedServices = Collections.emptyList();
+
+  /**
+   * Instantiate without change listener.
+   */
+  public RankedServices() {
+    this(null);
+  }
+
+  /**
+   * Instantiate without change listener.
+   * @param changeListener Change listener
+   */
+  public RankedServices(ChangeListener changeListener) {
+    this.changeListener = changeListener;
+  }
 
   /**
    * Handle bind service event.
@@ -70,6 +86,9 @@ public final class RankedServices<T> implements Iterable<T> {
   private void updateSortedServices() {
     List<T> copiedList = new ArrayList<T>(serviceMap.values());
     sortedServices = Collections.unmodifiableList(copiedList);
+    if (changeListener != null) {
+      changeListener.changed();
+    }
   }
 
   /**
@@ -82,6 +101,19 @@ public final class RankedServices<T> implements Iterable<T> {
   @Override
   public Iterator<T> iterator() {
     return sortedServices.iterator();
+  }
+
+  /**
+   * Notification for changes on services list.
+   */
+  public interface ChangeListener {
+
+    /**
+     * Is called when the list of ranked services was changed due to bundle bindings/unbindings.
+     * This method is called within a synchronized block, so it's code should be kept as efficient as possible.
+     */
+    void changed();
+
   }
 
 }
