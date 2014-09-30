@@ -17,7 +17,7 @@
  * limitations under the License.
  * #L%
  */
-package io.wcm.sling.commons.wrappers;
+package io.wcm.sling.commons.resource;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

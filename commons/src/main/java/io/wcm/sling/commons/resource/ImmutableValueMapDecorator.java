@@ -17,7 +17,7 @@
  * limitations under the License.
  * #L%
  */
-package io.wcm.sling.commons.wrappers;
+package io.wcm.sling.commons.resource;
 
 import java.util.Collection;
 import java.util.Collections;
