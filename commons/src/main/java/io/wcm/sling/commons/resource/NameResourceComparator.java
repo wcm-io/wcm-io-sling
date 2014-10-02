@@ -26,7 +26,7 @@ import org.apache.sling.api.resource.Resource;
 /**
  * Orders resources alphabetically by name (ascending).
  */
-public class NameResourceComparator implements Comparator<Resource> {
+public final class NameResourceComparator implements Comparator<Resource> {
 
   @Override
   public int compare(Resource o1, Resource o2) {

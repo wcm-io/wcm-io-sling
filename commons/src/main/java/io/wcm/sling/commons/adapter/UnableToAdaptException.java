@@ -24,7 +24,7 @@ import org.apache.sling.api.adapter.Adaptable;
 /**
  * Exception is thrown if {@link AdaptTo#notNull} call was not successful.
  */
-public class UnableToAdaptException extends RuntimeException {
+public final class UnableToAdaptException extends RuntimeException {
 
   private static final long serialVersionUID = 1L;
 
