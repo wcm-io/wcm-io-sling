@@ -29,11 +29,11 @@ import org.apache.commons.lang3.CharEncoding;
 public class RequestParamNoFormEncodingTest extends RequestParamTest {
 
   @Override
-  protected Map<String, String[]> getParamMap() throws UnsupportedEncodingException {
-    Map<String, String[]> paramMap = new HashMap<>();
+  protected Map<String, Object> getParamMap() throws UnsupportedEncodingException {
+    Map<String, Object> paramMap = new HashMap<>();
 
-    for (Map.Entry<String, String[]> entry : super.getParamMap().entrySet()) {
-      String[] values = entry.getValue();
+    for (Map.Entry<String, Object> entry : super.getParamMap().entrySet()) {
+      String[] values = (String[])entry.getValue();
       String[] convertedValues;
       if (values == null) {
         convertedValues = null;

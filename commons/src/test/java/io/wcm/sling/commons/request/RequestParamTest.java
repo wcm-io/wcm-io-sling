@@ -55,7 +55,7 @@ public class RequestParamTest {
   private static final String ENUM_PARAM = "enumParam";
   private static final SAMPLE_ENUM ENUM_VALUE = SAMPLE_ENUM.ENUM_VALUE2;
 
-  private Map<String, String[]> paramMap;
+  private Map<String, Object> paramMap;
   private MockSlingHttpServletRequest request;
 
   @Before
@@ -66,8 +66,8 @@ public class RequestParamTest {
   }
 
   @SuppressWarnings("unused")
-  protected Map<String, String[]> getParamMap() throws UnsupportedEncodingException {
-    return ImmutableMap.<String, String[]>builder()
+  protected Map<String, Object> getParamMap() throws UnsupportedEncodingException {
+    return ImmutableMap.<String, Object>builder()
         .put(STRING_PARAM, new String[] {
             STRING_VALUE
         })
@@ -121,8 +121,8 @@ public class RequestParamTest {
 
   @Test
   public void testGetMap() {
-    assertEquals(STRING_VALUE, RequestParam.get(paramMap, STRING_PARAM));
-    assertNull(RequestParam.get(paramMap, PARAM_NONEXISTING));
+    assertEquals(STRING_VALUE, RequestParam.get(request.getParameterMap(), STRING_PARAM));
+    assertNull(RequestParam.get(request.getParameterMap(), PARAM_NONEXISTING));
   }
 
   @Test
