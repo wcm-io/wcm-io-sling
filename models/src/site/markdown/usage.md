@@ -2,6 +2,8 @@
 
 The Sling Models Injector `AemObjectInjector` adds support for AEM context objects to Sling Models.
 
+See [Injector API documentation][apidocs-aemobjectinjector] for a full documentation of injections supported.
+
 ### Injecting PageManager and Page objects
 
 Example:
@@ -44,3 +46,5 @@ private class MyModel {
 // get model instance
 MyModel model = request.adaptTo(MyModel.class);
 ```
+
+[apidocs-aemobjectinjector]: apidocs/io/wcm/sling/models/annotations/AemObject.html
