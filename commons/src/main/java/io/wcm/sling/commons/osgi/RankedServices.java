@@ -32,6 +32,7 @@ import org.apache.sling.commons.osgi.ServiceUtil;
 
 /**
  * Helper class that collects all services registered via OSGi bind/unbind methods.
+ * The services are ordered by service ranking and can be iterated directly using this object instance.
  * Implementation is thread-safe.
  * @param <T> Service type
  */
@@ -92,12 +93,17 @@ public final class RankedServices<T> implements Iterable<T> {
   }
 
   /**
-   * @return List of all services registered in OSGi, sorted by service ranking.
+   * Lists all services registered in OSGi, sorted by service ranking.
+   * @return Collection of service instances
    */
   public Collection<T> get() {
     return sortedServices;
   }
 
+  /**
+   * Iterates all services registered in OSGi, sorted by service ranking.
+   * @return Iterator with service instances.
+   */
   @Override
   public Iterator<T> iterator() {
     return sortedServices.iterator();

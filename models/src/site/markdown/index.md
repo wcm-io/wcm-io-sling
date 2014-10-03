@@ -33,9 +33,9 @@ See [Injector API documentation][apidocs-aemobjectinjector] for details.
 ### Comparison to ACS Commons
 
 The [ACS AEM Commons][acs-commons] project also contains an implementation of an [AEM Object Injector][acs-commons-aem-object-injrecotr].
-It has basically the same feature-set as the wcm.io version, but it uses name-based injection based on property names.
+It has basically the same feature-set as the wcm.io version, but it uses name-based injection based on field names.
 
-The wcm.io AEM Object injector use class-based injection, making it easier to use independently from the property name.
+The wcm.io AEM Object injector use class-based injection, making it easier to use independently from the field name.
 
 
 [usage]: usage.html
@@ -48,7 +48,7 @@ The wcm.io AEM Object injector use class-based injection, making it easier to us
 
 ### Maven Dependency for CQ5
 
-Although wcm.io generally targets only AEM6, for this package a version for CQ55 and CQ56 is available as well:
+Although wcm.io generally targets only AEM6, for this package a version for CQ55 and CQ56 is published as well:
 
 ```xml
 <dependency>
@@ -58,4 +58,4 @@ Although wcm.io generally targets only AEM6, for this package a version for CQ55
 </dependency>
 ```
 
-It supports the same features, only the Authoring UI mode detection is missing.
+It supports the same features, only the Authoring UI mode detection is not available.
