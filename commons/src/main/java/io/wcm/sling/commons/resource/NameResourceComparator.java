@@ -23,9 +23,12 @@ import java.util.Comparator;
 
 import org.apache.sling.api.resource.Resource;
 
+import aQute.bnd.annotation.ProviderType;
+
 /**
  * Orders resources alphabetically by name (ascending).
  */
+@ProviderType
 public final class NameResourceComparator implements Comparator<Resource> {
 
   @Override

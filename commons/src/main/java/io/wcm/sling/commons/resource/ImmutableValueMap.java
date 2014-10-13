@@ -28,6 +28,8 @@ import java.util.Set;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.wrappers.ValueMapDecorator;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.google.common.collect.ImmutableMap;
 
 /**
@@ -39,6 +41,7 @@ import com.google.common.collect.ImmutableMap;
  * Static convenience methods provide similar behavior as Guava ImmutableMap variants.
  * </p>
  */
+@ProviderType
 public final class ImmutableValueMap implements ValueMap {
 
   private final ValueMap map;

@@ -20,4 +20,5 @@
 /**
  * Annotations for sling model extensions.
  */
+@aQute.bnd.annotation.Version("1.0.0")
 package io.wcm.sling.models.annotations;

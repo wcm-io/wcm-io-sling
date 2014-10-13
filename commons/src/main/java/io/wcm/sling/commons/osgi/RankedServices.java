@@ -30,12 +30,15 @@ import java.util.TreeMap;
 
 import org.apache.sling.commons.osgi.ServiceUtil;
 
+import aQute.bnd.annotation.ProviderType;
+
 /**
  * Helper class that collects all services registered via OSGi bind/unbind methods.
  * The services are ordered by service ranking and can be iterated directly using this object instance.
  * Implementation is thread-safe.
  * @param <T> Service type
  */
+@ProviderType
 public final class RankedServices<T> implements Iterable<T> {
 
   private final ChangeListener changeListener;

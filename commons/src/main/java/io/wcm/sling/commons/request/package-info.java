@@ -20,4 +20,5 @@
 /**
  * Helper classes for request handling.
  */
+@aQute.bnd.annotation.Version("0.2.0")
 package io.wcm.sling.commons.request;

@@ -21,9 +21,12 @@ package io.wcm.sling.commons.adapter;
 
 import org.apache.sling.api.adapter.Adaptable;
 
+import aQute.bnd.annotation.ProviderType;
+
 /**
  * Utility methods around Sling {@link Adaptable}.
  */
+@ProviderType
 public final class AdaptTo {
 
   private AdaptTo() {

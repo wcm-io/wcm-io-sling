@@ -20,4 +20,5 @@
 /**
  * Helper classes around the Sling {@link org.apache.sling.api.resource.Resource} concept.
  */
+@aQute.bnd.annotation.Version("0.2.0")
 package io.wcm.sling.commons.resource;

@@ -20,4 +20,5 @@
 /**
  * Miscellaneous helper classes.
  */
+@aQute.bnd.annotation.Version("0.2.0")
 package io.wcm.sling.commons.util;

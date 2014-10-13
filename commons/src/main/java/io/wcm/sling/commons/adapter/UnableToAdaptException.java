@@ -21,9 +21,12 @@ package io.wcm.sling.commons.adapter;
 
 import org.apache.sling.api.adapter.Adaptable;
 
+import aQute.bnd.annotation.ProviderType;
+
 /**
  * Exception is thrown if {@link AdaptTo#notNull} call was not successful.
  */
+@ProviderType
 public final class UnableToAdaptException extends RuntimeException {
 
   private static final long serialVersionUID = 1L;

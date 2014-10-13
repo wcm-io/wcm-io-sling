@@ -70,12 +70,6 @@
     </dependency>
 
     <dependency>
-      <groupId>org.apache.felix</groupId>
-      <artifactId>org.apache.felix.scr.annotations</artifactId>
-      <scope>compile</scope>
-    </dependency>
-
-    <dependency>
       <groupId>org.osgi</groupId>
       <artifactId>org.osgi.core</artifactId>
       <scope>compile</scope>
@@ -136,7 +130,7 @@
         <configuration>
           <instructions>
             <Export-Package>
-              io.wcm.sling.commons.*;version=${project.version}
+              io.wcm.sling.commons.*
             </Export-Package>
           </instructions>
         </configuration>

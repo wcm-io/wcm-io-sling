@@ -22,9 +22,12 @@ package io.wcm.sling.commons.request;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 
+import aQute.bnd.annotation.ProviderType;
+
 /**
  * Utility methods when for sling paths and resources.
  */
+@ProviderType
 public final class RequestPath {
 
   private RequestPath() {

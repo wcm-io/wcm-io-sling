@@ -29,12 +29,15 @@ import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
+import aQute.bnd.annotation.ProviderType;
+
 /**
  * Several helper methods for getting parameters from the servlet request.
  * This class automatically converts string parameters from ISO-8859-1 to UTF-8, because UTF-8 form data
  * is expected by default. This is only done if no request parameter "_charset_" with an explicit encoding is set.
  * If it is set, the {@link org.apache.sling.api.SlingHttpServletRequest} automatically converts the parameter data.
  */
+@ProviderType
 public final class RequestParam {
 
   /**

@@ -69,12 +69,6 @@
     </dependency>
 
     <dependency>
-      <groupId>org.apache.felix</groupId>
-      <artifactId>org.apache.felix.scr.annotations</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
       <groupId>org.osgi</groupId>
       <artifactId>org.osgi.core</artifactId>
       <scope>provided</scope>
@@ -147,7 +141,7 @@
         <configuration>
           <instructions>
             <Export-Package>
-              io.wcm.sling.models.annotations;version=${project.version}
+              io.wcm.sling.models.annotations
             </Export-Package>
           </instructions>
         </configuration>

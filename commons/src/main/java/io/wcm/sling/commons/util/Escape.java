@@ -25,9 +25,12 @@ import java.net.URLEncoder;
 import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
 
+import aQute.bnd.annotation.ProviderType;
+
 /**
  * Encoding utility functions.
  */
+@ProviderType
 public final class Escape {
 
   private Escape() {
