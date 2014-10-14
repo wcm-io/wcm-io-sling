@@ -138,13 +138,6 @@
       <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
-        <configuration>
-          <instructions>
-            <Export-Package>
-              io.wcm.sling.models.annotations
-            </Export-Package>
-          </instructions>
-        </configuration>
       </plugin>
 
       <plugin>

@@ -127,13 +127,6 @@
       <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
-        <configuration>
-          <instructions>
-            <Export-Package>
-              io.wcm.sling.commons.*
-            </Export-Package>
-          </instructions>
-        </configuration>
       </plugin>
 
       <plugin>
