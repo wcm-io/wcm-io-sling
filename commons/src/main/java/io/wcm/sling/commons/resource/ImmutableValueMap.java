@@ -24,13 +24,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
 
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.wrappers.ValueMapDecorator;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSortedMap;
 
 /**
  * {@link ValueMap} that does not support changing its content.
@@ -108,6 +111,25 @@ public final class ImmutableValueMap implements ValueMap {
   @Override
   public Set<java.util.Map.Entry<String, Object>> entrySet() {
     return Collections.unmodifiableSet(this.map.entrySet());
+  }
+
+  @Override
+  public int hashCode() {
+    return this.map.hashCode();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof ImmutableValueMap)) {
+      return false;
+    }
+    return this.map.entrySet().equals(((ImmutableValueMap)obj).map.entrySet());
+  }
+
+  @Override
+  public String toString() {
+    SortedMap sortedMap = ImmutableSortedMap.<String, Object>copyOf(this.map);
+    return "{" + Joiner.on(",").withKeyValueSeparator("=").join(sortedMap) + "}";
   }
 
   // mutable operations not supported
