@@ -20,8 +20,7 @@
 package io.wcm.sling.commons.adapter;
 
 import org.apache.sling.api.adapter.Adaptable;
-
-import aQute.bnd.annotation.ProviderType;
+import org.osgi.annotation.versioning.ProviderType;
 
 /**
  * Utility methods around Sling {@link Adaptable}.

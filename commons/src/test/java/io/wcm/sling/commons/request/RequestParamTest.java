@@ -22,12 +22,12 @@ package io.wcm.sling.commons.request;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import org.apache.sling.testing.mock.sling.servlet.MockSlingHttpServletRequest;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 import org.apache.commons.lang3.CharEncoding;
+import org.apache.sling.testing.mock.sling.servlet.MockSlingHttpServletRequest;
 import org.junit.Before;
 import org.junit.Test;
 

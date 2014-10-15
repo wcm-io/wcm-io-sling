@@ -20,5 +20,5 @@
 /**
  * Helper classes for OSGi and SCR.
  */
-@aQute.bnd.annotation.Version("0.2.0")
+@org.osgi.annotation.versioning.Version("0.2.0")
 package io.wcm.sling.commons.osgi;

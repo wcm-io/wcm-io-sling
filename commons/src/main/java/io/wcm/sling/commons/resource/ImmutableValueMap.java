@@ -28,8 +28,7 @@ import java.util.SortedMap;
 
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.wrappers.ValueMapDecorator;
-
-import aQute.bnd.annotation.ProviderType;
+import org.osgi.annotation.versioning.ProviderType;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableMap;

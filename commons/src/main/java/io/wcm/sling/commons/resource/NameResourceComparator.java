@@ -22,8 +22,7 @@ package io.wcm.sling.commons.resource;
 import java.util.Comparator;
 
 import org.apache.sling.api.resource.Resource;
-
-import aQute.bnd.annotation.ProviderType;
+import org.osgi.annotation.versioning.ProviderType;
 
 /**
  * Orders resources alphabetically by name (ascending).

@@ -29,8 +29,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.apache.sling.commons.osgi.ServiceUtil;
-
-import aQute.bnd.annotation.ProviderType;
+import org.osgi.annotation.versioning.ProviderType;
 
 /**
  * Helper class that collects all services registered via OSGi bind/unbind methods.
