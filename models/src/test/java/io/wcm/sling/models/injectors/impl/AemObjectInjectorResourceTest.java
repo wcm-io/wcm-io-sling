@@ -35,6 +35,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.adobe.granite.xss.XSSAPI;
+import com.day.cq.i18n.I18n;
 import com.day.cq.wcm.api.AuthoringUIMode;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
@@ -130,6 +131,12 @@ public class AemObjectInjectorResourceTest {
   @Test
   public void testXssApi() {
     Object result = this.injector.getValue(this.resource, null, XSSAPI.class, this.annotatedElement, null);
+    assertNull(result);
+  }
+
+  @Test
+  public void testI18n() {
+    Object result = this.injector.getValue(this.resource, null, I18n.class, this.annotatedElement, null);
     assertNull(result);
   }
 

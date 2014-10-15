@@ -1,4 +1,4 @@
-## About Sling Models Extension
+## About AEM Sling Models Extension
 
 AEM Object Injector for Sling Models.
 
@@ -27,6 +27,7 @@ The AEM Object Injector for Sling Models provides:
 * Current WCM mode and Authoring UI mode
 * Current Designer, Design and Style objects
 * XSSAPI for current request
+* CQ I18n object for the current request
 
 See [Injector API documentation][apidocs-aemobjectinjector] for details.
 

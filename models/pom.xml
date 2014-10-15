@@ -34,7 +34,7 @@
   <version>1.0.1-SNAPSHOT</version>
   <packaging>bundle</packaging>
 
-  <name>Sling Models Extensions</name>
+  <name>AEM Sling Models Extensions</name>
   <description>AEM Object Injector for Sling Models.</description>
 
   <scm>

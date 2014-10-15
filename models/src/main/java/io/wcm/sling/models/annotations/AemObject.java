@@ -32,6 +32,7 @@ import org.apache.sling.models.annotations.Source;
 import org.apache.sling.models.spi.injectorspecific.InjectAnnotation;
 
 import com.adobe.granite.xss.XSSAPI;
+import com.day.cq.i18n.I18n;
 import com.day.cq.wcm.api.AuthoringUIMode;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
@@ -122,6 +123,13 @@ import com.day.cq.wcm.api.designer.Style;
  * <tr>
  * <td>{@link XSSAPI}</td>
  * <td>AEM XSS API object for the current request</td>
+ * <td style="text-align:center">X</td>
+ * <td></td>
+ * <td></td>
+ * </tr>
+ * <tr>
+ * <td>{@link I18n}</td>
+ * <td>I18n object for the current request</td>
  * <td style="text-align:center">X</td>
  * <td></td>
  * <td></td>

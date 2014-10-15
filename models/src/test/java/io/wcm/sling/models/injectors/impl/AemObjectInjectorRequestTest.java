@@ -19,6 +19,7 @@
  */
 package io.wcm.sling.models.injectors.impl;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Matchers.any;
@@ -36,6 +37,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.adobe.granite.xss.XSSAPI;
+import com.day.cq.i18n.I18n;
 import com.day.cq.wcm.api.AuthoringUIMode;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
@@ -154,6 +156,12 @@ public class AemObjectInjectorRequestTest {
   public void testXssApi() {
     Object result = this.injector.getValue(this.request, null, XSSAPI.class, this.annotatedElement, null);
     assertSame(this.xssApi, result);
+  }
+
+  @Test
+  public void testI18n() {
+    Object result = this.injector.getValue(this.request, null, I18n.class, this.annotatedElement, null);
+    assertNotNull(result);
   }
 
   @Test

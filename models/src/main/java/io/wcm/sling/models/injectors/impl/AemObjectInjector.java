@@ -40,6 +40,7 @@ import org.apache.sling.models.spi.injectorspecific.InjectAnnotationProcessorFac
 import org.osgi.framework.Constants;
 
 import com.adobe.granite.xss.XSSAPI;
+import com.day.cq.i18n.I18n;
 import com.day.cq.wcm.api.AuthoringUIMode;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
@@ -102,6 +103,9 @@ public final class AemObjectInjector implements Injector, InjectAnnotationProces
       }
       if (requestedClass.equals(XSSAPI.class)) {
         return getXssApi(request);
+      }
+      if (requestedClass.equals(I18n.class)) {
+        return getI18n(request);
       }
     }
 
@@ -216,6 +220,10 @@ public final class AemObjectInjector implements Injector, InjectAnnotationProces
 
   private XSSAPI getXssApi(final SlingHttpServletRequest request) {
     return request.adaptTo(XSSAPI.class);
+  }
+
+  private I18n getI18n(final SlingHttpServletRequest request) {
+    return new I18n(request);
   }
 
   @Override
