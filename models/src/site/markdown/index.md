@@ -15,7 +15,7 @@ AEM Object Injector for Sling Models.
 ### Documentation
 
 * [Usage][usage]
-* [API Documentation][apidocs]
+* [API documentation][apidocs]
 * [Changelog][changelog]
 
 
