@@ -32,6 +32,7 @@ import org.apache.felix.scr.annotations.Service;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.api.scripting.SlingBindings;
 import org.apache.sling.models.spi.AcceptsNullName;
 import org.apache.sling.models.spi.DisposalCallbackRegistry;
 import org.apache.sling.models.spi.Injector;
@@ -233,13 +234,30 @@ public final class AemObjectInjector implements Injector, InjectAnnotationProces
     Page currentPage = getCurrentPage(request);
     if (currentPage != null) {
       Locale currentLocale = currentPage.getLanguage(false);
-      return new I18n(request.getResourceBundle(currentLocale));
+      return new I18n(getRequestFromSlingBindings(request).getResourceBundle(currentLocale));
     }
     return null;
   }
 
   private I18n getUserI18n(final SlingHttpServletRequest request) {
-    return new I18n(request);
+    return new I18n(getRequestFromSlingBindings(request));
+  }
+
+  /**
+   * Returns the {@link SlingHttpServletRequest} from SlingBindings. This is a request wrapped
+   * in another way than passed to this sling model object, any only with this resource bundle
+   * resolution against JCR-based resource bundles is working.
+   * @param request Original request
+   * @return Request from sling bindings
+   */
+  private SlingHttpServletRequest getRequestFromSlingBindings(SlingHttpServletRequest request) {
+    SlingBindings bindings = (SlingBindings)request.getAttribute(SlingBindings.class.getName());
+    if (bindings != null) {
+      return bindings.getRequest();
+    }
+    else {
+      return request;
+    }
   }
 
   @Override
