@@ -19,20 +19,28 @@
  */
 package io.wcm.sling.models.injectors.impl;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Mockito.when;
 
+import java.io.InputStream;
 import java.lang.reflect.AnnotatedElement;
+import java.util.Locale;
+import java.util.PropertyResourceBundle;
+import java.util.ResourceBundle;
 
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.i18n.ResourceBundleProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -50,8 +58,6 @@ import com.day.cq.wcm.api.designer.Style;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AemObjectInjectorRequestTest {
-
-  private final AemObjectInjector injector = new AemObjectInjector();
 
   @Mock
   private AnnotatedElement annotatedElement;
@@ -79,94 +85,109 @@ public class AemObjectInjectorRequestTest {
   private Cell cell;
   @Mock
   private XSSAPI xssApi;
+  @Mock
+  private ResourceBundleProvider resourceBundleProvider;
+  private ResourceBundle resourceBundle;
+
+  @InjectMocks
+  private AemObjectInjector injector;
+
+  private static final Locale SAMPLE_LOCALE = Locale.US;
 
   @Before
-  public void setUp() {
-    when(this.request.getResource()).thenReturn(this.resource);
-    when(this.request.getResourceResolver()).thenReturn(this.resourceResolver);
-    when(this.request.getAttribute(ComponentContext.CONTEXT_ATTR_NAME)).thenReturn(this.componentContext);
-    when(this.request.getAttribute(WCMMode.REQUEST_ATTRIBUTE_NAME)).thenReturn(WCMMode.PREVIEW);
-    when(this.request.getAttribute(AuthoringUIMode.REQUEST_ATTRIBUTE_NAME)).thenReturn(AuthoringUIMode.TOUCH);
-    when(this.request.adaptTo(XSSAPI.class)).thenReturn(this.xssApi);
-    when(this.resource.getResourceResolver()).thenReturn(this.resourceResolver);
-    when(this.resourceResolver.adaptTo(PageManager.class)).thenReturn(this.pageManager);
-    when(this.resourceResolver.adaptTo(Designer.class)).thenReturn(this.designer);
-    when(this.componentContext.getPage()).thenReturn(this.currentPage);
-    when(this.componentContext.getCell()).thenReturn(this.cell);
-    when(this.pageManager.getContainingPage(this.resource)).thenReturn(this.resourcePage);
-    when(this.designer.getDesign(any(Page.class))).thenReturn(this.design);
-    when(this.design.getStyle(this.cell)).thenReturn(this.style);
+  public void setUp() throws Exception {
+    when(request.getResource()).thenReturn(resource);
+    when(request.getResourceResolver()).thenReturn(resourceResolver);
+    when(request.getAttribute(ComponentContext.CONTEXT_ATTR_NAME)).thenReturn(componentContext);
+    when(request.getAttribute(WCMMode.REQUEST_ATTRIBUTE_NAME)).thenReturn(WCMMode.PREVIEW);
+    when(request.getAttribute(AuthoringUIMode.REQUEST_ATTRIBUTE_NAME)).thenReturn(AuthoringUIMode.TOUCH);
+    when(request.adaptTo(XSSAPI.class)).thenReturn(xssApi);
+    when(resource.getResourceResolver()).thenReturn(resourceResolver);
+    when(resourceResolver.adaptTo(PageManager.class)).thenReturn(pageManager);
+    when(resourceResolver.adaptTo(Designer.class)).thenReturn(designer);
+    when(componentContext.getPage()).thenReturn(currentPage);
+    when(componentContext.getCell()).thenReturn(cell);
+    when(pageManager.getContainingPage(resource)).thenReturn(resourcePage);
+    when(designer.getDesign(any(Page.class))).thenReturn(design);
+    when(design.getStyle(cell)).thenReturn(style);
+    when(currentPage.getLanguage(anyBoolean())).thenReturn(SAMPLE_LOCALE);
+
+    InputStream resourceBundleStream = getClass().getResourceAsStream("/sample-i18n.properties");
+    resourceBundle = new PropertyResourceBundle(resourceBundleStream);
+    resourceBundleStream.close();
+    when(resourceBundleProvider.getResourceBundle(SAMPLE_LOCALE)).thenReturn(resourceBundle);
   }
 
   @Test
   public void testPageManager() {
-    Object result = this.injector.getValue(this.request, null, PageManager.class, this.annotatedElement, null);
-    assertSame(this.pageManager, result);
+    Object result = injector.getValue(request, null, PageManager.class, annotatedElement, null);
+    assertSame(pageManager, result);
   }
 
   @Test
   public void testCurrentPage() {
-    Object result = this.injector.getValue(this.request, null, Page.class, this.annotatedElement, null);
-    assertSame(this.currentPage, result);
+    Object result = injector.getValue(request, null, Page.class, annotatedElement, null);
+    assertSame(currentPage, result);
   }
 
   @Test
   public void testResourcePage() {
-    Object result = this.injector.getValue(this.request, "resourcePage", Page.class, this.annotatedElement, null);
-    assertSame(this.resourcePage, result);
+    Object result = injector.getValue(request, "resourcePage", Page.class, annotatedElement, null);
+    assertSame(resourcePage, result);
   }
 
   @Test
   public void testWcmMode() {
-    Object result = this.injector.getValue(this.request, null, WCMMode.class, this.annotatedElement, null);
+    Object result = injector.getValue(request, null, WCMMode.class, annotatedElement, null);
     assertSame(WCMMode.PREVIEW, result);
   }
 
   @Test
   public void testAuthoringUiMode() {
-    Object result = this.injector.getValue(this.request, null, AuthoringUIMode.class, this.annotatedElement, null);
+    Object result = injector.getValue(request, null, AuthoringUIMode.class, annotatedElement, null);
     assertSame(AuthoringUIMode.TOUCH, result);
   }
 
   @Test
   public void testComponentContext() {
-    Object result = this.injector.getValue(this.request, null, ComponentContext.class, this.annotatedElement, null);
-    assertSame(this.componentContext, result);
+    Object result = injector.getValue(request, null, ComponentContext.class, annotatedElement, null);
+    assertSame(componentContext, result);
   }
 
   @Test
   public void testDesigner() {
-    Object result = this.injector.getValue(this.request, null, Designer.class, this.annotatedElement, null);
-    assertSame(this.designer, result);
+    Object result = injector.getValue(request, null, Designer.class, annotatedElement, null);
+    assertSame(designer, result);
   }
 
   @Test
   public void testDesign() {
-    Object result = this.injector.getValue(this.request, null, Design.class, this.annotatedElement, null);
-    assertSame(this.design, result);
+    Object result = injector.getValue(request, null, Design.class, annotatedElement, null);
+    assertSame(design, result);
   }
 
   @Test
   public void testStyle() {
-    Object result = this.injector.getValue(this.request, null, Style.class, this.annotatedElement, null);
-    assertSame(this.style, result);
+    Object result = injector.getValue(request, null, Style.class, annotatedElement, null);
+    assertSame(style, result);
   }
 
   @Test
   public void testXssApi() {
-    Object result = this.injector.getValue(this.request, null, XSSAPI.class, this.annotatedElement, null);
-    assertSame(this.xssApi, result);
+    Object result = injector.getValue(request, null, XSSAPI.class, annotatedElement, null);
+    assertSame(xssApi, result);
   }
 
   @Test
   public void testI18n() {
-    Object result = this.injector.getValue(this.request, null, I18n.class, this.annotatedElement, null);
+    I18n result = (I18n)injector.getValue(request, null, I18n.class, annotatedElement, null);
     assertNotNull(result);
+    assertEquals("mytranslation", result.get("mykey"));
   }
 
   @Test
   public void testInvalid() {
-    Object result = this.injector.getValue(this, null, PageManager.class, this.annotatedElement, null);
+    Object result = injector.getValue(this, null, PageManager.class, annotatedElement, null);
     assertNull(result);
   }
 

@@ -28,9 +28,11 @@ import java.lang.reflect.AnnotatedElement;
 
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.i18n.ResourceBundleProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -48,8 +50,6 @@ import com.day.cq.wcm.api.designer.Style;
 @RunWith(MockitoJUnitRunner.class)
 public class AemObjectInjectorResourceTest {
 
-  private final AemObjectInjector injector = new AemObjectInjector();
-
   @Mock
   private AnnotatedElement annotatedElement;
   @Mock
@@ -64,85 +64,90 @@ public class AemObjectInjectorResourceTest {
   private Designer designer;
   @Mock
   private Design design;
+  @Mock
+  private ResourceBundleProvider resourceBundleProvider;
+
+  @InjectMocks
+  private AemObjectInjector injector;
 
   @Before
   public void setUp() {
-    when(this.resource.getResourceResolver()).thenReturn(this.resourceResolver);
-    when(this.resourceResolver.adaptTo(PageManager.class)).thenReturn(this.pageManager);
-    when(this.resourceResolver.adaptTo(Designer.class)).thenReturn(this.designer);
-    when(this.pageManager.getContainingPage(this.resource)).thenReturn(this.resourcePage);
-    when(this.designer.getDesign(any(Page.class))).thenReturn(this.design);
+    when(resource.getResourceResolver()).thenReturn(resourceResolver);
+    when(resourceResolver.adaptTo(PageManager.class)).thenReturn(pageManager);
+    when(resourceResolver.adaptTo(Designer.class)).thenReturn(designer);
+    when(pageManager.getContainingPage(resource)).thenReturn(resourcePage);
+    when(designer.getDesign(any(Page.class))).thenReturn(design);
   }
 
   @Test
   public void testPageManager() {
-    Object result = this.injector.getValue(this.resource, null, PageManager.class, this.annotatedElement, null);
-    assertSame(this.pageManager, result);
+    Object result = injector.getValue(resource, null, PageManager.class, annotatedElement, null);
+    assertSame(pageManager, result);
   }
 
   @Test
   public void testCurrentPage() {
-    Object result = this.injector.getValue(this.resource, null, Page.class, this.annotatedElement, null);
-    assertSame(this.resourcePage, result);
+    Object result = injector.getValue(resource, null, Page.class, annotatedElement, null);
+    assertSame(resourcePage, result);
   }
 
   @Test
   public void testResourcePage() {
-    Object result = this.injector.getValue(this.resource, "resourcePage", Page.class, this.annotatedElement, null);
-    assertSame(this.resourcePage, result);
+    Object result = injector.getValue(resource, "resourcePage", Page.class, annotatedElement, null);
+    assertSame(resourcePage, result);
   }
 
   @Test
   public void testWcmMode() {
-    Object result = this.injector.getValue(this.resource, null, WCMMode.class, this.annotatedElement, null);
+    Object result = injector.getValue(resource, null, WCMMode.class, annotatedElement, null);
     assertNull(result);
   }
 
   @Test
   public void testAuthoringUiMode() {
-    Object result = this.injector.getValue(this.resource, null, AuthoringUIMode.class, this.annotatedElement, null);
+    Object result = injector.getValue(resource, null, AuthoringUIMode.class, annotatedElement, null);
     assertNull(result);
   }
 
   @Test
   public void testComponentContext() {
-    Object result = this.injector.getValue(this.resource, null, ComponentContext.class, this.annotatedElement, null);
+    Object result = injector.getValue(resource, null, ComponentContext.class, annotatedElement, null);
     assertNull(result);
   }
 
   @Test
   public void testDesigner() {
-    Object result = this.injector.getValue(this.resource, null, Designer.class, this.annotatedElement, null);
-    assertSame(this.designer, result);
+    Object result = injector.getValue(resource, null, Designer.class, annotatedElement, null);
+    assertSame(designer, result);
   }
 
   @Test
   public void testDesign() {
-    Object result = this.injector.getValue(this.resource, null, Design.class, this.annotatedElement, null);
-    assertSame(this.design, result);
+    Object result = injector.getValue(resource, null, Design.class, annotatedElement, null);
+    assertSame(design, result);
   }
 
   @Test
   public void testStyle() {
-    Object result = this.injector.getValue(this.resource, null, Style.class, this.annotatedElement, null);
+    Object result = injector.getValue(resource, null, Style.class, annotatedElement, null);
     assertNull(result);
   }
 
   @Test
   public void testXssApi() {
-    Object result = this.injector.getValue(this.resource, null, XSSAPI.class, this.annotatedElement, null);
+    Object result = injector.getValue(resource, null, XSSAPI.class, annotatedElement, null);
     assertNull(result);
   }
 
   @Test
   public void testI18n() {
-    Object result = this.injector.getValue(this.resource, null, I18n.class, this.annotatedElement, null);
+    Object result = injector.getValue(resource, null, I18n.class, annotatedElement, null);
     assertNull(result);
   }
 
   @Test
   public void testInvalid() {
-    Object result = this.injector.getValue(this, null, PageManager.class, this.annotatedElement, null);
+    Object result = injector.getValue(this, null, PageManager.class, annotatedElement, null);
     assertNull(result);
   }
 
