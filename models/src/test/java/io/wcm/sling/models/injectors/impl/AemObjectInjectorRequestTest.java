@@ -27,6 +27,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.AnnotatedElement;
 import java.util.Locale;
@@ -36,11 +37,9 @@ import java.util.ResourceBundle;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
-import org.apache.sling.i18n.ResourceBundleProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -85,17 +84,12 @@ public class AemObjectInjectorRequestTest {
   private Cell cell;
   @Mock
   private XSSAPI xssApi;
-  @Mock
-  private ResourceBundleProvider resourceBundleProvider;
-  private ResourceBundle resourceBundle;
 
-  @InjectMocks
   private AemObjectInjector injector;
 
-  private static final Locale SAMPLE_LOCALE = Locale.US;
-
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
+    injector = new AemObjectInjector();
     when(request.getResource()).thenReturn(resource);
     when(request.getResourceResolver()).thenReturn(resourceResolver);
     when(request.getAttribute(ComponentContext.CONTEXT_ATTR_NAME)).thenReturn(componentContext);
@@ -110,12 +104,6 @@ public class AemObjectInjectorRequestTest {
     when(pageManager.getContainingPage(resource)).thenReturn(resourcePage);
     when(designer.getDesign(any(Page.class))).thenReturn(design);
     when(design.getStyle(cell)).thenReturn(style);
-    when(currentPage.getLanguage(anyBoolean())).thenReturn(SAMPLE_LOCALE);
-
-    InputStream resourceBundleStream = getClass().getResourceAsStream("/sample-i18n.properties");
-    resourceBundle = new PropertyResourceBundle(resourceBundleStream);
-    resourceBundleStream.close();
-    when(resourceBundleProvider.getResourceBundle(SAMPLE_LOCALE)).thenReturn(resourceBundle);
   }
 
   @Test
@@ -132,7 +120,7 @@ public class AemObjectInjectorRequestTest {
 
   @Test
   public void testResourcePage() {
-    Object result = injector.getValue(request, "resourcePage", Page.class, annotatedElement, null);
+    Object result = injector.getValue(request, AemObjectInjector.RESOURCE_PAGE, Page.class, annotatedElement, null);
     assertSame(resourcePage, result);
   }
 
@@ -179,8 +167,20 @@ public class AemObjectInjectorRequestTest {
   }
 
   @Test
-  public void testI18n() {
+  public void testResourceI18n() throws IOException {
+    when(currentPage.getLanguage(anyBoolean())).thenReturn(Locale.US);
+    when(request.getResourceBundle(Locale.US)).thenReturn(getSampleResourceBundle());
+
     I18n result = (I18n)injector.getValue(request, null, I18n.class, annotatedElement, null);
+    assertNotNull(result);
+    assertEquals("mytranslation", result.get("mykey"));
+  }
+
+  @Test
+  public void testUserI18n() throws IOException {
+    when(request.getResourceBundle(null)).thenReturn(getSampleResourceBundle());
+
+    I18n result = (I18n)injector.getValue(request, AemObjectInjector.USER_I18N, I18n.class, annotatedElement, null);
     assertNotNull(result);
     assertEquals("mytranslation", result.get("mykey"));
   }
@@ -189,6 +189,13 @@ public class AemObjectInjectorRequestTest {
   public void testInvalid() {
     Object result = injector.getValue(this, null, PageManager.class, annotatedElement, null);
     assertNull(result);
+  }
+
+  private static ResourceBundle getSampleResourceBundle() throws IOException {
+    InputStream resourceBundleStream = AemObjectInjectorRequestTest.class.getResourceAsStream("/sample-i18n.properties");
+    ResourceBundle resourceBundle = new PropertyResourceBundle(resourceBundleStream);
+    resourceBundleStream.close();
+    return resourceBundle;
   }
 
 }

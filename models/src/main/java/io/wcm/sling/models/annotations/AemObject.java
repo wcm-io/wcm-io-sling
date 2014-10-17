@@ -52,6 +52,7 @@ import com.day.cq.wcm.api.designer.Style;
  * <tr>
  * <th style="text-align:left">Class</th>
  * <th style="text-align:left">Description</th>
+ * <th style="text-align:left">Name hint</th>
  * <th style="text-align:center">Request</th>
  * <th style="text-align:center">ResourceResolver</th>
  * <th style="text-align:center">Resource</th>
@@ -59,21 +60,23 @@ import com.day.cq.wcm.api.designer.Style;
  * <tr style="background-color:#eee">
  * <td>{@link PageManager}</td>
  * <td>AEM Page manager</td>
+ * <td></td>
  * <td style="text-align:center">X</td>
  * <td style="text-align:center">X</td>
  * <td style="text-align:center">X</td>
  * </tr>
  * <tr>
  * <td>{@link Page}</td>
- * <td>AEM page addressed by the request. If no or another name is specified always the current page is injected for a
- * {@link Page} class.</td>
+ * <td>AEM page addressed by the current request. Default to be injected for {@link Page} types.</td>
+ * <td>currentPage</td>
  * <td style="text-align:center">X</td>
  * <td></td>
  * <td style="text-align:center">X</td>
  * </tr>
  * <tr style="background-color:#eee">
  * <td>{@link Page}</td>
- * <td>Use "resourcePage" as name hint: AEM page containing the current resource.</td>
+ * <td>AEM page containing the current resource.</td>
+ * <td>resourcePage</td>
  * <td style="text-align:center">X</td>
  * <td></td>
  * <td style="text-align:center">X</td>
@@ -81,6 +84,7 @@ import com.day.cq.wcm.api.designer.Style;
  * <tr>
  * <td>{@link WCMMode}</td>
  * <td>Current AEM WCM mode</td>
+ * <td></td>
  * <td style="text-align:center">X</td>
  * <td></td>
  * <td></td>
@@ -88,6 +92,7 @@ import com.day.cq.wcm.api.designer.Style;
  * <tr style="background-color:#eee">
  * <td>{@link AuthoringUIMode}</td>
  * <td>Current AEM Authoring UI mode</td>
+ * <td></td>
  * <td style="text-align:center">X</td>
  * <td></td>
  * <td></td>
@@ -95,6 +100,7 @@ import com.day.cq.wcm.api.designer.Style;
  * <tr>
  * <td>{@link ComponentContext}</td>
  * <td>AEM component context of current request</td>
+ * <td></td>
  * <td style="text-align:center">X</td>
  * <td></td>
  * <td></td>
@@ -102,13 +108,15 @@ import com.day.cq.wcm.api.designer.Style;
  * <tr style="background-color:#eee">
  * <td>{@link Designer}</td>
  * <td>AEM designer</td>
+ * <td></td>
  * <td style="text-align:center">X</td>
  * <td style="text-align:center">X</td>
  * <td style="text-align:center">X</td>
  * </tr>
  * <tr>
  * <td>{@link Design}</td>
- * <td>AEM design of the current page.</td>
+ * <td>AEM design of the current page</td>
+ * <td></td>
  * <td style="text-align:center">X</td>
  * <td></td>
  * <td style="text-align:center">X</td>
@@ -116,6 +124,7 @@ import com.day.cq.wcm.api.designer.Style;
  * <tr style="background-color:#eee">
  * <td>{@link Style}</td>
  * <td>AEM design style of the current component</td>
+ * <td></td>
  * <td style="text-align:center">X</td>
  * <td></td>
  * <td></td>
@@ -123,13 +132,23 @@ import com.day.cq.wcm.api.designer.Style;
  * <tr>
  * <td>{@link XSSAPI}</td>
  * <td>AEM XSS API object for the current request</td>
+ * <td></td>
+ * <td style="text-align:center">X</td>
+ * <td></td>
+ * <td></td>
+ * </tr>
+ * <tr style="background-color:#eee">
+ * <td>{@link I18n}</td>
+ * <td>I18n object for the current resource/page context. Default to be inejctes for {@link I18n} types.</td>
+ * <td>resourceI18n</td>
  * <td style="text-align:center">X</td>
  * <td></td>
  * <td></td>
  * </tr>
  * <tr>
  * <td>{@link I18n}</td>
- * <td>I18n object for the current request</td>
+ * <td>I18n object for the current user</td>
+ * <td>userI18n</td>
  * <td style="text-align:center">X</td>
  * <td></td>
  * <td></td>

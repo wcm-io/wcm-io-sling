@@ -28,11 +28,9 @@ import java.lang.reflect.AnnotatedElement;
 
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
-import org.apache.sling.i18n.ResourceBundleProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -64,14 +62,12 @@ public class AemObjectInjectorResourceTest {
   private Designer designer;
   @Mock
   private Design design;
-  @Mock
-  private ResourceBundleProvider resourceBundleProvider;
 
-  @InjectMocks
   private AemObjectInjector injector;
 
   @Before
   public void setUp() {
+    injector = new AemObjectInjector();
     when(resource.getResourceResolver()).thenReturn(resourceResolver);
     when(resourceResolver.adaptTo(PageManager.class)).thenReturn(pageManager);
     when(resourceResolver.adaptTo(Designer.class)).thenReturn(designer);

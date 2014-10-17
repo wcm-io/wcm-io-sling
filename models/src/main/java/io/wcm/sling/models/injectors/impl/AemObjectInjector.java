@@ -24,18 +24,14 @@ import io.wcm.sling.models.annotations.AemObject;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Type;
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Property;
-import org.apache.felix.scr.annotations.Reference;
-import org.apache.felix.scr.annotations.ReferencePolicy;
 import org.apache.felix.scr.annotations.Service;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
-import org.apache.sling.i18n.ResourceBundleProvider;
 import org.apache.sling.models.spi.AcceptsNullName;
 import org.apache.sling.models.spi.DisposalCallbackRegistry;
 import org.apache.sling.models.spi.Injector;
@@ -75,10 +71,8 @@ public final class AemObjectInjector implements Injector, InjectAnnotationProces
    */
   public static final String NAME = "wcm-io-aem-object";
 
-  private static final String RESOURCE_PAGE = "resourcePage";
-
-  @Reference(policy = ReferencePolicy.DYNAMIC)
-  private volatile ResourceBundleProvider resourceBundleProvider;
+  static final String RESOURCE_PAGE = "resourcePage";
+  static final String USER_I18N = "userI18n";
 
   @Override
   public String getName() {
@@ -113,7 +107,12 @@ public final class AemObjectInjector implements Injector, InjectAnnotationProces
         return getXssApi(request);
       }
       if (requestedClass.equals(I18n.class)) {
-        return getI18n(request);
+        if (StringUtils.equals(name, USER_I18N)) {
+          return getUserI18n(request);
+        }
+        else {
+          return getResourceI18n(request);
+        }
       }
     }
 
@@ -230,14 +229,17 @@ public final class AemObjectInjector implements Injector, InjectAnnotationProces
     return request.adaptTo(XSSAPI.class);
   }
 
-  private I18n getI18n(final SlingHttpServletRequest request) {
+  private I18n getResourceI18n(final SlingHttpServletRequest request) {
     Page currentPage = getCurrentPage(request);
     if (currentPage != null) {
       Locale currentLocale = currentPage.getLanguage(false);
-      ResourceBundle bundle = resourceBundleProvider.getResourceBundle(currentLocale);
-      return new I18n(bundle);
+      return new I18n(request.getResourceBundle(currentLocale));
     }
     return null;
+  }
+
+  private I18n getUserI18n(final SlingHttpServletRequest request) {
+    return new I18n(request);
   }
 
   @Override
