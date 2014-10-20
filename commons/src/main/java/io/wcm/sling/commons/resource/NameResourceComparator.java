@@ -19,6 +19,7 @@
  */
 package io.wcm.sling.commons.resource;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import org.apache.sling.api.resource.Resource;
@@ -28,7 +29,8 @@ import org.osgi.annotation.versioning.ProviderType;
  * Orders resources alphabetically by name (ascending).
  */
 @ProviderType
-public final class NameResourceComparator implements Comparator<Resource> {
+public final class NameResourceComparator implements Comparator<Resource>, Serializable {
+  private static final long serialVersionUID = 1L;
 
   @Override
   public int compare(Resource o1, Resource o2) {
