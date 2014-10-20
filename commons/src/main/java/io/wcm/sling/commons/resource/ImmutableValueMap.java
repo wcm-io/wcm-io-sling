@@ -51,14 +51,14 @@ public final class ImmutableValueMap implements ValueMap {
   /**
    * @param map Value map
    */
-  private ImmutableValueMap(ValueMap map) {
+  ImmutableValueMap(ValueMap map) {
     this.map = map;
   }
 
   /**
    * @param map Map
    */
-  private ImmutableValueMap(Map<String, Object> map) {
+  ImmutableValueMap(Map<String, Object> map) {
     this.map = new ValueMapDecorator(map);
   }
 
@@ -108,7 +108,7 @@ public final class ImmutableValueMap implements ValueMap {
   }
 
   @Override
-  public Set<java.util.Map.Entry<String, Object>> entrySet() {
+  public Set<Entry<String, Object>> entrySet() {
     return Collections.unmodifiableSet(this.map.entrySet());
   }
 
@@ -257,7 +257,7 @@ public final class ImmutableValueMap implements ValueMap {
    */
   public static final class Builder {
 
-    private Map<String, Object> map = new HashMap<>();
+    private final Map<String, Object> map = new HashMap<>();
 
     /**
      * Associates {@code key} with {@code value} in the built map. Duplicate
