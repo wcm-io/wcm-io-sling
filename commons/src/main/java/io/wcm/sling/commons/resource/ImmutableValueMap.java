@@ -209,7 +209,7 @@ public final class ImmutableValueMap implements ValueMap {
    * Returns an immutable map containing the given entries, in order.
    * @throws IllegalArgumentException if duplicate keys are provided
    */
-  public static ImmutableValueMap of(
+  public static ImmutableValueMap of( //NOPMD
       String k1, Object v1, String k2, Object v2, String k3, Object v3, String k4, Object v4) {
     return new ImmutableValueMap(ImmutableMap.<String, Object>of(k1, v1, k2, v2, k3, v3, k4, v4));
   }
@@ -218,7 +218,7 @@ public final class ImmutableValueMap implements ValueMap {
    * Returns an immutable map containing the given entries, in order.
    * @throws IllegalArgumentException if duplicate keys are provided
    */
-  public static ImmutableValueMap of(
+  public static ImmutableValueMap of( //NOPMD
       String k1, Object v1, String k2, Object v2, String k3, Object v3, String k4, Object v4, String k5, Object v5) {
     return new ImmutableValueMap(ImmutableMap.<String, Object>of(k1, v1, k2, v2, k3, v3, k4, v4, k5, v5));
   }

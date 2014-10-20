@@ -34,7 +34,7 @@ public final class NameResourceComparator implements Comparator<Resource>, Seria
 
   @Override
   public int compare(Resource o1, Resource o2) {
-    if (o1 == o2) {
+    if (o1 == o2) { //NOPMD
       return 0;
     }
     if (o1 == null) {
