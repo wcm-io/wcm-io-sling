@@ -11,7 +11,7 @@ Example:
 ```java
 @Model(adaptables = SlingHttpServletRequest.class)
 private class MyModel {
-  
+
   @AemObject
   private PageManager pageManager;
 
@@ -21,7 +21,7 @@ private class MyModel {
   // add name hint to get resourcePage instead of currentPage
   @AemObject(name="resourcePage")
   private Page resourcePage;
-  
+
 }
 
 // get model instance
@@ -40,7 +40,7 @@ private class MyModel {
   public MyModel(@AemObject WCMMode wcmMode, @AemObject AuthoringUIMode authoringUiMode) {
     // constructor logic
   }
-  
+
 }
 
 // get model instance
