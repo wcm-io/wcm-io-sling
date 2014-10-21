@@ -23,15 +23,12 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
-import io.wcm.sling.commons.request.RequestContext;
-import io.wcm.testing.mock.aem.junit.AemContext;
 
 import java.lang.reflect.AnnotatedElement;
 
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -51,9 +48,6 @@ import com.day.cq.wcm.api.designer.Style;
 @RunWith(MockitoJUnitRunner.class)
 public class AemObjectInjectorResourceTest {
 
-  @Rule
-  public AemContext context = new AemContext();
-
   @Mock
   private AnnotatedElement annotatedElement;
   @Mock
@@ -68,15 +62,12 @@ public class AemObjectInjectorResourceTest {
   private Designer designer;
   @Mock
   private Design design;
-  @Mock
-  private RequestContext requestContext;
 
   private AemObjectInjector injector;
 
   @Before
   public void setUp() {
-    context.registerService(RequestContext.class, requestContext);
-    injector = context.registerInjectActivateService(new AemObjectInjector());
+    injector = new AemObjectInjector();
     when(resource.getResourceResolver()).thenReturn(resourceResolver);
     when(resourceResolver.adaptTo(PageManager.class)).thenReturn(pageManager);
     when(resourceResolver.adaptTo(Designer.class)).thenReturn(designer);
