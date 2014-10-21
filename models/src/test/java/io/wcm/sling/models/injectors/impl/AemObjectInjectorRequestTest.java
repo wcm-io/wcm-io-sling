@@ -26,6 +26,8 @@ import static org.junit.Assert.assertSame;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Mockito.when;
+import io.wcm.sling.commons.request.RequestContext;
+import io.wcm.testing.mock.aem.junit.AemContext;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,6 +40,7 @@ import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -58,38 +61,44 @@ import com.day.cq.wcm.api.designer.Style;
 @RunWith(MockitoJUnitRunner.class)
 public class AemObjectInjectorRequestTest {
 
-  @Mock
-  private AnnotatedElement annotatedElement;
-  @Mock
-  private SlingHttpServletRequest request;
-  @Mock
-  private Resource resource;
-  @Mock
-  private ResourceResolver resourceResolver;
-  @Mock
-  private PageManager pageManager;
-  @Mock
-  private Page currentPage;
-  @Mock
-  private Page resourcePage;
-  @Mock
-  private ComponentContext componentContext;
-  @Mock
-  private Designer designer;
-  @Mock
-  private Design design;
-  @Mock
-  private Style style;
-  @Mock
-  private Cell cell;
-  @Mock
-  private XSSAPI xssApi;
+  @Rule
+  public AemContext context = new AemContext();
 
-  private AemObjectInjector injector;
+  @Mock
+  protected AnnotatedElement annotatedElement;
+  @Mock
+  protected SlingHttpServletRequest request;
+  @Mock
+  protected Resource resource;
+  @Mock
+  protected ResourceResolver resourceResolver;
+  @Mock
+  protected PageManager pageManager;
+  @Mock
+  protected Page currentPage;
+  @Mock
+  protected Page resourcePage;
+  @Mock
+  protected ComponentContext componentContext;
+  @Mock
+  protected Designer designer;
+  @Mock
+  protected Design design;
+  @Mock
+  protected Style style;
+  @Mock
+  protected Cell cell;
+  @Mock
+  protected XSSAPI xssApi;
+  @Mock
+  protected RequestContext requestContext;
+
+  protected AemObjectInjector injector;
 
   @Before
   public void setUp() {
-    injector = new AemObjectInjector();
+    context.registerService(RequestContext.class, requestContext);
+    injector = context.registerInjectActivateService(new AemObjectInjector());
     when(request.getResource()).thenReturn(resource);
     when(request.getResourceResolver()).thenReturn(resourceResolver);
     when(request.getAttribute(ComponentContext.CONTEXT_ATTR_NAME)).thenReturn(componentContext);
@@ -106,63 +115,67 @@ public class AemObjectInjectorRequestTest {
     when(design.getStyle(cell)).thenReturn(style);
   }
 
+  protected Object adaptable() {
+    return request;
+  }
+
   @Test
   public void testPageManager() {
-    Object result = injector.getValue(request, null, PageManager.class, annotatedElement, null);
+    Object result = injector.getValue(adaptable(), null, PageManager.class, annotatedElement, null);
     assertSame(pageManager, result);
   }
 
   @Test
   public void testCurrentPage() {
-    Object result = injector.getValue(request, null, Page.class, annotatedElement, null);
+    Object result = injector.getValue(adaptable(), null, Page.class, annotatedElement, null);
     assertSame(currentPage, result);
   }
 
   @Test
   public void testResourcePage() {
-    Object result = injector.getValue(request, AemObjectInjector.RESOURCE_PAGE, Page.class, annotatedElement, null);
+    Object result = injector.getValue(adaptable(), AemObjectInjector.RESOURCE_PAGE, Page.class, annotatedElement, null);
     assertSame(resourcePage, result);
   }
 
   @Test
   public void testWcmMode() {
-    Object result = injector.getValue(request, null, WCMMode.class, annotatedElement, null);
+    Object result = injector.getValue(adaptable(), null, WCMMode.class, annotatedElement, null);
     assertSame(WCMMode.PREVIEW, result);
   }
 
   @Test
   public void testAuthoringUiMode() {
-    Object result = injector.getValue(request, null, AuthoringUIMode.class, annotatedElement, null);
+    Object result = injector.getValue(adaptable(), null, AuthoringUIMode.class, annotatedElement, null);
     assertSame(AuthoringUIMode.TOUCH, result);
   }
 
   @Test
   public void testComponentContext() {
-    Object result = injector.getValue(request, null, ComponentContext.class, annotatedElement, null);
+    Object result = injector.getValue(adaptable(), null, ComponentContext.class, annotatedElement, null);
     assertSame(componentContext, result);
   }
 
   @Test
   public void testDesigner() {
-    Object result = injector.getValue(request, null, Designer.class, annotatedElement, null);
+    Object result = injector.getValue(adaptable(), null, Designer.class, annotatedElement, null);
     assertSame(designer, result);
   }
 
   @Test
   public void testDesign() {
-    Object result = injector.getValue(request, null, Design.class, annotatedElement, null);
+    Object result = injector.getValue(adaptable(), null, Design.class, annotatedElement, null);
     assertSame(design, result);
   }
 
   @Test
   public void testStyle() {
-    Object result = injector.getValue(request, null, Style.class, annotatedElement, null);
+    Object result = injector.getValue(adaptable(), null, Style.class, annotatedElement, null);
     assertSame(style, result);
   }
 
   @Test
   public void testXssApi() {
-    Object result = injector.getValue(request, null, XSSAPI.class, annotatedElement, null);
+    Object result = injector.getValue(adaptable(), null, XSSAPI.class, annotatedElement, null);
     assertSame(xssApi, result);
   }
 
@@ -171,7 +184,7 @@ public class AemObjectInjectorRequestTest {
     when(currentPage.getLanguage(anyBoolean())).thenReturn(Locale.US);
     when(request.getResourceBundle(Locale.US)).thenReturn(getSampleResourceBundle());
 
-    I18n result = (I18n)injector.getValue(request, null, I18n.class, annotatedElement, null);
+    I18n result = (I18n)injector.getValue(adaptable(), null, I18n.class, annotatedElement, null);
     assertNotNull(result);
     assertEquals("mytranslation", result.get("mykey"));
   }
@@ -180,14 +193,14 @@ public class AemObjectInjectorRequestTest {
   public void testUserI18n() throws IOException {
     when(request.getResourceBundle(null)).thenReturn(getSampleResourceBundle());
 
-    I18n result = (I18n)injector.getValue(request, AemObjectInjector.USER_I18N, I18n.class, annotatedElement, null);
+    I18n result = (I18n)injector.getValue(adaptable(), AemObjectInjector.USER_I18N, I18n.class, annotatedElement, null);
     assertNotNull(result);
     assertEquals("mytranslation", result.get("mykey"));
   }
 
   @Test
   public void testInvalid() {
-    Object result = injector.getValue(this, null, PageManager.class, annotatedElement, null);
+    Object result = injector.getValue(new StringBuffer(), null, PageManager.class, annotatedElement, null);
     assertNull(result);
   }
 

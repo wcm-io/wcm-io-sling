@@ -70,7 +70,7 @@ import com.day.cq.wcm.api.designer.Style;
  * <td>AEM page addressed by the current request. Default to be injected for {@link Page} types.</td>
  * <td>currentPage</td>
  * <td style="text-align:center">X</td>
- * <td></td>
+ * <td style="text-align:center">X*</td>
  * <td style="text-align:center">X</td>
  * </tr>
  * <tr style="background-color:#eee">
@@ -78,7 +78,7 @@ import com.day.cq.wcm.api.designer.Style;
  * <td>AEM page containing the current resource.</td>
  * <td>resourcePage</td>
  * <td style="text-align:center">X</td>
- * <td></td>
+ * <td style="text-align:center">X*</td>
  * <td style="text-align:center">X</td>
  * </tr>
  * <tr>
@@ -86,24 +86,24 @@ import com.day.cq.wcm.api.designer.Style;
  * <td>Current AEM WCM mode</td>
  * <td></td>
  * <td style="text-align:center">X</td>
- * <td></td>
- * <td></td>
+ * <td style="text-align:center">X*</td>
+ * <td style="text-align:center">X*</td>
  * </tr>
  * <tr style="background-color:#eee">
  * <td>{@link AuthoringUIMode}</td>
  * <td>Current AEM Authoring UI mode</td>
  * <td></td>
  * <td style="text-align:center">X</td>
- * <td></td>
- * <td></td>
+ * <td style="text-align:center">X*</td>
+ * <td style="text-align:center">X*</td>
  * </tr>
  * <tr>
  * <td>{@link ComponentContext}</td>
  * <td>AEM component context of current request</td>
  * <td></td>
  * <td style="text-align:center">X</td>
- * <td></td>
- * <td></td>
+ * <td style="text-align:center">X*</td>
+ * <td style="text-align:center">X*</td>
  * </tr>
  * <tr style="background-color:#eee">
  * <td>{@link Designer}</td>
@@ -118,7 +118,7 @@ import com.day.cq.wcm.api.designer.Style;
  * <td>AEM design of the current page</td>
  * <td></td>
  * <td style="text-align:center">X</td>
- * <td></td>
+ * <td style="text-align:center">X*</td>
  * <td style="text-align:center">X</td>
  * </tr>
  * <tr style="background-color:#eee">
@@ -126,34 +126,39 @@ import com.day.cq.wcm.api.designer.Style;
  * <td>AEM design style of the current component</td>
  * <td></td>
  * <td style="text-align:center">X</td>
- * <td></td>
- * <td></td>
+ * <td style="text-align:center">X*</td>
+ * <td style="text-align:center">X*</td>
  * </tr>
  * <tr>
  * <td>{@link XSSAPI}</td>
  * <td>AEM XSS API object for the current request</td>
  * <td></td>
  * <td style="text-align:center">X</td>
- * <td></td>
- * <td></td>
+ * <td style="text-align:center">X*</td>
+ * <td style="text-align:center">X*</td>
  * </tr>
  * <tr style="background-color:#eee">
  * <td>{@link I18n}</td>
  * <td>I18n object for the current resource/page context. Default to be inejctes for {@link I18n} types.</td>
  * <td>resourceI18n</td>
  * <td style="text-align:center">X</td>
- * <td></td>
- * <td></td>
+ * <td style="text-align:center">X*</td>
+ * <td style="text-align:center">X*</td>
  * </tr>
  * <tr>
  * <td>{@link I18n}</td>
  * <td>I18n object for the current user</td>
  * <td>userI18n</td>
  * <td style="text-align:center">X</td>
- * <td></td>
- * <td></td>
+ * <td style="text-align:center">X*</td>
+ * <td style="text-align:center">X*</td>
  * </tr>
  * </table>
+ * <p>
+ * In case of X* the class cannot be derived from the adaptable, but is derived from the request of the current thread
+ * detected via {@link io.wcm.sling.commons.request.RequestContext}. If the current thread is not associated with a
+ * request nothing is injected.
+ * </p>
  */
 @Target({ METHOD, FIELD, PARAMETER })
 @Retention(RUNTIME)

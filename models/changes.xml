@@ -27,6 +27,9 @@
       <action type="add" dev="sseifert" issue="WCMIO-21">
         Add support for CQ I18n object.
       </action>
+      <action type="add" dev="sseifert">
+        Support inject of all request-derived AEM context objects regardles of adaptable if current thread is attached to a sling request.
+      </action>
     </release>
 
     <release version="1.0.0" date="2014-09-12">

@@ -19,6 +19,7 @@
  */
 package io.wcm.sling.models.injectors.impl;
 
+import io.wcm.sling.commons.request.RequestContext;
 import io.wcm.sling.models.annotations.AemObject;
 
 import java.lang.reflect.AnnotatedElement;
@@ -28,6 +29,7 @@ import java.util.Locale;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Property;
+import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
@@ -75,6 +77,9 @@ public final class AemObjectInjector implements Injector, InjectAnnotationProces
   static final String RESOURCE_PAGE = "resourcePage";
   static final String USER_I18N = "userI18n";
 
+  @Reference
+  private RequestContext requestContext;
+
   @Override
   public String getName() {
     return NAME;
@@ -90,8 +95,8 @@ public final class AemObjectInjector implements Injector, InjectAnnotationProces
     }
     Class<?> requestedClass = (Class<?>)type;
 
-    if (adaptable instanceof SlingHttpServletRequest) {
-      SlingHttpServletRequest request = (SlingHttpServletRequest)adaptable;
+    SlingHttpServletRequest request = getRequest(adaptable);
+    if (request != null) {
       if (requestedClass.equals(WCMMode.class)) {
         return getWcmMode(request);
       }
@@ -138,25 +143,36 @@ public final class AemObjectInjector implements Injector, InjectAnnotationProces
     return null;
   }
 
-  private ResourceResolver getResourceResolver(final Object adaptable) {
+  private SlingHttpServletRequest getRequest(final Object adaptable) {
     if (adaptable instanceof SlingHttpServletRequest) {
-      return ((SlingHttpServletRequest)adaptable).getResourceResolver();
+      return (SlingHttpServletRequest)adaptable;
     }
+    else {
+      return requestContext.getThreadRequest();
+    }
+  }
+
+  private ResourceResolver getResourceResolver(final Object adaptable) {
     if (adaptable instanceof ResourceResolver) {
       return (ResourceResolver)adaptable;
     }
     if (adaptable instanceof Resource) {
       return ((Resource)adaptable).getResourceResolver();
     }
+    SlingHttpServletRequest request = getRequest(adaptable);
+    if (request != null) {
+      return request.getResourceResolver();
+    }
     return null;
   }
 
   private Resource getResource(final Object adaptable) {
-    if (adaptable instanceof SlingHttpServletRequest) {
-      return ((SlingHttpServletRequest)adaptable).getResource();
-    }
     if (adaptable instanceof Resource) {
       return (Resource)adaptable;
+    }
+    SlingHttpServletRequest request = getRequest(adaptable);
+    if (request != null) {
+      return request.getResource();
     }
     return null;
   }
@@ -178,8 +194,9 @@ public final class AemObjectInjector implements Injector, InjectAnnotationProces
   }
 
   private Page getCurrentPage(final Object adaptable) {
-    if (adaptable instanceof SlingHttpServletRequest) {
-      ComponentContext context = getComponentContext((SlingHttpServletRequest)adaptable);
+    SlingHttpServletRequest request = getRequest(adaptable);
+    if (request != null) {
+      ComponentContext context = getComponentContext(request);
       if (context != null) {
         return context.getPage();
       }
