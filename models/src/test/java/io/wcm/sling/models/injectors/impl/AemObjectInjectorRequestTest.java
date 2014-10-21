@@ -27,7 +27,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Mockito.when;
 import io.wcm.sling.commons.request.RequestContext;
-import io.wcm.testing.mock.aem.junit.AemContext;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,6 +38,8 @@ import java.util.ResourceBundle;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.testing.mock.sling.ResourceResolverType;
+import org.apache.sling.testing.mock.sling.junit.SlingContext;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -62,7 +63,7 @@ import com.day.cq.wcm.api.designer.Style;
 public class AemObjectInjectorRequestTest {
 
   @Rule
-  public AemContext context = new AemContext();
+  public SlingContext context = new SlingContext(ResourceResolverType.RESOURCERESOLVER_MOCK);
 
   @Mock
   protected AnnotatedElement annotatedElement;
