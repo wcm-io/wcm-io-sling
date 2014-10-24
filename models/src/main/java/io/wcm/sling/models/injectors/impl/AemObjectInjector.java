@@ -222,7 +222,12 @@ public final class AemObjectInjector implements Injector, InjectAnnotationProces
   }
 
   private AuthoringUIMode getAuthoringUiMode(final SlingHttpServletRequest request) {
-    return AuthoringUIMode.fromRequest(request);
+    AuthoringUIMode mode = AuthoringUIMode.fromRequest(request);
+    if (mode == null) {
+      // if no mode is set (e.g. if WCMMode is disabled) default to Touch UI
+      mode = AuthoringUIMode.TOUCH;
+    }
+    return mode;
   }
 
   private ComponentContext getComponentContext(final SlingHttpServletRequest request) {

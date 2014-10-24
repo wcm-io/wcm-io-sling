@@ -91,7 +91,7 @@ import com.day.cq.wcm.api.designer.Style;
  * </tr>
  * <tr style="background-color:#eee">
  * <td>{@link AuthoringUIMode}</td>
- * <td>Current AEM Authoring UI mode</td>
+ * <td>Current AEM Authoring UI mode. Defaults to Touch UI if mode is not set.</td>
  * <td></td>
  * <td style="text-align:center">X</td>
  * <td style="text-align:center">X*</td>
