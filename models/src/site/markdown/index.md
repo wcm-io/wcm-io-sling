@@ -8,7 +8,7 @@ AEM Object Injector for Sling Models.
 <dependency>
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.sling.models</artifactId>
-  <version>1.1.0-SNAPSHOT</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 
