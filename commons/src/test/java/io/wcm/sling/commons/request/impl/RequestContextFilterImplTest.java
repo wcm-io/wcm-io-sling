@@ -23,6 +23,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -37,18 +39,20 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class RequestContextFilterTest {
+public class RequestContextFilterImplTest {
 
   @Mock
   private SlingHttpServletRequest request;
   @Mock
+  private SlingHttpServletRequest request2;
+  @Mock
   private SlingHttpServletResponse response;
 
-  private RequestContextFilter underTest;
+  private RequestContextFilterImpl underTest;
 
   @Before
   public void setUp() {
-    underTest = new RequestContextFilter();
+    underTest = new RequestContextFilterImpl();
   }
 
   @Test
@@ -59,6 +63,33 @@ public class RequestContextFilterTest {
       @Override
       public void doFilter(ServletRequest req, ServletResponse resp) {
         assertSame(req, underTest.getThreadRequest());
+      }
+    });
+
+    assertNull(underTest.getThreadRequest());
+  }
+
+  @Test
+  public void testFilterNested() throws Exception {
+    assertNull(underTest.getThreadRequest());
+
+    underTest.doFilter(request, response, new FilterChain() {
+
+      @Override
+      public void doFilter(ServletRequest req, ServletResponse resp) throws IOException, ServletException {
+        assertSame(req, underTest.getThreadRequest());
+        assertSame(request, underTest.getThreadRequest());
+
+        underTest.doFilter(request2, resp, new FilterChain() {
+          @Override
+          public void doFilter(ServletRequest req2, ServletResponse resp2) {
+            assertSame(req2, underTest.getThreadRequest());
+            assertSame(request2, underTest.getThreadRequest());
+          }
+        });
+
+        assertSame(req, underTest.getThreadRequest());
+        assertSame(request, underTest.getThreadRequest());
       }
     });
 

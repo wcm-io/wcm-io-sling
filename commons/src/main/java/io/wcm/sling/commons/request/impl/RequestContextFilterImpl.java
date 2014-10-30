@@ -22,6 +22,7 @@ package io.wcm.sling.commons.request.impl;
 import io.wcm.sling.commons.request.RequestContext;
 
 import java.io.IOException;
+import java.util.Stack;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -29,9 +30,9 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Property;
 import org.apache.felix.scr.annotations.Service;
 import org.apache.sling.api.SlingHttpServletRequest;
 
@@ -43,26 +44,38 @@ import org.apache.sling.api.SlingHttpServletRequest;
 @Service({
   RequestContext.class, Filter.class
 })
-public final class RequestContextFilter implements RequestContext, Filter {
+@Property(name = "sling.filter.scope", value = "component")
+public final class RequestContextFilterImpl implements RequestContext, Filter {
 
-  private static final ThreadLocal<SlingHttpServletRequest> REQUEST_THREADLOCAL = new ThreadLocal<>();
+  private static final ThreadLocal<Stack<SlingHttpServletRequest>> REQUEST_THREADLOCAL = new ThreadLocal<Stack<SlingHttpServletRequest>>() {
+    @Override
+    protected Stack<SlingHttpServletRequest> initialValue() {
+      return new Stack<SlingHttpServletRequest>();
+    }
+  };
 
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-    if (request instanceof HttpServletRequest) {
-      REQUEST_THREADLOCAL.set((SlingHttpServletRequest)request);
+    if (request instanceof SlingHttpServletRequest) {
+      REQUEST_THREADLOCAL.get().push((SlingHttpServletRequest)request);
     }
     try {
       chain.doFilter(request, response);
     }
     finally {
-      REQUEST_THREADLOCAL.remove();
+      REQUEST_THREADLOCAL.get().pop();
     }
   }
 
   @Override
   public SlingHttpServletRequest getThreadRequest() {
-    return REQUEST_THREADLOCAL.get();
+    Stack<SlingHttpServletRequest> stack = REQUEST_THREADLOCAL.get();
+    if (stack.isEmpty()) {
+      return null;
+    }
+    else {
+      return stack.peek();
+    }
   }
 
   @Override
