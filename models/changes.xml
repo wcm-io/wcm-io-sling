@@ -29,6 +29,8 @@
       </action>
       <action type="add" dev="sseifert">
         Support inject of all request-derived AEM context objects regardles of adaptable if current thread is attached to a sling request.
+        Support this for the SlingObjectInjector as well by overlaying it.
+        This feature for both injectors can be turned on and off via OSGi configuration.
       </action>
       <action type="fix" dev="sseifert" issue="WCMIO-27">
         Default to TOUCH if AuthoringUIMode is not set on current request.

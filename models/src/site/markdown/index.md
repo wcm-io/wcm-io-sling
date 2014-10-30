@@ -8,7 +8,7 @@ AEM Object Injector for Sling Models.
 <dependency>
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.sling.models</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -28,6 +28,7 @@ The AEM Object Injector for Sling Models provides:
 * Current Designer, Design and Style objects
 * XSSAPI for current request
 * CQ I18n object for the current request
+* Support injection request-derived context objects on all models, not only when the adaptable is a request
 
 See [Injector API documentation][apidocs-aemobjectinjector] for details.
 
@@ -37,7 +38,7 @@ See [Injector API documentation][apidocs-aemobjectinjector] for details.
 The [ACS AEM Commons][acs-commons] project also contains an implementation of an [AEM Object Injector][acs-commons-aem-object-injrecotr].
 It has basically the same feature-set as the wcm.io version, but it uses name-based injection based on field names.
 
-The wcm.io AEM Object injector use class-based injection, making it easier to use independently from the field name.
+The wcm.io AEM Object injector use class-based injection, making it easier to use independently from the field name. Since version 1.1 it supports more features than the ACS AEM Commons version.
 
 
 [usage]: usage.html

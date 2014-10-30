@@ -58,6 +58,7 @@ import com.day.cq.wcm.api.designer.Cell;
 import com.day.cq.wcm.api.designer.Design;
 import com.day.cq.wcm.api.designer.Designer;
 import com.day.cq.wcm.api.designer.Style;
+import com.google.common.collect.ImmutableMap;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AemObjectInjectorRequestTest {
@@ -99,6 +100,10 @@ public class AemObjectInjectorRequestTest {
   @Before
   public void setUp() {
     context.registerService(RequestContext.class, requestContext);
+    context.registerInjectActivateService(new ModelsImplConfiguration(),
+        ImmutableMap.<String, Object>of(ModelsImplConfiguration.PARAM_REQUEST_THREAD_LOCAL,
+            ModelsImplConfiguration.PARAM_REQUEST_THREAD_LOCAL_DEFAULT));
+
     injector = context.registerInjectActivateService(new AemObjectInjector());
     when(request.getResource()).thenReturn(resource);
     when(request.getResourceResolver()).thenReturn(resourceResolver);

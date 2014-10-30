@@ -30,7 +30,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Property;
 import org.apache.felix.scr.annotations.Reference;
-import org.apache.felix.scr.annotations.ReferenceCardinality;
 import org.apache.felix.scr.annotations.Service;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
@@ -78,8 +77,10 @@ public final class AemObjectInjector implements Injector, InjectAnnotationProces
   static final String RESOURCE_PAGE = "resourcePage";
   static final String USER_I18N = "userI18n";
 
-  @Reference(cardinality = ReferenceCardinality.OPTIONAL_UNARY)
+  @Reference
   private RequestContext requestContext;
+  @Reference
+  private ModelsImplConfiguration modelsImplConfiguration;
 
   @Override
   public String getName() {
@@ -148,7 +149,7 @@ public final class AemObjectInjector implements Injector, InjectAnnotationProces
     if (adaptable instanceof SlingHttpServletRequest) {
       return (SlingHttpServletRequest)adaptable;
     }
-    else if (requestContext != null) {
+    else if (modelsImplConfiguration.isRequestThreadLocal()) {
       return requestContext.getThreadRequest();
     }
     else {

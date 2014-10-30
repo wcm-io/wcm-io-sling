@@ -45,6 +45,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.google.common.collect.ImmutableMap;
+
 @RunWith(MockitoJUnitRunner.class)
 public class SlingObjectInjectorRequestTest {
 
@@ -70,7 +72,11 @@ public class SlingObjectInjectorRequestTest {
 
   @Before
   public void setUp() {
-    context.registerService(RequestContext.class, this.requestContext);
+    context.registerService(RequestContext.class, requestContext);
+    context.registerInjectActivateService(new ModelsImplConfiguration(),
+        ImmutableMap.<String, Object>of(ModelsImplConfiguration.PARAM_REQUEST_THREAD_LOCAL,
+            ModelsImplConfiguration.PARAM_REQUEST_THREAD_LOCAL_DEFAULT));
+
     injector = context.registerInjectActivateService(new SlingObjectInjector());
 
     SlingBindings bindings = new SlingBindings();

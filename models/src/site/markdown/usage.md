@@ -47,4 +47,14 @@ private class MyModel {
 MyModel model = request.adaptTo(MyModel.class);
 ```
 
+
+### Request Thread Local Support
+
+In the original Sling Models implementation only context objects derived from the adaptable can be injected. If the adaptable is not a request, most of the context objects could not be injected.
+
+The AEM Sling Models Extensions enhances this behavior for both `@SlingObject` injector and the `@AemObject` injector to support inject all context objects even if the adaptable is not a request. This is implemented by using a thread local and a servlet filter bound to the current Sling component rendering process.
+
+This features is switched on by default, you can disable it in the OSGi configuration via the "wm.io Models Configuration".
+
+
 [apidocs-aemobjectinjector]: apidocs/io/wcm/sling/models/annotations/AemObject.html

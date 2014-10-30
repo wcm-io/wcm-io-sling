@@ -22,11 +22,15 @@ package io.wcm.sling.models.injectors.impl;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.when;
+import io.wcm.sling.commons.request.RequestContext;
 
 import java.lang.reflect.AnnotatedElement;
 
 import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.testing.mock.sling.ResourceResolverType;
+import org.apache.sling.testing.mock.sling.junit.SlingContext;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -42,9 +46,13 @@ import com.day.cq.wcm.api.components.ComponentContext;
 import com.day.cq.wcm.api.designer.Design;
 import com.day.cq.wcm.api.designer.Designer;
 import com.day.cq.wcm.api.designer.Style;
+import com.google.common.collect.ImmutableMap;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AemObjectInjectorResourceResolverTest {
+
+  @Rule
+  public SlingContext context = new SlingContext(ResourceResolverType.RESOURCERESOLVER_MOCK);
 
   @Mock
   private AnnotatedElement annotatedElement;
@@ -54,12 +62,20 @@ public class AemObjectInjectorResourceResolverTest {
   private PageManager pageManager;
   @Mock
   private Designer designer;
+  @Mock
+  protected RequestContext requestContext;
 
   private AemObjectInjector injector;
 
   @Before
   public void setUp() {
-    injector = new AemObjectInjector();
+    context.registerService(RequestContext.class, requestContext);
+    context.registerInjectActivateService(new ModelsImplConfiguration(),
+        ImmutableMap.<String, Object>of(ModelsImplConfiguration.PARAM_REQUEST_THREAD_LOCAL,
+            ModelsImplConfiguration.PARAM_REQUEST_THREAD_LOCAL_DEFAULT));
+
+    injector = context.registerInjectActivateService(new AemObjectInjector());
+
     when(resourceResolver.adaptTo(PageManager.class)).thenReturn(pageManager);
     when(resourceResolver.adaptTo(Designer.class)).thenReturn(designer);
   }

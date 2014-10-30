@@ -73,6 +73,8 @@ public final class SlingObjectInjector implements Injector, InjectAnnotationProc
 
   @Reference
   private RequestContext requestContext;
+  @Reference
+  private ModelsImplConfiguration modelsImplConfiguration;
 
   @Override
   public String getName() {
@@ -82,6 +84,11 @@ public final class SlingObjectInjector implements Injector, InjectAnnotationProc
   @Override
   public Object getValue(final Object adaptable, final String name, final Type type, final AnnotatedElement element,
       final DisposalCallbackRegistry callbackRegistry) {
+
+    // let the original sling object injector step in if the thread-local request feature is deactivated
+    if (!modelsImplConfiguration.isRequestThreadLocal()) {
+      return null;
+    }
 
     // only class types are supported
     if (!(type instanceof Class<?>)) {
@@ -131,7 +138,7 @@ public final class SlingObjectInjector implements Injector, InjectAnnotationProc
     if (adaptable instanceof SlingHttpServletRequest) {
       return (SlingHttpServletRequest)adaptable;
     }
-    else if (requestContext != null) {
+    else if (modelsImplConfiguration.isRequestThreadLocal()) {
       return requestContext.getThreadRequest();
     }
     else {

@@ -23,12 +23,16 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
+import io.wcm.sling.commons.request.RequestContext;
 
 import java.lang.reflect.AnnotatedElement;
 
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.testing.mock.sling.ResourceResolverType;
+import org.apache.sling.testing.mock.sling.junit.SlingContext;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -44,9 +48,13 @@ import com.day.cq.wcm.api.components.ComponentContext;
 import com.day.cq.wcm.api.designer.Design;
 import com.day.cq.wcm.api.designer.Designer;
 import com.day.cq.wcm.api.designer.Style;
+import com.google.common.collect.ImmutableMap;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AemObjectInjectorResourceTest {
+
+  @Rule
+  public SlingContext context = new SlingContext(ResourceResolverType.RESOURCERESOLVER_MOCK);
 
   @Mock
   private AnnotatedElement annotatedElement;
@@ -62,12 +70,20 @@ public class AemObjectInjectorResourceTest {
   private Designer designer;
   @Mock
   private Design design;
+  @Mock
+  protected RequestContext requestContext;
 
   private AemObjectInjector injector;
 
   @Before
   public void setUp() {
-    injector = new AemObjectInjector();
+    context.registerService(RequestContext.class, requestContext);
+    context.registerInjectActivateService(new ModelsImplConfiguration(),
+        ImmutableMap.<String, Object>of(ModelsImplConfiguration.PARAM_REQUEST_THREAD_LOCAL,
+            ModelsImplConfiguration.PARAM_REQUEST_THREAD_LOCAL_DEFAULT));
+
+    injector = context.registerInjectActivateService(new AemObjectInjector());
+
     when(resource.getResourceResolver()).thenReturn(resourceResolver);
     when(resourceResolver.adaptTo(PageManager.class)).thenReturn(pageManager);
     when(resourceResolver.adaptTo(Designer.class)).thenReturn(designer);
