@@ -29,7 +29,7 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SlingObjectInjectorResource_RequestContextTest extends SlingObjectInjectorRequestTest {
+public class SlingObjectOverlayInjectorResourceResolver_RequestContextTest extends SlingObjectOverlayInjectorRequestTest {
 
   @Before
   public void setupRequestContext() {
@@ -38,7 +38,7 @@ public class SlingObjectInjectorResource_RequestContextTest extends SlingObjectI
 
   @Override
   protected Object adaptable() {
-    return this.resource;
+    return this.resourceResolver;
   }
 
   @Override

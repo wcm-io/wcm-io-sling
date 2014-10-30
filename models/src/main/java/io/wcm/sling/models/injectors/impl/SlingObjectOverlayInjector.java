@@ -64,7 +64,7 @@ import org.osgi.framework.Constants;
 @Service
 // use ranking MAX_VALUE - 10 to overlay the sling-object injector of sling which is registered to MAX_VALUE
 @Property(name = Constants.SERVICE_RANKING, intValue = Integer.MAX_VALUE - 10)
-public final class SlingObjectInjector implements Injector, InjectAnnotationProcessorFactory, AcceptsNullName {
+public final class SlingObjectOverlayInjector implements Injector, InjectAnnotationProcessorFactory, AcceptsNullName {
 
   /**
    * Injector name

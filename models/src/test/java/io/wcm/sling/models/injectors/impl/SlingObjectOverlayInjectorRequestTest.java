@@ -48,7 +48,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.google.common.collect.ImmutableMap;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SlingObjectInjectorRequestTest {
+public class SlingObjectOverlayInjectorRequestTest {
 
   @Rule
   public SlingContext context = new SlingContext(ResourceResolverType.RESOURCERESOLVER_MOCK);
@@ -68,7 +68,7 @@ public class SlingObjectInjectorRequestTest {
   @Mock
   protected RequestContext requestContext;
 
-  protected SlingObjectInjector injector;
+  protected SlingObjectOverlayInjector injector;
 
   @Before
   public void setUp() {
@@ -77,7 +77,7 @@ public class SlingObjectInjectorRequestTest {
         ImmutableMap.<String, Object>of(ModelsImplConfiguration.PARAM_REQUEST_THREAD_LOCAL,
             ModelsImplConfiguration.PARAM_REQUEST_THREAD_LOCAL_DEFAULT));
 
-    injector = context.registerInjectActivateService(new SlingObjectInjector());
+    injector = context.registerInjectActivateService(new SlingObjectOverlayInjector());
 
     SlingBindings bindings = new SlingBindings();
     bindings.put(SlingBindings.SLING, this.scriptHelper);

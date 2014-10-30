@@ -29,7 +29,7 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SlingObjectInjectorRequest_RequestContextTest extends SlingObjectInjectorRequestTest {
+public class SlingObjectOverlayInjectorRequest_RequestContextTest extends SlingObjectOverlayInjectorRequestTest {
 
   @Before
   public void setupRequestContext() {
