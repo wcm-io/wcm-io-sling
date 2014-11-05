@@ -49,6 +49,7 @@ import com.day.cq.wcm.api.designer.Style;
  * <p>
  * Supports the following objects:
  * <table>
+ * <caption>Supported objects</caption>
  * <tr>
  * <th style="text-align:left">Class</th>
  * <th style="text-align:left">Description</th>
