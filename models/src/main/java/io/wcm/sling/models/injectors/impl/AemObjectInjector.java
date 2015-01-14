@@ -261,30 +261,37 @@ public final class AemObjectInjector implements Injector, InjectAnnotationProces
     Page currentPage = getCurrentPage(request);
     if (currentPage != null) {
       Locale currentLocale = currentPage.getLanguage(false);
-      return new I18n(getRequestFromSlingBindings(request).getResourceBundle(currentLocale));
+      return new I18n(getI18nEnabledRequest(request).getResourceBundle(currentLocale));
     }
     return null;
   }
 
   private I18n getUserI18n(final SlingHttpServletRequest request) {
-    return new I18n(getRequestFromSlingBindings(request));
+    return new I18n(getI18nEnabledRequest(request));
   }
 
   /**
-   * Returns the {@link SlingHttpServletRequest} from SlingBindings. This is a request wrapped
-   * in another way than passed to this sling model object, any only with this resource bundle
-   * resolution against JCR-based resource bundles is working.
+   * Returns a sling request that has a resource bundle set. Due to several wrappings inside Sling
+   * this is not always the request that is available in the script or java code initiating the injection.
+   * If a SlingBindings object is available the request from this is returned.
+   * If not it is checked if the current request that was recorded in a ThreadLocal can be used.
+   * As a last resort a fallback to the request that was used for the adaption is returned, but this
+   * is likely to not be i18n-enabled.
    * @param request Original request
    * @return Request from sling bindings
    */
-  private SlingHttpServletRequest getRequestFromSlingBindings(SlingHttpServletRequest request) {
+  private SlingHttpServletRequest getI18nEnabledRequest(SlingHttpServletRequest request) {
     SlingBindings bindings = (SlingBindings)request.getAttribute(SlingBindings.class.getName());
     if (bindings != null) {
       return bindings.getRequest();
     }
-    else {
-      return request;
+    if (modelsImplConfiguration.isRequestThreadLocal()) {
+      SlingHttpServletRequest threadLocalRequest = requestContext.getThreadRequest();
+      if (threadLocalRequest != null) {
+        return threadLocalRequest;
+      }
     }
+    return request;
   }
 
   @Override
