@@ -22,7 +22,6 @@ package io.wcm.sling.commons.resource;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.apache.sling.testing.mock.sling.junit.SlingContext;
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,7 +29,7 @@ import org.junit.Test;
 public class ResourceTypeTest {
 
   @Rule
-  public SlingContext context = new SlingContext(ResourceResolverType.JCR_MOCK);
+  public SlingContext context = new SlingContext();
 
   @Test
   public void testMakeAbsolute_Invalid() {
