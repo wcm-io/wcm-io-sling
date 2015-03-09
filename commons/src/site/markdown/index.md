@@ -8,7 +8,7 @@ Common Sling utility and helper functions.
 <dependency>
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.sling.commons</artifactId>
-  <version>0.5.0</version>
+  <version>0.6.0</version>
 </dependency>
 ```
 
