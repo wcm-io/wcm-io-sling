@@ -35,6 +35,7 @@ import org.osgi.annotation.versioning.ProviderType;
  * Helper class that collects all services registered via OSGi bind/unbind methods.
  * The services are ordered by service ranking and can be iterated directly using this object instance.
  * Implementation is thread-safe.
+ * TODO: deprecate this class when org.apache.sling.commons.osgi is released, which contains a replacement (SLING-4521)
  * @param <T> Service type
  */
 @ProviderType
