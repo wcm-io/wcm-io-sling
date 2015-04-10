@@ -23,6 +23,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 
+import com.day.cq.wcm.api.components.Component;
+import com.day.cq.wcm.api.components.ComponentManager;
+
 /**
  * Helper methods for resource type path handling.
  */
@@ -47,6 +50,20 @@ public final class ResourceType {
     if (StringUtils.isEmpty(resourceType) || StringUtils.startsWith(resourceType, "/")) {
       return resourceType;
     }
+
+    // first try to resolve path via component manager - because on publish instance the original resource may not accessible
+    ComponentManager componentManager = resourceResolver.adaptTo(ComponentManager.class);
+    if (componentManager != null) {
+      Component component = componentManager.getComponent(resourceType);
+      if (component != null) {
+        return component.getPath();
+      }
+      else {
+        return resourceType;
+      }
+    }
+
+    // otherwise use resource resolver directly
     Resource resource = resourceResolver.getResource(resourceType);
     if (resource != null) {
       return resource.getPath();

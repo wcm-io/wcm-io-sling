@@ -21,15 +21,15 @@ package io.wcm.sling.commons.resource;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import io.wcm.testing.mock.aem.junit.AemContext;
 
-import org.apache.sling.testing.mock.sling.junit.SlingContext;
 import org.junit.Rule;
 import org.junit.Test;
 
-public class ResourceTypeTest {
+public class ResourceTypeAemContextTest {
 
   @Rule
-  public SlingContext context = new SlingContext();
+  public AemContext context = new AemContext();
 
   @Test
   public void testMakeAbsolute_Invalid() {
