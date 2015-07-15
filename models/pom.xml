@@ -38,9 +38,9 @@
   <description>AEM Object Injector for Sling Models.</description>
 
   <scm>
-    <connection>scm:git:https://github.com/wcm-io/wcm-io.git</connection>
-    <developerConnection>scm:git:https://github.com/wcm-io/wcm-io.git</developerConnection>
-    <url>https://github.com/wcm-io/wcm-io</url>
+    <connection>scm:git:https://github.com/wcm-io/wcm-io-sling.git</connection>
+    <developerConnection>scm:git:https://github.com/wcm-io/wcm-io-sling.git</developerConnection>
+    <url>https://github.com/wcm-io/wcm-io-sling</url>
     <tag>HEAD</tag>
   </scm>
 
