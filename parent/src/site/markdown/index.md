@@ -6,3 +6,8 @@ wcm.io extensions for [Apache Sling](http://sling.apache.org/) features.
 
 * [Models](models/): AEM Object Injector for Sling Models
 * [Commons](commons/): Common Sling utility and helper functions.
+
+
+### GitHub Repository
+
+Sources: https://github.com/wcm-io/wcm-io-sling
