@@ -1,6 +1,6 @@
-## wcm.io Sling
+## wcm.io Sling Extensions
 
-wcm.io extensions for Sling features.
+wcm.io extensions for [Apache Sling](http://sling.apache.org/) features.
 
 ### Overview
 
