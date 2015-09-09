@@ -34,6 +34,7 @@ import org.apache.sling.models.spi.injectorspecific.InjectAnnotation;
 
 import com.adobe.granite.xss.XSSAPI;
 import com.day.cq.i18n.I18n;
+import com.day.cq.tagging.TagManager;
 import com.day.cq.wcm.api.AuthoringUIMode;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
@@ -154,6 +155,14 @@ import com.day.cq.wcm.api.designer.Style;
  * <td style="text-align:center">X</td>
  * <td style="text-align:center">X*</td>
  * <td style="text-align:center">X*</td>
+ * </tr>
+ * <tr style="background-color:#eee">
+ * <td>{@link TagManager}</td>
+ * <td>AEM Tag manager</td>
+ * <td></td>
+ * <td style="text-align:center">X</td>
+ * <td style="text-align:center">X</td>
+ * <td style="text-align:center">X</td>
  * </tr>
  * </table>
  * <p>

@@ -46,6 +46,7 @@ import org.osgi.framework.Constants;
 
 import com.adobe.granite.xss.XSSAPI;
 import com.day.cq.i18n.I18n;
+import com.day.cq.tagging.TagManager;
 import com.day.cq.wcm.api.AuthoringUIMode;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
@@ -141,6 +142,9 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
     }
     else if (requestedClass.equals(Design.class)) {
       return getCurrentDesign(adaptable);
+    }
+    else if (requestedClass.equals(TagManager.class)) {
+      return getTagManager(adaptable);
     }
 
     return null;
@@ -269,6 +273,14 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
 
   private I18n getUserI18n(final SlingHttpServletRequest request) {
     return new I18n(getI18nEnabledRequest(request));
+  }
+
+  private TagManager getTagManager(final Object adaptable) {
+    ResourceResolver resolver = getResourceResolver(adaptable);
+    if (resolver != null) {
+      return resolver.adaptTo(TagManager.class);
+    }
+    return null;
   }
 
   /**

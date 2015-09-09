@@ -27,6 +27,9 @@
       <action type="update" dev="sseifert">
         Update to Sling Models 1.2.0.
       </action>
+      <action type="add" dev="sseifert">
+        Add support for TagManager.
+      </action>
     </release>
 
     <release version="1.1.2" date="2015-03-09">
