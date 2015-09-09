@@ -50,7 +50,6 @@
 
   <dependencies>
 
-    <!-- Latest version of Sling Models -->
     <dependency>
       <groupId>org.apache.sling</groupId>
       <artifactId>org.apache.sling.models.api</artifactId>
@@ -107,6 +106,11 @@
       <artifactId>jsp-api</artifactId>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+      <scope>provided</scope>
+    </dependency>
 
     <dependency>
       <groupId>javax.jcr</groupId>
@@ -128,6 +132,21 @@
     </dependency>
 
   </dependencies>
+  
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.apache.sling</groupId>
+        <artifactId>org.apache.sling.models.api</artifactId>
+        <version>1.2.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.sling</groupId>
+        <artifactId>org.apache.sling.models.impl</artifactId>
+        <version>1.2.0</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <build>
 
