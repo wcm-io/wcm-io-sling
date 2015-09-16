@@ -35,16 +35,18 @@ import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.scripting.SlingBindings;
+import org.apache.sling.models.annotations.injectorspecific.InjectionStrategy;
 import org.apache.sling.models.spi.AcceptsNullName;
 import org.apache.sling.models.spi.DisposalCallbackRegistry;
 import org.apache.sling.models.spi.Injector;
-import org.apache.sling.models.spi.injectorspecific.AbstractInjectAnnotationProcessor;
-import org.apache.sling.models.spi.injectorspecific.InjectAnnotationProcessor;
-import org.apache.sling.models.spi.injectorspecific.InjectAnnotationProcessorFactory;
+import org.apache.sling.models.spi.injectorspecific.AbstractInjectAnnotationProcessor2;
+import org.apache.sling.models.spi.injectorspecific.InjectAnnotationProcessor2;
+import org.apache.sling.models.spi.injectorspecific.StaticInjectAnnotationProcessorFactory;
 import org.osgi.framework.Constants;
 
 import com.adobe.granite.xss.XSSAPI;
 import com.day.cq.i18n.I18n;
+import com.day.cq.tagging.TagManager;
 import com.day.cq.wcm.api.AuthoringUIMode;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
@@ -67,7 +69,7 @@ import com.day.cq.wcm.commons.WCMUtils;
  * pre-configured from the current request.
  */
 @Property(name = Constants.SERVICE_RANKING, intValue = 4500)
-public final class AemObjectInjector implements Injector, InjectAnnotationProcessorFactory, AcceptsNullName {
+public final class AemObjectInjector implements Injector, StaticInjectAnnotationProcessorFactory, AcceptsNullName {
 
   /**
    * Injector name
@@ -140,6 +142,9 @@ public final class AemObjectInjector implements Injector, InjectAnnotationProces
     }
     else if (requestedClass.equals(Design.class)) {
       return getCurrentDesign(adaptable);
+    }
+    else if (requestedClass.equals(TagManager.class)) {
+      return getTagManager(adaptable);
     }
 
     return null;
@@ -270,6 +275,14 @@ public final class AemObjectInjector implements Injector, InjectAnnotationProces
     return new I18n(getI18nEnabledRequest(request));
   }
 
+  private TagManager getTagManager(final Object adaptable) {
+    ResourceResolver resolver = getResourceResolver(adaptable);
+    if (resolver != null) {
+      return resolver.adaptTo(TagManager.class);
+    }
+    return null;
+  }
+
   /**
    * Returns a sling request that has a resource bundle set. Due to several wrappings inside Sling
    * this is not always the request that is available in the script or java code initiating the injection.
@@ -295,7 +308,7 @@ public final class AemObjectInjector implements Injector, InjectAnnotationProces
   }
 
   @Override
-  public InjectAnnotationProcessor createAnnotationProcessor(final Object adaptable, final AnnotatedElement element) {
+  public InjectAnnotationProcessor2 createAnnotationProcessor(final AnnotatedElement element) {
     // check if the element has the expected annotation
     AemObject annotation = element.getAnnotation(AemObject.class);
     if (annotation != null) {
@@ -304,7 +317,7 @@ public final class AemObjectInjector implements Injector, InjectAnnotationProces
     return null;
   }
 
-  private static class AemObjectAnnotationProcessor extends AbstractInjectAnnotationProcessor {
+  private static class AemObjectAnnotationProcessor extends AbstractInjectAnnotationProcessor2 {
 
     private final AemObject annotation;
 
@@ -313,8 +326,14 @@ public final class AemObjectInjector implements Injector, InjectAnnotationProces
     }
 
     @Override
+    public InjectionStrategy getInjectionStrategy() {
+      return annotation.injectionStrategy();
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
     public Boolean isOptional() {
-      return this.annotation.optional();
+      return annotation.optional();
     }
   }
 

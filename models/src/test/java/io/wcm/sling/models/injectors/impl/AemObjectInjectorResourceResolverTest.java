@@ -38,6 +38,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.adobe.granite.xss.XSSAPI;
 import com.day.cq.i18n.I18n;
+import com.day.cq.tagging.TagManager;
 import com.day.cq.wcm.api.AuthoringUIMode;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
@@ -63,6 +64,8 @@ public class AemObjectInjectorResourceResolverTest {
   @Mock
   private Designer designer;
   @Mock
+  protected TagManager tagManager;
+  @Mock
   protected RequestContext requestContext;
 
   private AemObjectInjector injector;
@@ -78,6 +81,7 @@ public class AemObjectInjectorResourceResolverTest {
 
     when(resourceResolver.adaptTo(PageManager.class)).thenReturn(pageManager);
     when(resourceResolver.adaptTo(Designer.class)).thenReturn(designer);
+    when(resourceResolver.adaptTo(TagManager.class)).thenReturn(tagManager);
   }
 
   @Test
@@ -120,6 +124,12 @@ public class AemObjectInjectorResourceResolverTest {
   public void testDesigner() {
     Object result = injector.getValue(resourceResolver, null, Designer.class, annotatedElement, null);
     assertSame(designer, result);
+  }
+
+  @Test
+  public void testTagManager() {
+    Object result = injector.getValue(resourceResolver, null, TagManager.class, annotatedElement, null);
+    assertSame(tagManager, result);
   }
 
   @Test

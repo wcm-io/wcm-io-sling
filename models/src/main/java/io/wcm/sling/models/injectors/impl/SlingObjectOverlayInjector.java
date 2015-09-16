@@ -37,13 +37,14 @@ import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.scripting.SlingBindings;
 import org.apache.sling.api.scripting.SlingScriptHelper;
+import org.apache.sling.models.annotations.injectorspecific.InjectionStrategy;
 import org.apache.sling.models.annotations.injectorspecific.SlingObject;
 import org.apache.sling.models.spi.AcceptsNullName;
 import org.apache.sling.models.spi.DisposalCallbackRegistry;
 import org.apache.sling.models.spi.Injector;
-import org.apache.sling.models.spi.injectorspecific.AbstractInjectAnnotationProcessor;
-import org.apache.sling.models.spi.injectorspecific.InjectAnnotationProcessor;
-import org.apache.sling.models.spi.injectorspecific.InjectAnnotationProcessorFactory;
+import org.apache.sling.models.spi.injectorspecific.AbstractInjectAnnotationProcessor2;
+import org.apache.sling.models.spi.injectorspecific.InjectAnnotationProcessor2;
+import org.apache.sling.models.spi.injectorspecific.StaticInjectAnnotationProcessorFactory;
 import org.osgi.framework.Constants;
 
 /**
@@ -64,7 +65,7 @@ import org.osgi.framework.Constants;
 @Service
 // use ranking MAX_VALUE - 10 to overlay the sling-object injector of sling which is registered to MAX_VALUE
 @Property(name = Constants.SERVICE_RANKING, intValue = Integer.MAX_VALUE - 10)
-public final class SlingObjectOverlayInjector implements Injector, InjectAnnotationProcessorFactory, AcceptsNullName {
+public final class SlingObjectOverlayInjector implements Injector, StaticInjectAnnotationProcessorFactory, AcceptsNullName {
 
   /**
    * Injector name
@@ -163,7 +164,7 @@ public final class SlingObjectOverlayInjector implements Injector, InjectAnnotat
   }
 
   @Override
-  public InjectAnnotationProcessor createAnnotationProcessor(final Object adaptable, final AnnotatedElement element) {
+  public InjectAnnotationProcessor2 createAnnotationProcessor(final AnnotatedElement element) {
     // check if the element has the expected annotation
     SlingObject annotation = element.getAnnotation(SlingObject.class);
     if (annotation != null) {
@@ -172,7 +173,7 @@ public final class SlingObjectOverlayInjector implements Injector, InjectAnnotat
     return null;
   }
 
-  private static class SlingObjectAnnotationProcessor extends AbstractInjectAnnotationProcessor {
+  private static class SlingObjectAnnotationProcessor extends AbstractInjectAnnotationProcessor2 {
 
     private final SlingObject annotation;
 
@@ -181,8 +182,14 @@ public final class SlingObjectOverlayInjector implements Injector, InjectAnnotat
     }
 
     @Override
+    public InjectionStrategy getInjectionStrategy() {
+      return annotation.injectionStrategy();
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
     public Boolean isOptional() {
-      return this.annotation.optional();
+      return annotation.optional();
     }
   }
 
