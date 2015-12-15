@@ -19,9 +19,6 @@
  */
 package io.wcm.sling.models.injectors.impl;
 
-import io.wcm.sling.commons.request.RequestContext;
-import io.wcm.sling.models.annotations.AemObject;
-
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Type;
 import java.util.Locale;
@@ -56,6 +53,9 @@ import com.day.cq.wcm.api.designer.Design;
 import com.day.cq.wcm.api.designer.Designer;
 import com.day.cq.wcm.api.designer.Style;
 import com.day.cq.wcm.commons.WCMUtils;
+
+import io.wcm.sling.commons.request.RequestContext;
+import io.wcm.sling.models.annotations.AemObject;
 
 /**
  * Injects common AEM objects that can be derived from a SlingHttpServletRequest.
@@ -321,7 +321,7 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
 
     private final AemObject annotation;
 
-    public AemObjectAnnotationProcessor(final AemObject annotation) {
+    AemObjectAnnotationProcessor(final AemObject annotation) {
       this.annotation = annotation;
     }
 
