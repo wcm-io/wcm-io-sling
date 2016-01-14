@@ -71,6 +71,7 @@
       <groupId>io.wcm</groupId>
       <artifactId>io.wcm.sling.commons</artifactId>
       <version>0.6.0</version>
+      <scope>compile</scope>
     </dependency>
 
     <dependency>
