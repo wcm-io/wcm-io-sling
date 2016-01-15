@@ -67,8 +67,9 @@ import io.wcm.sling.models.annotations.AemObject;
  * SERVICE_RANKING of this service should be lower than the ranking of the OsgiServiceInjector (5000),
  * otherwise the generic XSSAPI service would be injected from the OSGi Service Registry instead of the
  * pre-configured from the current request.
+ * Additionally it should be lower than the ACS commons AemObjectInjector (4500).
  */
-@Property(name = Constants.SERVICE_RANKING, intValue = 4500)
+@Property(name = Constants.SERVICE_RANKING, intValue = 4400)
 public final class AemObjectInjector implements Injector, StaticInjectAnnotationProcessorFactory, AcceptsNullName {
 
   /**
@@ -169,6 +170,9 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
     if (adaptable instanceof Resource) {
       return ((Resource)adaptable).getResourceResolver();
     }
+    if (adaptable instanceof Page) {
+      return ((Page)adaptable).adaptTo(Resource.class).getResourceResolver();
+    }
     SlingHttpServletRequest request = getRequest(adaptable);
     if (request != null) {
       return request.getResourceResolver();
@@ -179,6 +183,9 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
   private Resource getResource(final Object adaptable) {
     if (adaptable instanceof Resource) {
       return (Resource)adaptable;
+    }
+    if (adaptable instanceof Page) {
+      return ((Page)adaptable).adaptTo(Resource.class);
     }
     SlingHttpServletRequest request = getRequest(adaptable);
     if (request != null) {

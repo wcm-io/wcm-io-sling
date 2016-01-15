@@ -22,7 +22,6 @@ package io.wcm.sling.models.injectors.impl;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.when;
-import io.wcm.sling.commons.request.RequestContext;
 
 import java.lang.reflect.AnnotatedElement;
 
@@ -45,7 +44,10 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.day.cq.wcm.api.Page;
 import com.google.common.collect.ImmutableMap;
+
+import io.wcm.sling.commons.request.RequestContext;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SlingObjectOverlayInjectorRequestTest {
@@ -64,6 +66,8 @@ public class SlingObjectOverlayInjectorRequestTest {
   @Mock
   protected ResourceResolver resourceResolver;
   @Mock
+  protected Page page;
+  @Mock
   protected Resource resource;
   @Mock
   protected RequestContext requestContext;
@@ -81,6 +85,8 @@ public class SlingObjectOverlayInjectorRequestTest {
 
     SlingBindings bindings = new SlingBindings();
     bindings.put(SlingBindings.SLING, this.scriptHelper);
+
+    when(page.adaptTo(Resource.class)).thenReturn(resource);
     when(this.resource.getResourceResolver()).thenReturn(this.resourceResolver);
     when(this.request.getResourceResolver()).thenReturn(this.resourceResolver);
     when(this.request.getResource()).thenReturn(this.resource);
