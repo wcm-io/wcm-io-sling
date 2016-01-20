@@ -27,6 +27,9 @@
       <action type="fix" dev="sseifert">
         Support injecting AEM context objects whan adaptable is Page.
       </action>
+      <action type="update" dev="sseifert">
+        Set AEM API and OSGi dependencies to provided scope.
+      </action>
     </release>
 
     <release version="1.2.0" date="2015-09-16">
