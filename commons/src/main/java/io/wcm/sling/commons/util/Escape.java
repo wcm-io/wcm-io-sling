@@ -24,6 +24,7 @@ import java.net.URLEncoder;
 
 import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.jackrabbit.util.Text;
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -95,6 +96,35 @@ public final class Escape {
       return validName(fileName);
     }
     return validName(fileName) + "." + validName(fileExtension);
+  }
+
+  /**
+   * Convert a string to a literal, suitable for inclusion in a query (XPath or JCR-SQL2).
+   * See JSR-283 specification v2.0, Section 4.6.6.19.
+   * @param value Any string.
+   * @return A valid JCR query string literal, including enclosing quotes.
+   */
+  public static String jcrQueryLiteral(String value) {
+    if (value == null) {
+      throw new IllegalArgumentException("Invalid query string value: " + value);
+    }
+    return "'" + StringUtils.replace(value, "'", "''") + "'";
+  }
+
+  /**
+   * Convert a string to a JCR search expression literal, suitable for use in jcr:contains() (inside XPath)
+   * or contains (JCR-SQL2). The characters - and " have special meaning, and may be escaped with a backslash
+   * to obtain their literal value.
+   * See JSR-283 specification v2.0, Section 4.6.6.19.
+   * @param value Any string.
+   * @return A valid string literal suitable for use in JCR contains clauses, including enclosing quotes.
+   */
+  public static String jcrQueryContainsExpr(String value) {
+    if (value == null || value.isEmpty()) {
+      throw new IllegalArgumentException("Invalid query string value: " + value);
+    }
+    // Escape special characters not allowed in jcr:contains expression
+    return jcrQueryLiteral(Text.escapeIllegalXpathSearchChars(value));
   }
 
 }

@@ -63,4 +63,36 @@ public class EscapeTest {
     assertEquals("test-sel1-sel2.file", Escape.validFilename("test.sel1.sel2.file"));
   }
 
+  @Test
+  public void testJcrQueryLiteral() {
+    assertEquals("''", Escape.jcrQueryLiteral(""));
+    assertEquals("'abc'", Escape.jcrQueryLiteral("abc"));
+    assertEquals("'a''bc'", Escape.jcrQueryLiteral("a'bc"));
+    assertEquals("'a''bc'''''", Escape.jcrQueryLiteral("a'bc''"));
+    assertEquals("'abc?'", Escape.jcrQueryLiteral("abc?"));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testJcrQueryLiteralNull() {
+    Escape.jcrQueryLiteral(null);
+  }
+
+  @Test
+  public void testJcrQueryContainsExpr() throws Exception {
+    assertEquals("'abc'", Escape.jcrQueryContainsExpr("abc"));
+    assertEquals("'a''bc'", Escape.jcrQueryContainsExpr("a'bc"));
+    assertEquals("'a''bc'''''", Escape.jcrQueryContainsExpr("a'bc''"));
+    assertEquals("'abc\\?'", Escape.jcrQueryContainsExpr("abc?"));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testJcrQueryContainsExprNull() {
+    Escape.jcrQueryContainsExpr(null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testJcrQueryContainsExprEmpty() {
+    Escape.jcrQueryContainsExpr("");
+  }
+
 }
