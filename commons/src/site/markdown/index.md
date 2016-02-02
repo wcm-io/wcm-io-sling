@@ -2,15 +2,8 @@
 
 Common Sling utility and helper functions.
 
-### Maven Dependency
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.wcm/io.wcm.sling.commons/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.wcm/io.wcm.sling.commons)
 
-```xml
-<dependency>
-  <groupId>io.wcm</groupId>
-  <artifactId>io.wcm.sling.commons</artifactId>
-  <version>0.6.2</version>
-</dependency>
-```
 
 ### Documentation
 

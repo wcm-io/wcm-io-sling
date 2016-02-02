@@ -2,15 +2,8 @@
 
 AEM Object Injector for Sling Models.
 
-### Maven Dependency
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.wcm/io.wcm.sling.models/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.wcm/io.wcm.sling.models)
 
-```xml
-<dependency>
-  <groupId>io.wcm</groupId>
-  <artifactId>io.wcm.sling.models</artifactId>
-  <version>1.2.0</version>
-</dependency>
-```
 
 ### Documentation
 
