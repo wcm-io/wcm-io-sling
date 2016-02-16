@@ -26,7 +26,6 @@ import static org.junit.Assert.assertSame;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Mockito.when;
-import io.wcm.sling.commons.request.RequestContext;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -61,6 +60,8 @@ import com.day.cq.wcm.api.designer.Designer;
 import com.day.cq.wcm.api.designer.Style;
 import com.google.common.collect.ImmutableMap;
 
+import io.wcm.sling.commons.request.RequestContext;
+
 @RunWith(MockitoJUnitRunner.class)
 public class AemObjectInjectorRequestTest {
 
@@ -71,6 +72,8 @@ public class AemObjectInjectorRequestTest {
   protected AnnotatedElement annotatedElement;
   @Mock
   protected SlingHttpServletRequest request;
+  @Mock
+  protected Page page;
   @Mock
   protected Resource resource;
   @Mock
@@ -108,6 +111,8 @@ public class AemObjectInjectorRequestTest {
             ModelsImplConfiguration.PARAM_REQUEST_THREAD_LOCAL_DEFAULT));
 
     injector = context.registerInjectActivateService(new AemObjectInjector());
+
+    when(page.adaptTo(Resource.class)).thenReturn(resource);
     when(request.getResource()).thenReturn(resource);
     when(request.getResourceResolver()).thenReturn(resourceResolver);
     when(request.getAttribute(ComponentContext.CONTEXT_ATTR_NAME)).thenReturn(componentContext);

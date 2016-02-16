@@ -19,9 +19,6 @@
  */
 package io.wcm.sling.models.injectors.impl;
 
-import io.wcm.sling.commons.request.RequestContext;
-import io.wcm.sling.models.annotations.AemObject;
-
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Type;
 import java.util.Locale;
@@ -57,6 +54,9 @@ import com.day.cq.wcm.api.designer.Designer;
 import com.day.cq.wcm.api.designer.Style;
 import com.day.cq.wcm.commons.WCMUtils;
 
+import io.wcm.sling.commons.request.RequestContext;
+import io.wcm.sling.models.annotations.AemObject;
+
 /**
  * Injects common AEM objects that can be derived from a SlingHttpServletRequest.
  * Documentation see {@link AemObject}.
@@ -67,8 +67,9 @@ import com.day.cq.wcm.commons.WCMUtils;
  * SERVICE_RANKING of this service should be lower than the ranking of the OsgiServiceInjector (5000),
  * otherwise the generic XSSAPI service would be injected from the OSGi Service Registry instead of the
  * pre-configured from the current request.
+ * Additionally it should be lower than the ACS commons AemObjectInjector (4500).
  */
-@Property(name = Constants.SERVICE_RANKING, intValue = 4500)
+@Property(name = Constants.SERVICE_RANKING, intValue = 4400)
 public final class AemObjectInjector implements Injector, StaticInjectAnnotationProcessorFactory, AcceptsNullName {
 
   /**
@@ -169,6 +170,9 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
     if (adaptable instanceof Resource) {
       return ((Resource)adaptable).getResourceResolver();
     }
+    if (adaptable instanceof Page) {
+      return ((Page)adaptable).adaptTo(Resource.class).getResourceResolver();
+    }
     SlingHttpServletRequest request = getRequest(adaptable);
     if (request != null) {
       return request.getResourceResolver();
@@ -179,6 +183,9 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
   private Resource getResource(final Object adaptable) {
     if (adaptable instanceof Resource) {
       return (Resource)adaptable;
+    }
+    if (adaptable instanceof Page) {
+      return ((Page)adaptable).adaptTo(Resource.class);
     }
     SlingHttpServletRequest request = getRequest(adaptable);
     if (request != null) {
@@ -321,7 +328,7 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
 
     private final AemObject annotation;
 
-    public AemObjectAnnotationProcessor(final AemObject annotation) {
+    AemObjectAnnotationProcessor(final AemObject annotation) {
       this.annotation = annotation;
     }
 

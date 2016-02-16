@@ -19,8 +19,6 @@
  */
 package io.wcm.sling.models.injectors.impl;
 
-import io.wcm.sling.commons.request.RequestContext;
-
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Type;
 
@@ -46,6 +44,8 @@ import org.apache.sling.models.spi.injectorspecific.AbstractInjectAnnotationProc
 import org.apache.sling.models.spi.injectorspecific.InjectAnnotationProcessor2;
 import org.apache.sling.models.spi.injectorspecific.StaticInjectAnnotationProcessorFactory;
 import org.osgi.framework.Constants;
+
+import io.wcm.sling.commons.request.RequestContext;
 
 /**
  * Injects common Sling objects that can be derived from either a SlingHttpServletRequest, a ResourceResolver or a
@@ -177,7 +177,7 @@ public final class SlingObjectOverlayInjector implements Injector, StaticInjectA
 
     private final SlingObject annotation;
 
-    public SlingObjectAnnotationProcessor(final SlingObject annotation) {
+    SlingObjectAnnotationProcessor(final SlingObject annotation) {
       this.annotation = annotation;
     }
 
