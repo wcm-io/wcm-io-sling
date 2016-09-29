@@ -1,6 +1,7 @@
 <img src="http://wcm.io/images/favicon-16@2x.png"/> wcm.io Sling Extensions
 ======
 [![Build Status](https://travis-ci.org/wcm-io/wcm-io-sling.png?branch=develop)](https://travis-ci.org/wcm-io/wcm-io-sling)
+[![Code Coverage](https://codecov.io/gh/wcm-io/wcm-io-sling/branch/develop/graph/badge.svg)](https://codecov.io/gh/wcm-io/wcm-io-sling)
 
 wcm.io extensions for [Apache Sling](http://sling.apache.org/) features.
 
