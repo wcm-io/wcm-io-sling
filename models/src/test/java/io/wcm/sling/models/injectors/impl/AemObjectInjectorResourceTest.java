@@ -23,6 +23,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
+
+import com.adobe.granite.workflow.WorkflowSession;
 import io.wcm.sling.commons.request.RequestContext;
 
 import java.lang.reflect.AnnotatedElement;
@@ -75,6 +77,8 @@ public class AemObjectInjectorResourceTest {
   private Design design;
   @Mock
   protected RequestContext requestContext;
+  @Mock
+  protected WorkflowSession workflowSession;
 
   private AemObjectInjector injector;
 
@@ -92,6 +96,7 @@ public class AemObjectInjectorResourceTest {
     when(resourceResolver.adaptTo(Designer.class)).thenReturn(designer);
     when(resourceResolver.adaptTo(TagManager.class)).thenReturn(tagManager);
     when(pageManager.getContainingPage(resource)).thenReturn(resourcePage);
+    when(resourceResolver.adaptTo(WorkflowSession.class)).thenReturn(workflowSession);
     when(designer.getDesign(any(Page.class))).thenReturn(design);
   }
 
@@ -165,6 +170,12 @@ public class AemObjectInjectorResourceTest {
   public void testI18n() {
     Object result = injector.getValue(resource, null, I18n.class, annotatedElement, null);
     assertNull(result);
+  }
+
+  @Test
+  public void testWorkflowSession() {
+    Object result = injector.getValue(resource, null, WorkflowSession.class, annotatedElement, null);
+    assertSame(workflowSession, result);
   }
 
   @Test
