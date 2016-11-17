@@ -23,7 +23,6 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
-import io.wcm.sling.models.injectors.impl.AemObjectInjector;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -32,6 +31,7 @@ import org.apache.sling.models.annotations.Source;
 import org.apache.sling.models.annotations.injectorspecific.InjectionStrategy;
 import org.apache.sling.models.spi.injectorspecific.InjectAnnotation;
 
+import com.adobe.granite.workflow.WorkflowSession;
 import com.adobe.granite.xss.XSSAPI;
 import com.day.cq.i18n.I18n;
 import com.day.cq.tagging.TagManager;
@@ -43,6 +43,8 @@ import com.day.cq.wcm.api.components.ComponentContext;
 import com.day.cq.wcm.api.designer.Design;
 import com.day.cq.wcm.api.designer.Designer;
 import com.day.cq.wcm.api.designer.Style;
+
+import io.wcm.sling.models.injectors.impl.AemObjectInjector;
 
 /**
  * Injects common AEM objects that can be derived from a SlingHttpServletRequest.
@@ -164,6 +166,14 @@ import com.day.cq.wcm.api.designer.Style;
  * <td style="text-align:center">X</td>
  * <td style="text-align:center">X</td>
  * </tr>
+ * <tr>
+ * <td>{@link WorkflowSession}</td>
+ * <td>Granite Workflow Session</td>
+ * <td></td>
+ * <td style="text-align:center">X</td>
+ * <td style="text-align:center">X</td>
+ * <td style="text-align:center">X</td>
+ * </tr>
  * </table>
  * <p>
  * In case of X* the class cannot be derived from the adaptable, but is derived from the request of the current thread
@@ -183,6 +193,7 @@ public @interface AemObject {
    * <p>
    * For most injections of AemObject this is not required, it is only use as name-hint for injectint a Page object.
    * </p>
+   * @return Name
    */
   String name() default "";
 
@@ -193,6 +204,7 @@ public @interface AemObject {
    * If even those are not available the default injection strategy defined on the
    * {@link org.apache.sling.models.annotations.Model} applies.
    * Default value = DEFAULT.
+   * @return Injection strategy
    */
   InjectionStrategy injectionStrategy() default InjectionStrategy.DEFAULT;
 
@@ -200,6 +212,7 @@ public @interface AemObject {
    * If set to true, the model can be instantiated even if there is no request attribute
    * with the given name found.
    * Default = false.
+   * @return Optional
    * @deprecated Use {@link #injectionStrategy()} instead
    */
   @Deprecated
