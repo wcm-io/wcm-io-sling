@@ -23,8 +23,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
@@ -44,7 +44,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import com.adobe.granite.workflow.WorkflowSession;
 import com.adobe.granite.xss.XSSAPI;
@@ -63,7 +63,7 @@ import com.google.common.collect.ImmutableMap;
 
 import io.wcm.sling.commons.request.RequestContext;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class AemObjectInjectorRequestTest {
 
   @Rule

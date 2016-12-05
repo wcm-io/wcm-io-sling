@@ -26,9 +26,9 @@ import org.apache.sling.api.scripting.SlingScriptHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class SlingObjectOverlayInjectorResourceResolver_RequestContextTest extends SlingObjectOverlayInjectorRequestTest {
 
   @Before

@@ -21,11 +21,8 @@ package io.wcm.sling.models.injectors.impl;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-
-import com.adobe.granite.workflow.WorkflowSession;
-import io.wcm.sling.commons.request.RequestContext;
 
 import java.lang.reflect.AnnotatedElement;
 
@@ -38,8 +35,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
+import com.adobe.granite.workflow.WorkflowSession;
 import com.adobe.granite.xss.XSSAPI;
 import com.day.cq.i18n.I18n;
 import com.day.cq.tagging.TagManager;
@@ -52,6 +50,8 @@ import com.day.cq.wcm.api.designer.Design;
 import com.day.cq.wcm.api.designer.Designer;
 import com.day.cq.wcm.api.designer.Style;
 import com.google.common.collect.ImmutableMap;
+
+import io.wcm.sling.commons.request.RequestContext;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AemObjectInjectorResourceTest {

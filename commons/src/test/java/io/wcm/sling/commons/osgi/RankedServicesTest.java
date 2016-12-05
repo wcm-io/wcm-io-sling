@@ -23,7 +23,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import io.wcm.sling.commons.osgi.RankedServices.ChangeListener;
 
 import java.util.Map;
 
@@ -32,6 +31,8 @@ import org.osgi.framework.Constants;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
+
+import io.wcm.sling.commons.osgi.RankedServices.ChangeListener;
 
 public class RankedServicesTest {
 
