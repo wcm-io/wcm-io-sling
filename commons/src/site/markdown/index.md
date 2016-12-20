@@ -19,6 +19,7 @@ The Sling Commons library contains:
 * OSGi `RankedServices` class for making it easier consuming a list of services ordered by service ranking.
 * Helper classes for accessing typed request parameters and selectors from the current request
 * An `ImmutableValueMap` implementation with similar interface like Google Guava's `ImmutableMap`
+* `RequestContext` interface which supports getting the current request via a ThreadLocal
 * Other useful helper classes, see [API documentation][apidocs]
 
 
