@@ -21,10 +21,11 @@ package io.wcm.sling.commons.resource;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import io.wcm.testing.mock.aem.junit.AemContext;
 
 import org.junit.Rule;
 import org.junit.Test;
+
+import io.wcm.testing.mock.aem.junit.AemContext;
 
 public class ResourceTypeAemContextTest {
 

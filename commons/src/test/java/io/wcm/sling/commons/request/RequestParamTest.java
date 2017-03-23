@@ -27,20 +27,25 @@ import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 import org.apache.commons.lang3.CharEncoding;
-import org.apache.sling.testing.mock.sling.servlet.MockSlingHttpServletRequest;
+import org.apache.sling.servlethelpers.MockSlingHttpServletRequest;
+import org.apache.sling.testing.mock.sling.junit.SlingContext;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableMap;
 
 public class RequestParamTest {
 
+  @Rule
+  public SlingContext context = new SlingContext();
+
   private static final String PARAM_NONEXISTING = "paramNonExisting";
   protected static final String STRING_PARAM = "stringParam";
   protected static final String STRING_VALUE = "value1 äöüß€ ᚠᛇᚻ γλώσσα";
   private static final String MULTI_STRING_PARAM = "multiStringParam";
   private static final String[] MULTI_STRING_VALUE = new String[] {
-    STRING_VALUE, "value2", "value3"
+      STRING_VALUE, "value2", "value3"
   };
   private static final String INTEGER_PARAM = "intParam";
   private static final int INTEGER_VALUE = 123;
@@ -60,7 +65,7 @@ public class RequestParamTest {
 
   @Before
   public void setUp() throws Exception {
-    request = new MockSlingHttpServletRequest();
+    request = context.request();
     paramMap = getParamMap();
     request.setParameterMap(paramMap);
   }

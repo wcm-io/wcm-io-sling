@@ -23,8 +23,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
@@ -44,8 +44,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
+import com.adobe.granite.workflow.WorkflowSession;
 import com.adobe.granite.xss.XSSAPI;
 import com.day.cq.i18n.I18n;
 import com.day.cq.tagging.TagManager;
@@ -62,7 +63,7 @@ import com.google.common.collect.ImmutableMap;
 
 import io.wcm.sling.commons.request.RequestContext;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class AemObjectInjectorRequestTest {
 
   @Rule
@@ -100,6 +101,8 @@ public class AemObjectInjectorRequestTest {
   protected XSSAPI xssApi;
   @Mock
   protected RequestContext requestContext;
+  @Mock
+  protected WorkflowSession workflowSession;
 
   protected AemObjectInjector injector;
 
@@ -123,6 +126,7 @@ public class AemObjectInjectorRequestTest {
     when(resourceResolver.adaptTo(PageManager.class)).thenReturn(pageManager);
     when(resourceResolver.adaptTo(Designer.class)).thenReturn(designer);
     when(resourceResolver.adaptTo(TagManager.class)).thenReturn(tagManager);
+    when(resourceResolver.adaptTo(WorkflowSession.class)).thenReturn(workflowSession);
     when(componentContext.getPage()).thenReturn(currentPage);
     when(componentContext.getCell()).thenReturn(cell);
     when(pageManager.getContainingPage(resource)).thenReturn(resourcePage);
@@ -218,6 +222,13 @@ public class AemObjectInjectorRequestTest {
     assertNotNull(result);
     assertEquals("mytranslation", result.get("mykey"));
   }
+
+  @Test
+  public void testWorkflowSession() {
+    Object result = injector.getValue(adaptable(), null, WorkflowSession.class, annotatedElement, null);
+    assertSame(workflowSession, result);
+  }
+
 
   @Test
   public void testInvalid() {

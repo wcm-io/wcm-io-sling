@@ -16,11 +16,12 @@ AEM Object Injector for Sling Models.
 
 The AEM Object Injector for Sling Models provides:
 
-* Access to PagerManager and Page objects
+* Access to PageManager, Page and TagManager objects
 * Current WCM mode and Authoring UI mode
 * Current Designer, Design and Style objects
 * XSSAPI for current request
 * CQ I18n object for the current request
+* Granite Workflow Session
 * Support injection request-derived context objects on all models, not only when the adaptable is a request
 
 See [Injector API documentation][apidocs-aemobjectinjector] for details.

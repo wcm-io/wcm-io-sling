@@ -22,7 +22,6 @@ package io.wcm.sling.models.injectors.impl;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.when;
-import io.wcm.sling.commons.request.RequestContext;
 
 import java.lang.reflect.AnnotatedElement;
 
@@ -34,8 +33,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
+import com.adobe.granite.workflow.WorkflowSession;
 import com.adobe.granite.xss.XSSAPI;
 import com.day.cq.i18n.I18n;
 import com.day.cq.tagging.TagManager;
@@ -48,6 +48,8 @@ import com.day.cq.wcm.api.designer.Design;
 import com.day.cq.wcm.api.designer.Designer;
 import com.day.cq.wcm.api.designer.Style;
 import com.google.common.collect.ImmutableMap;
+
+import io.wcm.sling.commons.request.RequestContext;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AemObjectInjectorResourceResolverTest {
@@ -67,6 +69,8 @@ public class AemObjectInjectorResourceResolverTest {
   protected TagManager tagManager;
   @Mock
   protected RequestContext requestContext;
+  @Mock
+  protected WorkflowSession workflowSession;
 
   private AemObjectInjector injector;
 
@@ -81,6 +85,7 @@ public class AemObjectInjectorResourceResolverTest {
 
     when(resourceResolver.adaptTo(PageManager.class)).thenReturn(pageManager);
     when(resourceResolver.adaptTo(Designer.class)).thenReturn(designer);
+    when(resourceResolver.adaptTo(WorkflowSession.class)).thenReturn(workflowSession);
     when(resourceResolver.adaptTo(TagManager.class)).thenReturn(tagManager);
   }
 
@@ -154,6 +159,12 @@ public class AemObjectInjectorResourceResolverTest {
   public void testI18n() {
     Object result = injector.getValue(resourceResolver, null, I18n.class, annotatedElement, null);
     assertNull(result);
+  }
+
+  @Test
+  public void testWorkflowSession() {
+    Object result = injector.getValue(resourceResolver, null, WorkflowSession.class, annotatedElement, null);
+    assertSame(workflowSession, result);
   }
 
   @Test

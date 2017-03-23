@@ -19,8 +19,6 @@
  */
 package io.wcm.sling.commons.request.impl;
 
-import io.wcm.sling.commons.request.RequestContext;
-
 import java.io.IOException;
 import java.util.Stack;
 
@@ -35,6 +33,8 @@ import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Property;
 import org.apache.felix.scr.annotations.Service;
 import org.apache.sling.api.SlingHttpServletRequest;
+
+import io.wcm.sling.commons.request.RequestContext;
 
 /**
  * Servlet filter that sets the current sling request during processing to make it available via the

@@ -41,6 +41,7 @@ import org.apache.sling.models.spi.injectorspecific.InjectAnnotationProcessor2;
 import org.apache.sling.models.spi.injectorspecific.StaticInjectAnnotationProcessorFactory;
 import org.osgi.framework.Constants;
 
+import com.adobe.granite.workflow.WorkflowSession;
 import com.adobe.granite.xss.XSSAPI;
 import com.day.cq.i18n.I18n;
 import com.day.cq.tagging.TagManager;
@@ -146,6 +147,9 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
     }
     else if (requestedClass.equals(TagManager.class)) {
       return getTagManager(adaptable);
+    }
+    else if (requestedClass.equals(WorkflowSession.class)) {
+      return getWorkflowSession(adaptable);
     }
 
     return null;
@@ -286,6 +290,14 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
     ResourceResolver resolver = getResourceResolver(adaptable);
     if (resolver != null) {
       return resolver.adaptTo(TagManager.class);
+    }
+    return null;
+  }
+
+  private WorkflowSession getWorkflowSession(final Object adaptable) {
+    ResourceResolver resolver = getResourceResolver(adaptable);
+    if (resolver != null) {
+      return resolver.adaptTo(WorkflowSession.class);
     }
     return null;
   }
