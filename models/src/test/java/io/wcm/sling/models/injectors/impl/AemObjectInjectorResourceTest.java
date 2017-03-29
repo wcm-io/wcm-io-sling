@@ -49,7 +49,6 @@ import com.day.cq.wcm.api.components.ComponentContext;
 import com.day.cq.wcm.api.designer.Design;
 import com.day.cq.wcm.api.designer.Designer;
 import com.day.cq.wcm.api.designer.Style;
-import com.google.common.collect.ImmutableMap;
 
 import io.wcm.sling.commons.request.RequestContext;
 
@@ -86,8 +85,7 @@ public class AemObjectInjectorResourceTest {
   public void setUp() {
     context.registerService(RequestContext.class, requestContext);
     context.registerInjectActivateService(new ModelsImplConfiguration(),
-        ImmutableMap.<String, Object>of(ModelsImplConfiguration.PARAM_REQUEST_THREAD_LOCAL,
-            ModelsImplConfiguration.PARAM_REQUEST_THREAD_LOCAL_DEFAULT));
+        "requestThreadLocal", true);
 
     injector = context.registerInjectActivateService(new AemObjectInjector());
 

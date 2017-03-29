@@ -29,10 +29,8 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import org.apache.felix.scr.annotations.Component;
-import org.apache.felix.scr.annotations.Property;
-import org.apache.felix.scr.annotations.Service;
 import org.apache.sling.api.SlingHttpServletRequest;
+import org.osgi.service.component.annotations.Component;
 
 import io.wcm.sling.commons.request.RequestContext;
 
@@ -40,11 +38,9 @@ import io.wcm.sling.commons.request.RequestContext;
  * Servlet filter that sets the current sling request during processing to make it available via the
  * {@link RequestContext} interface.
  */
-@Component(immediate = true)
-@Service({
-  RequestContext.class, Filter.class
+@Component(service = { RequestContext.class, Filter.class }, immediate = true, property = {
+    "sling.filter.scope=component"
 })
-@Property(name = "sling.filter.scope", value = "component")
 public final class RequestContextFilterImpl implements RequestContext, Filter {
 
   private static final ThreadLocal<Stack<SlingHttpServletRequest>> REQUEST_THREADLOCAL = new ThreadLocal<Stack<SlingHttpServletRequest>>() {

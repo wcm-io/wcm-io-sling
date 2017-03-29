@@ -36,6 +36,7 @@ public final class AdaptTo {
    * Try to adapt the adaptable to the given type and ensures that it succeeds.
    * @param adaptable Adaptable
    * @param type Type
+   * @param <T> Type
    * @return Adaption result (not null)
    * @throws UnableToAdaptException if the adaption was not successful
    */

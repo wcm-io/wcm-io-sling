@@ -24,10 +24,6 @@ import java.lang.reflect.Type;
 import java.util.Locale;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.felix.scr.annotations.Component;
-import org.apache.felix.scr.annotations.Property;
-import org.apache.felix.scr.annotations.Reference;
-import org.apache.felix.scr.annotations.Service;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
@@ -40,6 +36,8 @@ import org.apache.sling.models.spi.injectorspecific.AbstractInjectAnnotationProc
 import org.apache.sling.models.spi.injectorspecific.InjectAnnotationProcessor2;
 import org.apache.sling.models.spi.injectorspecific.StaticInjectAnnotationProcessorFactory;
 import org.osgi.framework.Constants;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 import com.adobe.granite.workflow.WorkflowSession;
 import com.adobe.granite.xss.XSSAPI;
@@ -62,15 +60,15 @@ import io.wcm.sling.models.annotations.AemObject;
  * Injects common AEM objects that can be derived from a SlingHttpServletRequest.
  * Documentation see {@link AemObject}.
  */
-@Component
-@Service
-/*
- * SERVICE_RANKING of this service should be lower than the ranking of the OsgiServiceInjector (5000),
- * otherwise the generic XSSAPI service would be injected from the OSGi Service Registry instead of the
- * pre-configured from the current request.
- * Additionally it should be lower than the ACS commons AemObjectInjector (4500).
- */
-@Property(name = Constants.SERVICE_RANKING, intValue = 4400)
+@Component(service = { Injector.class, StaticInjectAnnotationProcessorFactory.class }, property = {
+    /*
+     * SERVICE_RANKING of this service should be lower than the ranking of the OsgiServiceInjector (5000),
+     * otherwise the generic XSSAPI service would be injected from the OSGi Service Registry instead of the
+     * pre-configured from the current request.
+     * Additionally it should be lower than the ACS commons AemObjectInjector (4500).
+     */
+    Constants.SERVICE_RANKING + ":Integer=" + 4400
+})
 public final class AemObjectInjector implements Injector, StaticInjectAnnotationProcessorFactory, AcceptsNullName {
 
   /**

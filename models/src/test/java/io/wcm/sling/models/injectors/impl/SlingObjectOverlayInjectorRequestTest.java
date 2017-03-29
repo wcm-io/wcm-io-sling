@@ -45,7 +45,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.day.cq.wcm.api.Page;
-import com.google.common.collect.ImmutableMap;
 
 import io.wcm.sling.commons.request.RequestContext;
 
@@ -78,8 +77,7 @@ public class SlingObjectOverlayInjectorRequestTest {
   public void setUp() {
     context.registerService(RequestContext.class, requestContext);
     context.registerInjectActivateService(new ModelsImplConfiguration(),
-        ImmutableMap.<String, Object>of(ModelsImplConfiguration.PARAM_REQUEST_THREAD_LOCAL,
-            ModelsImplConfiguration.PARAM_REQUEST_THREAD_LOCAL_DEFAULT));
+        "requestThreadLocal", true);
 
     injector = context.registerInjectActivateService(new SlingObjectOverlayInjector());
 
