@@ -23,13 +23,21 @@ import org.osgi.annotation.versioning.ConsumerType;
 
 /**
  * Marker interface for Context-Aware services.
- * If multiple implementations of a OSGi service interface or class exists the {@link ContextAwareServiceResolver} can
+ * <p>
+ * If multiple implementations of an OSGi service interface or class exists the {@link ContextAwareServiceResolver} can
  * be used to picks the implementation with the best match for the current resource context/path in the resource
  * hierarchy.
- * This interface has no methods, the metadata for detecting the matching paths is published via the service properties
- * declared by the constants of this interface.
+ * </p>
+ * <p>
+ * This interface has no methods, the metadata for detecting the matching paths is published via the properties
+ * declared by the constants of this interface. The properties can be set as service properties or as bundle header.
+ * Service property is checked first, if it is not set there the bundle header of the bundle which registered the
+ * service is checked as fallback.
+ * </p>
+ * <p>
  * If multiple service implementations exist which match for a given resource path the one with the highest service
  * ranking is picked.
+ * </p>
  */
 //CHECKSTYLE:OFF
 @ConsumerType
@@ -38,26 +46,26 @@ public interface ContextAwareService {
 
   /**
    * Context path whitelist expression.
-   * Service property defining a regular expression the context resource path is matched against.
+   * Service property or bundle header defining a regular expression the context resource path is matched against.
    * Only if the path is matching the service is considered as candidate.
    * If the property is not set all resource paths are accepted.
    */
-  String PROPERTY_CONTEXT_PATH_PATTERN = "contextPathRegex";
+  String PROPERTY_CONTEXT_PATH_PATTERN = "wcmio-CAService-ContextPathRegex";
 
   /**
    * Context path blacklist expression.
-   * Service property defining a regular expression the context resource path is matched against.
+   * Service property or bundle header defining a regular expression the context resource path is matched against.
    * If the path is matching the service is not considered as candidate.
    * If the property is not set no resource paths are blacklisted.
    */
-  String PROPERTY_CONTEXT_PATH_BLACKLIST_PATTERN = "contextPathBlacklistRegex";
+  String PROPERTY_CONTEXT_PATH_BLACKLIST_PATTERN = "wcmio-CAService-ContextPathBlacklistRegex";
 
   /**
    * Accepts empty context paths.
-   * Service property that can be set to "true" to signal that this service implementation also should
+   * Service property or bundle header that can be set to "true" to signal that this service implementation also should
    * be considered as candidate if no context resource exists and thus the context path is empty (null).
    * If the property is not set the implementation is not considered as candidate for empty resource paths.
    */
-  String PROPERTY_ACCEPTS_CONTEXT_PATH_EMPTY = "acceptsContextPathEmpty";
+  String PROPERTY_ACCEPTS_CONTEXT_PATH_EMPTY = "wcmio-CASService-AcceptsContextPathEmpty";
 
 }

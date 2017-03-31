@@ -20,20 +20,24 @@
 package io.wcm.sling.commons.caservice.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
 import java.util.stream.Collectors;
 
+import org.apache.sling.testing.mock.osgi.MockBundle;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.osgi.framework.Constants;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 
 import io.wcm.sling.commons.caservice.ContextAwareService;
 import io.wcm.sling.commons.caservice.ContextAwareServiceResolver;
+import io.wcm.sling.commons.caservice.ContextAwareServiceResolver.ResolveAllResult;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
 public class ContextAwareServiceResolverImplTest {
@@ -85,7 +89,7 @@ public class ContextAwareServiceResolverImplTest {
     assertSame(defaultImpl, underTest.resolve(DummySpi.class, context.create().resource("/etc/test1")));
 
     assertEquals(ImmutableList.of(contentDamImpl, contentImpl, defaultImpl),
-        underTest.resolveAll(DummySpi.class, context.create().resource("/content/dam/test2")).collect(Collectors.toList()));
+        underTest.resolveAll(DummySpi.class, context.create().resource("/content/dam/test2")).getServices().collect(Collectors.toList()));
   }
 
   @Test
@@ -97,7 +101,7 @@ public class ContextAwareServiceResolverImplTest {
     assertNull(underTest.resolve(DummySpi.class, context.create().resource("/etc/test1")));
 
     assertEquals(ImmutableList.of(contentDamImpl, contentImpl),
-        underTest.resolveAll(DummySpi.class, context.create().resource("/content/dam/test2")).collect(Collectors.toList()));
+        underTest.resolveAll(DummySpi.class, context.create().resource("/content/dam/test2")).getServices().collect(Collectors.toList()));
   }
 
   @Test
@@ -110,7 +114,7 @@ public class ContextAwareServiceResolverImplTest {
     assertSame(contentImpl, underTest.resolve(DummySpi.class, context.request()));
 
     assertEquals(ImmutableList.of(contentImpl, defaultImpl),
-        underTest.resolveAll(DummySpi.class, context.create().resource("/content/test2")).collect(Collectors.toList()));
+        underTest.resolveAll(DummySpi.class, context.create().resource("/content/test2")).getServices().collect(Collectors.toList()));
   }
 
   @Test
@@ -121,7 +125,37 @@ public class ContextAwareServiceResolverImplTest {
 
     assertSame(defaultImpl, underTest.resolve(DummySpi.class, null));
 
-    assertEquals(ImmutableList.of(defaultImpl), underTest.resolveAll(DummySpi.class, null).collect(Collectors.toList()));
+    assertEquals(ImmutableList.of(defaultImpl), underTest.resolveAll(DummySpi.class, null).getServices().collect(Collectors.toList()));
+  }
+
+  @Test
+  public void testResolveAllCombindedKey() {
+    ResolveAllResult result1 = underTest.resolveAll(DummySpi.class, context.create().resource("/content/dam/test1"));
+    ResolveAllResult result2 = underTest.resolveAll(DummySpi.class, context.create().resource("/content/dam/test2"));
+    ResolveAllResult result3 = underTest.resolveAll(DummySpi.class, context.create().resource("/content/sample/test3"));
+
+    assertEquals(result1.getCombinedKey(), result2.getCombinedKey());
+    assertNotEquals(result1.getCombinedKey(), result3.getCombinedKey());
+  }
+
+  @Test
+  public void testWithBundleHeader() {
+
+    // service gets path pattern from bundle header instead of service property
+    ((MockBundle)context.bundleContext().getBundle()).setHeaders(ImmutableMap.of(
+        ContextAwareService.PROPERTY_CONTEXT_PATH_PATTERN, "^/content/dam(/.*)?$"));
+    DummySpi contentDamImplWithBundleHeader = context.registerService(DummySpi.class, new DummySpiImpl(),
+        Constants.SERVICE_RANKING, 1000);
+
+
+    assertSame(contentImpl, underTest.resolve(DummySpi.class, context.create().resource("/content/test1")));
+    assertSame(contentSampleImpl, underTest.resolve(DummySpi.class, context.create().resource("/content/sample/test1")));
+    assertSame(contentImpl, underTest.resolve(DummySpi.class, context.create().resource("/content/sample/exclude/test1")));
+    assertSame(contentDamImplWithBundleHeader, underTest.resolve(DummySpi.class, context.create().resource("/content/dam/test1")));
+    assertNull(underTest.resolve(DummySpi.class, context.create().resource("/etc/test1")));
+
+    assertEquals(ImmutableList.of(contentDamImplWithBundleHeader, contentDamImpl, contentImpl),
+        underTest.resolveAll(DummySpi.class, context.create().resource("/content/dam/test2")).getServices().collect(Collectors.toList()));
   }
 
 }

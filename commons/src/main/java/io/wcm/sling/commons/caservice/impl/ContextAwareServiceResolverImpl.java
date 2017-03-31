@@ -20,6 +20,7 @@
 package io.wcm.sling.commons.caservice.impl;
 
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -48,7 +49,7 @@ public class ContextAwareServiceResolverImpl implements ContextAwareServiceResol
   private BundleContext bundleContext;
 
   // cache of service trackers for each SPI interface
-  private final LoadingCache<String, ContextAwareServiceTracker> cache = CacheBuilder.newBuilder()
+  private final LoadingCache<String, ContextAwareServiceTracker> serviceTrackerCache = CacheBuilder.newBuilder()
       .removalListener(new RemovalListener<String, ContextAwareServiceTracker>() {
         @Override
         public void onRemoval(RemovalNotification<String, ContextAwareServiceTracker> notification) {
@@ -69,7 +70,7 @@ public class ContextAwareServiceResolverImpl implements ContextAwareServiceResol
 
   @Deactivate
   private void deactivate(BundleContext context) {
-    cache.invalidateAll();
+    serviceTrackerCache.invalidateAll();
   }
 
   @SuppressWarnings("unchecked")
@@ -77,15 +78,24 @@ public class ContextAwareServiceResolverImpl implements ContextAwareServiceResol
   public <T extends ContextAwareService> T resolve(Class<T> serviceClass, Adaptable adaptable) {
     Resource resource = getResource(adaptable);
     ContextAwareServiceTracker serviceTracker = getServiceTracker(serviceClass);
-    return (T)serviceTracker.resolve(resource).findFirst().orElse(null);
+    return serviceTracker.resolve(resource)
+        .map(serviceInfo -> (T)serviceInfo.getService())
+        .findFirst().orElse(null);
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T extends ContextAwareService> Stream<T> resolveAll(Class<T> serviceClass, Adaptable adaptable) {
+  public <T extends ContextAwareService> ResolveAllResult<T> resolveAll(Class<T> serviceClass, Adaptable adaptable) {
     Resource resource = getResource(adaptable);
     ContextAwareServiceTracker serviceTracker = getServiceTracker(serviceClass);
-    return (Stream<T>)serviceTracker.resolve(resource);
+    return new ResolveAllResultImpl(
+        serviceTracker.resolve(resource).map(serviceInfo -> (T)serviceInfo.getService()),
+        () -> buildCombinedKey(serviceTracker, serviceTracker.resolve(resource)));
+  }
+
+  private String buildCombinedKey(ContextAwareServiceTracker serviceTracker, Stream<ServiceInfo> result) {
+    return serviceTracker.getLastServiceChangeTimestamp() + "\n"
+        + result.map(ServiceInfo::getKey).collect(Collectors.joining("\n~\n"));
   }
 
   private Resource getResource(Adaptable adaptable) {
@@ -100,7 +110,7 @@ public class ContextAwareServiceResolverImpl implements ContextAwareServiceResol
 
   private ContextAwareServiceTracker getServiceTracker(Class<?> serviceClass) {
     try {
-      return cache.get(serviceClass.getName());
+      return serviceTrackerCache.get(serviceClass.getName());
     }
     catch (ExecutionException ex) {
       throw new RuntimeException("Error getting service tracker for " + serviceClass.getName() + " from cache.", ex);

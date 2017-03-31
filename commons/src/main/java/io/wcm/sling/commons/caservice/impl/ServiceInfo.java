@@ -48,7 +48,7 @@ class ServiceInfo {
   private final Pattern contextPathRegex;
   private final Pattern contextPathBlacklistRegex;
   private final boolean acceptsContextPathEmpty;
-  private final String patternKey;
+  private final String key;
   private boolean valid = true;
 
   private static final Logger log = LoggerFactory.getLogger(ContextAwareServiceTracker.class);
@@ -56,22 +56,22 @@ class ServiceInfo {
   ServiceInfo(ServiceReference<?> serviceReference, BundleContext bundleContext) {
     this.service = validateAndGetService(serviceReference, bundleContext);
     this.serviceProperties = propertiesToMap(serviceReference);
-    this.contextPathRegex = validateAndParsePattern(serviceReference.getProperty(PROPERTY_CONTEXT_PATH_PATTERN));
-    this.contextPathBlacklistRegex = validateAndParsePattern(serviceReference.getProperty(PROPERTY_CONTEXT_PATH_BLACKLIST_PATTERN));
-    this.acceptsContextPathEmpty = validateAndGetBoolan(serviceReference.getProperty(PROPERTY_ACCEPTS_CONTEXT_PATH_EMPTY));
-    this.patternKey = buildPatternKey();
+    this.contextPathRegex = validateAndParsePattern(serviceReference, PROPERTY_CONTEXT_PATH_PATTERN);
+    this.contextPathBlacklistRegex = validateAndParsePattern(serviceReference, PROPERTY_CONTEXT_PATH_BLACKLIST_PATTERN);
+    this.acceptsContextPathEmpty = validateAndGetBoolan(lookupServicePropertyBundleHeader(serviceReference, PROPERTY_ACCEPTS_CONTEXT_PATH_EMPTY));
+    this.key = buildKey();
   }
 
   private ContextAwareService validateAndGetService(ServiceReference<?> serviceReference, BundleContext bundleContext) {
     Object serviceObject = bundleContext.getService(serviceReference);
     try {
-      if (!(serviceObject instanceof ContextAwareService)) {
-        log.warn("Service implementation " + serviceObject.getClass().getName() + " does not implement the ContextAwareService interface"
-            + " - service will be ignored for context-aware service resolution.");
-        valid = false;
-        return null;
+      if (serviceObject instanceof ContextAwareService) {
+        return (ContextAwareService)serviceObject;
       }
-      return (ContextAwareService)serviceObject;
+      log.warn("Service implementation " + serviceObject.getClass().getName() + " does not implement the ContextAwareService interface"
+          + " - service will be ignored for context-aware service resolution.");
+      valid = false;
+      return null;
     }
     finally {
       bundleContext.ungetService(serviceReference);
@@ -80,34 +80,41 @@ class ServiceInfo {
 
   private Map<String, Object> propertiesToMap(ServiceReference<?> reference) {
     Map<String, Object> props = new HashMap<>();
-    for (String key : reference.getPropertyKeys()) {
-      props.put(key, reference.getProperty(key));
+    for (String propertyName : reference.getPropertyKeys()) {
+      props.put(propertyName, reference.getProperty(propertyName));
     }
     return props;
   }
 
-  private Pattern validateAndParsePattern(Object value) {
-    if (value != null && (!(value instanceof String))) {
-      log.warn("Service implementation " + service.getClass().getName() + " has invalid regex pattern '" + value + "'"
-          + " - service will be ignored for context-aware service resolution.");
-      valid = false;
-      return null;
+  private Object lookupServicePropertyBundleHeader(ServiceReference<?> serviceReference, String propertyName) {
+    Object value = serviceReference.getProperty(propertyName);
+    if (value == null) {
+      value = serviceReference.getBundle().getHeaders().get(propertyName);
     }
-    String patternString = (String)value;
-    if (StringUtils.isEmpty(patternString)) {
-      return null;
-    }
-    else {
-      try {
-        return Pattern.compile(patternString);
-      }
-      catch (PatternSyntaxException ex) {
-        log.warn("Service implementation " + service.getClass().getName() + " has invalid regex pattern '" + value + "'"
-            + " - service will be ignored for context-aware service resolution.");
-        valid = false;
+    return value;
+  }
+
+  private Pattern validateAndParsePattern(ServiceReference<?> serviceReference, String patternPropertyName) {
+    Object value = lookupServicePropertyBundleHeader(serviceReference, patternPropertyName);
+    if (value == null || value instanceof String) {
+      String patternString = (String)value;
+      if (StringUtils.isEmpty(patternString)) {
         return null;
       }
+      else {
+        try {
+          return Pattern.compile(patternString);
+        }
+        catch (PatternSyntaxException ex) {
+          // fallback to invalid
+        }
+      }
     }
+    log.warn("Invalid " + patternPropertyName + " regex pattern '" + value + "' - "
+        + "service " + service.getClass().getName() + " from bundle " + serviceReference.getBundle().getSymbolicName() + " "
+        + "will be ignored for context-aware service resolution.");
+    valid = false;
+    return null;
   }
 
   private boolean validateAndGetBoolan(Object value) {
@@ -158,9 +165,9 @@ class ServiceInfo {
     return true;
   }
 
-  private String buildPatternKey() {
-    return "[contextPathRegex]" + contextPathRegex + "\n"
-        + "[contextPathBlacklistRegex]" + contextPathBlacklistRegex;
+  private String buildKey() {
+    return "[wl]" + contextPathRegex + "\n"
+        + "[bl]" + contextPathBlacklistRegex + "\n";
   }
 
   /**
@@ -168,8 +175,8 @@ class ServiceInfo {
    * can be used for caching and faster lookup of matching services.
    * @return Key of all path patterns
    */
-  public String getPatternKey() {
-    return this.patternKey;
+  public String getKey() {
+    return this.key;
   }
 
 }

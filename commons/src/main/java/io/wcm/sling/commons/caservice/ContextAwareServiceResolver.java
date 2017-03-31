@@ -56,8 +56,34 @@ public interface ContextAwareServiceResolver {
    *          A resource instances is used directly for matching, in case of request the associated resource is used.
    *          May be null if no context is available.
    * @param <T> Service interface or class
-   * @return Stream with all matching service implementations (may be empty)
+   * @return Collection of all matching services
    */
-  <T extends ContextAwareService> Stream<T> resolveAll(Class<T> serviceClass, Adaptable adaptable);
+  <T extends ContextAwareService> ResolveAllResult<T> resolveAll(Class<T> serviceClass, Adaptable adaptable);
+
+  /**
+   * Result of the {@link ContextAwareServiceResolver#resolveAll(Class, Adaptable)} method.
+   * All methods are implemented in a lazy fashion.
+   * @param <T> Service interface or class
+   */
+  interface ResolveAllResult<T extends ContextAwareService> {
+
+    /**
+     * Gets all matching services
+     * @return Context-Aware services
+     */
+    Stream<T> getServices();
+
+    /**
+     * Gets a combined key that represents the path filter sets of all affected context-aware services
+     * that matched for the given resource and a timestamp of the service registration for this service interface
+     * changed last.
+     * That means for two different resources that get the same combined key the same list of services is returned, and
+     * the result that was calculated from them can be cached with this key. Of course this makes only sense when the
+     * services always the same result as long as they are registered.
+     * @return Key string
+     */
+    String getCombinedKey();
+
+  }
 
 }

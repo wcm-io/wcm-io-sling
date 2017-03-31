@@ -38,6 +38,7 @@ class ContextAwareServiceTracker implements ServiceTrackerCustomizer<ContextAwar
   private final BundleContext bundleContext;
   private final ServiceTracker<ContextAwareService, ServiceInfo> serviceTracker;
   private volatile RankedServices<ServiceInfo> rankedServices;
+  private volatile long lastServiceChange;
 
   private static final Logger log = LoggerFactory.getLogger(ContextAwareServiceTracker.class);
 
@@ -62,6 +63,7 @@ class ContextAwareServiceTracker implements ServiceTrackerCustomizer<ContextAwar
     if (rankedServices != null) {
       rankedServices.bind(serviceInfo, serviceInfo.getServiceProperties());
     }
+    lastServiceChange = System.currentTimeMillis();
     return serviceInfo;
   }
 
@@ -78,16 +80,20 @@ class ContextAwareServiceTracker implements ServiceTrackerCustomizer<ContextAwar
     if (rankedServices != null) {
       rankedServices.unbind(serviceInfo, serviceInfo.getServiceProperties());
     }
+    lastServiceChange = System.currentTimeMillis();
     bundleContext.ungetService(reference);
   }
 
-  public Stream<ContextAwareService> resolve(Resource resource) {
+  public Stream<ServiceInfo> resolve(Resource resource) {
     if (rankedServices == null) {
       return Stream.empty();
     }
     return rankedServices.getList().stream()
-        .filter(serviceInfo -> serviceInfo.matches(resource))
-        .map(ServiceInfo::getService);
+        .filter(serviceInfo -> serviceInfo.matches(resource));
+  }
+
+  public long getLastServiceChangeTimestamp() {
+    return this.lastServiceChange;
   }
 
 }
