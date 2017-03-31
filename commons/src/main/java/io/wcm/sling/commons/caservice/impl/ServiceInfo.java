@@ -187,7 +187,7 @@ class ServiceInfo {
     if (contextPathRegex != null) {
       builder.append("contextPathRegex", contextPathRegex);
     }
-    if (contextPathRegex != null) {
+    if (contextPathBlacklistRegex != null) {
       builder.append("contextPathBlacklistRegex", contextPathBlacklistRegex);
     }
     if (acceptsContextPathEmpty) {

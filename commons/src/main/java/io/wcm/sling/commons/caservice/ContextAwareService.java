@@ -50,7 +50,7 @@ public interface ContextAwareService {
    * Only if the path is matching the service is considered as candidate.
    * If the property is not set all resource paths are accepted.
    */
-  String PROPERTY_CONTEXT_PATH_PATTERN = "wcmio-CAService-ContextPathRegex";
+  String PROPERTY_CONTEXT_PATH_PATTERN = "Wcmio-CAService-ContextPathRegex";
 
   /**
    * Context path blacklist expression.
@@ -58,7 +58,7 @@ public interface ContextAwareService {
    * If the path is matching the service is not considered as candidate.
    * If the property is not set no resource paths are blacklisted.
    */
-  String PROPERTY_CONTEXT_PATH_BLACKLIST_PATTERN = "wcmio-CAService-ContextPathBlacklistRegex";
+  String PROPERTY_CONTEXT_PATH_BLACKLIST_PATTERN = "Wcmio-CAService-ContextPathBlacklistRegex";
 
   /**
    * Accepts empty context paths.
@@ -66,6 +66,6 @@ public interface ContextAwareService {
    * be considered as candidate if no context resource exists and thus the context path is empty (null).
    * If the property is not set the implementation is not considered as candidate for empty resource paths.
    */
-  String PROPERTY_ACCEPTS_CONTEXT_PATH_EMPTY = "wcmio-CASService-AcceptsContextPathEmpty";
+  String PROPERTY_ACCEPTS_CONTEXT_PATH_EMPTY = "Wcmio-CASService-AcceptsContextPathEmpty";
 
 }
