@@ -30,6 +30,9 @@
       <action type="add" dev="sseifert">
         Add ResourcePath.getAbsoluteLevel.
       </action>
+      <action type="add" dev="sseifert">
+        Add ContextAwareService and ContextAwareServiceResolver.
+      </action>
     </release>
 
     <release version="0.6.4" date="2016-02-16">
