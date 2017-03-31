@@ -30,6 +30,8 @@ import java.util.regex.PatternSyntaxException;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.sling.api.resource.Resource;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -178,5 +180,27 @@ class ServiceInfo {
   public String getKey() {
     return this.key;
   }
+
+  @Override
+  public String toString() {
+    ToStringBuilder builder = new ToStringBuilder(service, TO_STRING_STYLE);
+    if (contextPathRegex != null) {
+      builder.append("contextPathRegex", contextPathRegex);
+    }
+    if (contextPathRegex != null) {
+      builder.append("contextPathBlacklistRegex", contextPathBlacklistRegex);
+    }
+    if (acceptsContextPathEmpty) {
+      builder.append("acceptsContextPathEmpty", acceptsContextPathEmpty);
+    }
+    return builder.build();
+  }
+  private static final ToStringStyle TO_STRING_STYLE = new ToStringStyle() {
+    private static final long serialVersionUID = 1L;
+    {
+      setUseIdentityHashCode(false);
+      setContentStart(" [");
+    }
+  };
 
 }

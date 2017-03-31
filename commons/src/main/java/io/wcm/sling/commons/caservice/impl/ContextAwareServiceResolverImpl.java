@@ -19,10 +19,16 @@
  */
 package io.wcm.sling.commons.caservice.impl;
 
+import java.io.PrintWriter;
+import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.felix.inventory.Format;
+import org.apache.felix.inventory.InventoryPrinter;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.adapter.Adaptable;
 import org.apache.sling.api.resource.Resource;
@@ -43,8 +49,12 @@ import io.wcm.sling.commons.caservice.ContextAwareServiceResolver;
 /**
  * {@link ContextAwareServiceResolver} implementation.
  */
-@Component(service = ContextAwareServiceResolver.class, immediate = true)
-public class ContextAwareServiceResolverImpl implements ContextAwareServiceResolver {
+@Component(service = { ContextAwareServiceResolver.class, InventoryPrinter.class }, immediate = true, property = {
+    InventoryPrinter.NAME + "=wcmio-caservice",
+    InventoryPrinter.TITLE + "=wcm.io Context-Aware Services",
+    InventoryPrinter.FORMAT + "=TEXT"
+})
+public class ContextAwareServiceResolverImpl implements ContextAwareServiceResolver, InventoryPrinter {
 
   private BundleContext bundleContext;
 
@@ -114,6 +124,29 @@ public class ContextAwareServiceResolverImpl implements ContextAwareServiceResol
     }
     catch (ExecutionException ex) {
       throw new RuntimeException("Error getting service tracker for " + serviceClass.getName() + " from cache.", ex);
+    }
+  }
+
+  @Override
+  public void print(PrintWriter pw, Format format, boolean isZip) {
+    if (format != Format.TEXT) {
+      return;
+    }
+    ConcurrentMap<String, ContextAwareServiceTracker> map = serviceTrackerCache.asMap();
+    if (map.isEmpty()) {
+      pw.println();
+      pw.println("No context-aware services found.");
+      pw.println("The services are registered lazily on first access of the service interface or class.");
+      return;
+    }
+    for (Map.Entry<String, ContextAwareServiceTracker> entry : map.entrySet()) {
+      pw.println();
+      pw.println(entry.getKey());
+      pw.println(StringUtils.repeat('-', entry.getKey().length()));
+      for (ServiceInfo serviceInfo : entry.getValue().getServiceInfos()) {
+        pw.print("- ");
+        pw.println(serviceInfo.toString());
+      }
     }
   }
 

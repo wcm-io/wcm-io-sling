@@ -96,4 +96,8 @@ class ContextAwareServiceTracker implements ServiceTrackerCustomizer<ContextAwar
     return this.lastServiceChange;
   }
 
+  public Iterable<ServiceInfo> getServiceInfos() {
+    return rankedServices;
+  }
+
 }
