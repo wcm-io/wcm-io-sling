@@ -173,6 +173,7 @@ public final class ImmutableValueMap implements ValueMap {
    * Returns the empty map. This map behaves and performs comparably to {@link Collections#emptyMap}, and is preferable
    * mainly for consistency
    * and maintainability of your code.
+   * @return ImmutableValueMap
    */
   public static ImmutableValueMap of() {
     return new ImmutableValueMap(ValueMap.EMPTY);
@@ -183,6 +184,9 @@ public final class ImmutableValueMap implements ValueMap {
    * performs comparably to {@link Collections#singletonMap} but will not accept
    * a null key or value. It is preferable mainly for consistency and
    * maintainability of your code.
+   * @param k1 Key 1
+   * @param v1 Value 1
+   * @return ImmutableValueMap
    */
   public static ImmutableValueMap of(String k1, Object v1) {
     return new ImmutableValueMap(ImmutableMap.<String, Object>of(k1, v1));
@@ -190,6 +194,11 @@ public final class ImmutableValueMap implements ValueMap {
 
   /**
    * Returns an immutable map containing the given entries, in order.
+   * @param k1 Key 1
+   * @param v1 Value 1
+   * @param k2 Key 2
+   * @param v2 Value 2
+   * @return ImmutableValueMap
    * @throws IllegalArgumentException if duplicate keys are provided
    */
   public static ImmutableValueMap of(String k1, Object v1, String k2, Object v2) {
@@ -198,6 +207,13 @@ public final class ImmutableValueMap implements ValueMap {
 
   /**
    * Returns an immutable map containing the given entries, in order.
+   * @param k1 Key 1
+   * @param v1 Value 1
+   * @param k2 Key 2
+   * @param v2 Value 2
+   * @param k3 Key 3
+   * @param v3 Value 3
+   * @return ImmutableValueMap
    * @throws IllegalArgumentException if duplicate keys are provided
    */
   public static ImmutableValueMap of(
@@ -207,6 +223,15 @@ public final class ImmutableValueMap implements ValueMap {
 
   /**
    * Returns an immutable map containing the given entries, in order.
+   * @param k1 Key 1
+   * @param v1 Value 1
+   * @param k2 Key 2
+   * @param v2 Value 2
+   * @param k3 Key 3
+   * @param v3 Value 3
+   * @param k4 Key 4
+   * @param v4 Value 4
+   * @return ImmutableValueMap
    * @throws IllegalArgumentException if duplicate keys are provided
    */
   public static ImmutableValueMap of( //NOPMD
@@ -216,6 +241,17 @@ public final class ImmutableValueMap implements ValueMap {
 
   /**
    * Returns an immutable map containing the given entries, in order.
+   * @param k1 Key 1
+   * @param v1 Value 1
+   * @param k2 Key 2
+   * @param v2 Value 2
+   * @param k3 Key 3
+   * @param v3 Value 3
+   * @param k4 Key 4
+   * @param v4 Value 4
+   * @param k5 Key 5
+   * @param v5 Value 5
+   * @return ImmutableValueMap
    * @throws IllegalArgumentException if duplicate keys are provided
    */
   public static ImmutableValueMap of( //NOPMD
@@ -228,6 +264,7 @@ public final class ImmutableValueMap implements ValueMap {
   /**
    * Returns a new builder. The generated builder is equivalent to the builder
    * created by the {@link Builder} constructor.
+   * @return Builder
    */
   public static Builder builder() {
     return new Builder();
@@ -241,6 +278,8 @@ public final class ImmutableValueMap implements ValueMap {
    * <p>
    * Despite the method name, this method attempts to avoid actually copying the data when it is safe to do so. The
    * exact circumstances under which a copy will or will not be performed are undocumented and subject to change.
+   * @param map Map
+   * @return ImmutableValueMap
    * @throws NullPointerException if any key or value in {@code map} is null
    */
   public static ImmutableValueMap copyOf(Map<String, Object> map) {
@@ -262,6 +301,9 @@ public final class ImmutableValueMap implements ValueMap {
     /**
      * Associates {@code key} with {@code value} in the built map. Duplicate
      * keys are not allowed, and will cause {@link #build} to fail.
+     * @param key Key
+     * @param value value
+     * @return this
      */
     public Builder put(String key, Object value) {
       map.put(key, value);
@@ -271,6 +313,8 @@ public final class ImmutableValueMap implements ValueMap {
     /**
      * Adds the given {@code entry} to the map, making it immutable if
      * necessary. Duplicate keys are not allowed, and will cause {@link #build} to fail.
+     * @param entry Entry
+     * @return this
      */
     public Builder put(Entry<String, Object> entry) {
       return put(entry.getKey(), entry.getValue());
@@ -279,6 +323,8 @@ public final class ImmutableValueMap implements ValueMap {
     /**
      * Associates all of the given map's keys and values in the built map.
      * Duplicate keys are not allowed, and will cause {@link #build} to fail.
+     * @param value Value
+     * @return this
      * @throws NullPointerException if any key or value in {@code map} is null
      */
     public Builder putAll(Map<String, Object> value) {
@@ -288,6 +334,7 @@ public final class ImmutableValueMap implements ValueMap {
 
     /**
      * Returns a newly-created immutable map.
+     * @return ImmutableValueMap
      * @throws IllegalArgumentException if duplicate keys were added
      */
     public ImmutableValueMap build() {
