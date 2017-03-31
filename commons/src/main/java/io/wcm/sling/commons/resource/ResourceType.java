@@ -36,6 +36,11 @@ public final class ResourceType {
   }
 
   /**
+   * /apps prefix for resource types
+   */
+  public static final String APPS_PREFIX = "/apps/";
+
+  /**
    * Converts the resource type to an absolute path. If it does not start with "/" the resource is resolved
    * via search paths using resource resolver. If not matching resource is found it is returned unchanged.
    * @param resourceType Resource type
