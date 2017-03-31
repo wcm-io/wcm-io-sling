@@ -25,4 +25,4 @@ The Sling Commons library contains:
 
 [apidocs]: apidocs/
 [changelog]: changes-report.html
-[caservice]: caservice.html
+[caservice]: context-aware-services.html
