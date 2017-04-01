@@ -28,7 +28,10 @@
         Switch to AEM 6.1 and Java 8 as minimum versions.
       </action>
       <action type="add" dev="sseifert">
-        Add ResourcePath.getAbsoluteLevel.
+        ResourcePath: Add getAbsoluteLevel method.
+      </action>
+      <action type="add" dev="sseifert">
+        ResourceType: Add makeRelative, equals and is methods.
       </action>
       <action type="add" dev="sseifert">
         Add ContextAwareService and ContextAwareServiceResolver.
