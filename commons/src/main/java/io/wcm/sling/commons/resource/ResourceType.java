@@ -19,7 +19,13 @@
  */
 package io.wcm.sling.commons.resource;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+
 import org.apache.commons.lang3.StringUtils;
+import org.apache.sling.api.SlingException;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 
@@ -39,6 +45,11 @@ public final class ResourceType {
    * /apps prefix for resource types
    */
   public static final String APPS_PREFIX = "/apps/";
+
+  /**
+   * /libs prefix for resource types
+   */
+  public static final String LIBS_PREFIX = "/libs/";
 
   /**
    * Converts the resource type to an absolute path. If it does not start with "/" the resource is resolved
@@ -72,6 +83,79 @@ public final class ResourceType {
     else {
       return resourceType;
     }
+  }
+
+  /**
+   * Makes the given resource type relative by stripping off an /apps/ or /libs/ prefix.
+   * In case the given resource type does not start with any of these prefixes it is returned unmodified.
+   * This method does not take the real configured search paths into account, but in case of AEM usually only /apps/ and
+   * /libs/ are used.
+   * @param resourceType The resource type to make relative.
+   * @return Relative resource type
+   */
+  public static String makeRelative(String resourceType) {
+    if (StringUtils.startsWith(resourceType, APPS_PREFIX)) {
+      return resourceType.substring(APPS_PREFIX.length());
+    }
+    else if (StringUtils.startsWith(resourceType, LIBS_PREFIX)) {
+      return resourceType.substring(LIBS_PREFIX.length());
+    }
+    return resourceType;
+  }
+
+  /**
+   * Returns <code>true</code> if the given resource type are equal.
+   * In case the value of any of the given resource types starts with /apps/ or /libs/ prefix this is removed before
+   * doing the comparison.
+   * @param resourceType A resource type
+   * @param anotherResourceType Another resource type to compare with
+   * @return <code>true</code> if the resource type equals the given resource type.
+   */
+  public static boolean equals(@Nonnull String resourceType, @Nonnull String anotherResourceType) {
+    return StringUtils.equals(makeRelative(resourceType), makeRelative(anotherResourceType));
+  }
+
+  /**
+   * Returns <code>true</code> if the resource type or any of the resource's super type(s) equals the given resource
+   * type.
+   * This implementation is equal to {@link ResourceResolver#isResourceType(Resource, String)} - but in earlier sling
+   * version the comparison check did not take potentieal mixtures of relative and absolute resource types into account.
+   * This method respects this.
+   * @param resource The resource to check
+   * @param resourceType The resource type to check this resource against.
+   * @return <code>true</code> if the resource type or any of the resource's super type(s) equals the given resource
+   *         type. <code>false</code> is also returned if <code>resource</code> or<code>resourceType</code> are
+   *         <code>null</code>.
+   */
+  public static boolean is(Resource resource, String resourceType) {
+    if (resource == null || resourceType == null) {
+      return false;
+    }
+    ResourceResolver resolver = resource.getResourceResolver();
+    // Check if the resource is of the given type. This method first checks the
+    // resource type of the resource, then its super resource type and continues
+    //  to go up the resource super type hierarchy.
+    boolean result = false;
+    if (ResourceType.equals(resourceType, resource.getResourceType())) {
+      result = true;
+    }
+    else {
+      Set<String> superTypesChecked = new HashSet<>();
+      String superType = resolver.getParentResourceType(resource);
+      while (!result && superType != null) {
+        if (ResourceType.equals(resourceType, superType)) {
+          result = true;
+        }
+        else {
+          superTypesChecked.add(superType);
+          superType = resolver.getParentResourceType(superType);
+          if (superType != null && superTypesChecked.contains(superType)) {
+            throw new SlingException("Cyclic dependency for resourceSuperType hierarchy detected on resource " + resource.getPath(), null);
+          }
+        }
+      }
+    }
+    return result;
   }
 
 }
