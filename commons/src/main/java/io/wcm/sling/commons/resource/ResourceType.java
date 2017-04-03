@@ -22,8 +22,6 @@ package io.wcm.sling.commons.resource;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.annotation.Nonnull;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingException;
 import org.apache.sling.api.resource.Resource;
@@ -111,7 +109,7 @@ public final class ResourceType {
    * @param anotherResourceType Another resource type to compare with
    * @return <code>true</code> if the resource type equals the given resource type.
    */
-  public static boolean equals(@Nonnull String resourceType, @Nonnull String anotherResourceType) {
+  public static boolean equals(String resourceType, String anotherResourceType) {
     return StringUtils.equals(makeRelative(resourceType), makeRelative(anotherResourceType));
   }
 

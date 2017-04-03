@@ -21,6 +21,7 @@ package io.wcm.sling.models.injectors.impl;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.lang.reflect.AnnotatedElement;
@@ -35,6 +36,7 @@ import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.scripting.SlingBindings;
 import org.apache.sling.api.scripting.SlingScriptHelper;
 import org.apache.sling.models.annotations.injectorspecific.SlingObject;
+import org.apache.sling.models.spi.DisposalCallbackRegistry;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.apache.sling.testing.mock.sling.junit.SlingContext;
 import org.junit.Before;
@@ -98,48 +100,48 @@ public class SlingObjectOverlayInjectorRequestTest {
 
   @Test
   public void testResourceResolver() {
-    Object result = this.injector.getValue(adaptable(), null, ResourceResolver.class, this.annotatedElement, null);
+    Object result = this.injector.getValue(adaptable(), null, ResourceResolver.class, this.annotatedElement, mock(DisposalCallbackRegistry.class));
     assertSame(this.resourceResolver, result);
   }
 
   @Test
   public void testResource() {
-    Object result = this.injector.getValue(adaptable(), null, Resource.class, this.annotatedElement, null);
+    Object result = this.injector.getValue(adaptable(), null, Resource.class, this.annotatedElement, mock(DisposalCallbackRegistry.class));
     assertNull(result);
 
     when(annotatedElement.isAnnotationPresent(SlingObject.class)).thenReturn(true);
-    result = this.injector.getValue(adaptable(), null, Resource.class, this.annotatedElement, null);
+    result = this.injector.getValue(adaptable(), null, Resource.class, this.annotatedElement, mock(DisposalCallbackRegistry.class));
     assertSame(resource, result);
   }
 
   @Test
   public void testRequest() {
     Object result = this.injector.getValue(adaptable(), null, SlingHttpServletRequest.class,
-        this.annotatedElement, null);
+        this.annotatedElement, mock(DisposalCallbackRegistry.class));
     assertSame(this.request, result);
 
-    result = this.injector.getValue(adaptable(), null, HttpServletRequest.class, this.annotatedElement, null);
+    result = this.injector.getValue(adaptable(), null, HttpServletRequest.class, this.annotatedElement, mock(DisposalCallbackRegistry.class));
     assertSame(this.request, result);
   }
 
   @Test
   public void testResponse() {
-    Object result = this.injector.getValue(adaptable(), null, SlingHttpServletResponse.class, this.annotatedElement, null);
+    Object result = this.injector.getValue(adaptable(), null, SlingHttpServletResponse.class, this.annotatedElement, mock(DisposalCallbackRegistry.class));
     assertSame(this.response, result);
 
-    result = this.injector.getValue(adaptable(), null, HttpServletResponse.class, this.annotatedElement, null);
+    result = this.injector.getValue(adaptable(), null, HttpServletResponse.class, this.annotatedElement, mock(DisposalCallbackRegistry.class));
     assertSame(this.response, result);
   }
 
   @Test
   public void testScriptHelper() {
-    Object result = this.injector.getValue(adaptable(), null, SlingScriptHelper.class, this.annotatedElement, null);
+    Object result = this.injector.getValue(adaptable(), null, SlingScriptHelper.class, this.annotatedElement, mock(DisposalCallbackRegistry.class));
     assertSame(this.scriptHelper, result);
   }
 
   @Test
   public void testInvalid() {
-    Object result = this.injector.getValue(new StringBuffer(), null, SlingScriptHelper.class, this.annotatedElement, null);
+    Object result = this.injector.getValue(new StringBuffer(), null, SlingScriptHelper.class, this.annotatedElement, mock(DisposalCallbackRegistry.class));
     assertNull(result);
   }
 

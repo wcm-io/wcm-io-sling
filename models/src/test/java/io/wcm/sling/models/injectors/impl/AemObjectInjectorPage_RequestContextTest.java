@@ -20,8 +20,10 @@
 package io.wcm.sling.models.injectors.impl;
 
 import static org.junit.Assert.assertSame;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import org.apache.sling.models.spi.DisposalCallbackRegistry;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,7 +47,7 @@ public class AemObjectInjectorPage_RequestContextTest extends AemObjectInjectorR
   @Override
   @Test
   public void testInvalid() {
-    Object result = injector.getValue(new StringBuffer(), null, PageManager.class, annotatedElement, null);
+    Object result = injector.getValue(new StringBuffer(), null, PageManager.class, annotatedElement, mock(DisposalCallbackRegistry.class));
     assertSame(pageManager, result);
   }
 

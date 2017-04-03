@@ -59,7 +59,7 @@ public class ContextAwareServiceResolverImpl implements ContextAwareServiceResol
       })
       .build(new CacheLoader<String, ContextAwareServiceTracker>() {
         @Override
-        public ContextAwareServiceTracker load(String className) throws Exception {
+        public ContextAwareServiceTracker load(String className) {
           return new ContextAwareServiceTracker(className, bundleContext);
         }
       });
