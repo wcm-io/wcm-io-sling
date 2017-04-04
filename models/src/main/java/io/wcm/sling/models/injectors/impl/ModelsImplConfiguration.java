@@ -19,37 +19,35 @@
  */
 package io.wcm.sling.models.injectors.impl;
 
-import java.util.Dictionary;
-
-import org.apache.felix.scr.annotations.Activate;
-import org.apache.felix.scr.annotations.Component;
-import org.apache.felix.scr.annotations.Property;
-import org.apache.felix.scr.annotations.Service;
-import org.apache.sling.commons.osgi.PropertiesUtil;
-import org.osgi.service.component.ComponentContext;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.metatype.annotations.AttributeDefinition;
+import org.osgi.service.metatype.annotations.Designate;
+import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
 /**
  * Configures behavior of the wcm.io Injectors for Sling Models
  */
-@Component(immediate = true, metatype = true,
-label = "wcm.io Models Configuration",
-description = "Configures behavior of the wcm.io Injectors for Sling Models")
-@Service(ModelsImplConfiguration.class)
+@Component(service = ModelsImplConfiguration.class, immediate = true)
+@Designate(ocd = ModelsImplConfiguration.Config.class)
 public class ModelsImplConfiguration {
 
-  @Property(label = "Request Thread Local",
-      description = "Enables the thread-local based injection of all request-derived objects in AEM Object " +
-          "and Sling Object injectors. These objects can than always be injected regardless of the adaptable.",
-          boolValue = ModelsImplConfiguration.PARAM_REQUEST_THREAD_LOCAL_DEFAULT)
-  static final String PARAM_REQUEST_THREAD_LOCAL = "requestThreadLocal";
-  static final boolean PARAM_REQUEST_THREAD_LOCAL_DEFAULT = true;
+  @ObjectClassDefinition(name = "wcm.io Models Configuration",
+      description = "Configures behavior of the wcm.io Injectors for Sling Models")
+  @interface Config {
+
+    @AttributeDefinition(name = "Request Thread Local",
+        description = "Enables the thread-local based injection of all request-derived objects in AEM Object " +
+            "and Sling Object injectors. These objects can than always be injected regardless of the adaptable.")
+    boolean requestThreadLocal() default true;
+
+  }
 
   private boolean requestThreadLocal;
 
   @Activate
-  private void activate(ComponentContext componentContext) {
-    Dictionary config = componentContext.getProperties();
-    requestThreadLocal = PropertiesUtil.toBoolean(config.get(PARAM_REQUEST_THREAD_LOCAL), PARAM_REQUEST_THREAD_LOCAL_DEFAULT);
+  private void activate(Config config) {
+    requestThreadLocal = config.requestThreadLocal();
   }
 
   /**

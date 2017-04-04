@@ -53,7 +53,7 @@ public class AdaptToTest {
       AdaptTo.notNull(adaptable, Comparable.class);
       fail("No exception thrown.");
     }
-    catch (Throwable ex) {
+    /*CHECKSTYLE:OFF*/ catch (Exception ex) { /*CHECKSTYLE:ON*/
       assertTrue(ex instanceof UnableToAdaptException);
       assertSame(adaptable, ((UnableToAdaptException)ex).getAdaptable());
       assertEquals(Comparable.class, ((UnableToAdaptException)ex).getType());

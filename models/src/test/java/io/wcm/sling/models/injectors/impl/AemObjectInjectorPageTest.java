@@ -22,12 +22,14 @@ package io.wcm.sling.models.injectors.impl;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.lang.reflect.AnnotatedElement;
 
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.models.spi.DisposalCallbackRegistry;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.apache.sling.testing.mock.sling.junit.SlingContext;
 import org.junit.Before;
@@ -48,7 +50,6 @@ import com.day.cq.wcm.api.components.ComponentContext;
 import com.day.cq.wcm.api.designer.Design;
 import com.day.cq.wcm.api.designer.Designer;
 import com.day.cq.wcm.api.designer.Style;
-import com.google.common.collect.ImmutableMap;
 
 import io.wcm.sling.commons.request.RequestContext;
 
@@ -85,8 +86,7 @@ public class AemObjectInjectorPageTest {
   public void setUp() {
     context.registerService(RequestContext.class, requestContext);
     context.registerInjectActivateService(new ModelsImplConfiguration(),
-        ImmutableMap.<String, Object>of(ModelsImplConfiguration.PARAM_REQUEST_THREAD_LOCAL,
-            ModelsImplConfiguration.PARAM_REQUEST_THREAD_LOCAL_DEFAULT));
+        "requestThreadLocal", true);
 
     injector = context.registerInjectActivateService(new AemObjectInjector());
 
@@ -101,79 +101,79 @@ public class AemObjectInjectorPageTest {
 
   @Test
   public void testPageManager() {
-    Object result = injector.getValue(page, null, PageManager.class, annotatedElement, null);
+    Object result = injector.getValue(page, null, PageManager.class, annotatedElement, mock(DisposalCallbackRegistry.class));
     assertSame(pageManager, result);
   }
 
   @Test
   public void testCurrentPage() {
-    Object result = injector.getValue(page, null, Page.class, annotatedElement, null);
+    Object result = injector.getValue(page, null, Page.class, annotatedElement, mock(DisposalCallbackRegistry.class));
     assertSame(resourcePage, result);
   }
 
   @Test
   public void testResourcePage() {
-    Object result = injector.getValue(page, "resourcePage", Page.class, annotatedElement, null);
+    Object result = injector.getValue(page, "resourcePage", Page.class, annotatedElement, mock(DisposalCallbackRegistry.class));
     assertSame(resourcePage, result);
   }
 
   @Test
   public void testWcmMode() {
-    Object result = injector.getValue(page, null, WCMMode.class, annotatedElement, null);
+    Object result = injector.getValue(page, null, WCMMode.class, annotatedElement, mock(DisposalCallbackRegistry.class));
     assertNull(result);
   }
 
   @Test
   public void testAuthoringUiMode() {
-    Object result = injector.getValue(page, null, AuthoringUIMode.class, annotatedElement, null);
+    Object result = injector.getValue(page, null, AuthoringUIMode.class, annotatedElement, mock(DisposalCallbackRegistry.class));
     assertNull(result);
   }
 
   @Test
   public void testComponentContext() {
-    Object result = injector.getValue(page, null, ComponentContext.class, annotatedElement, null);
+    Object result = injector.getValue(page, null, ComponentContext.class, annotatedElement, mock(DisposalCallbackRegistry.class));
     assertNull(result);
   }
 
   @Test
   public void testDesigner() {
-    Object result = injector.getValue(page, null, Designer.class, annotatedElement, null);
+    Object result = injector.getValue(page, null, Designer.class, annotatedElement, mock(DisposalCallbackRegistry.class));
     assertSame(designer, result);
   }
 
   @Test
   public void testTagManager() {
-    Object result = injector.getValue(page, null, TagManager.class, annotatedElement, null);
+    Object result = injector.getValue(page, null, TagManager.class, annotatedElement, mock(DisposalCallbackRegistry.class));
     assertSame(tagManager, result);
   }
 
   @Test
   public void testDesign() {
-    Object result = injector.getValue(page, null, Design.class, annotatedElement, null);
+    Object result = injector.getValue(page, null, Design.class, annotatedElement, mock(DisposalCallbackRegistry.class));
     assertSame(design, result);
   }
 
   @Test
   public void testStyle() {
-    Object result = injector.getValue(page, null, Style.class, annotatedElement, null);
+    Object result = injector.getValue(page, null, Style.class, annotatedElement, mock(DisposalCallbackRegistry.class));
     assertNull(result);
   }
 
   @Test
   public void testXssApi() {
-    Object result = injector.getValue(page, null, XSSAPI.class, annotatedElement, null);
+    Object result = injector.getValue(page, null, XSSAPI.class, annotatedElement, mock(DisposalCallbackRegistry.class));
     assertNull(result);
   }
 
   @Test
   public void testI18n() {
-    Object result = injector.getValue(page, null, I18n.class, annotatedElement, null);
+    Object result = injector.getValue(page, null, I18n.class, annotatedElement, mock(DisposalCallbackRegistry.class));
     assertNull(result);
   }
 
   @Test
   public void testInvalid() {
-    Object result = injector.getValue(this, null, PageManager.class, annotatedElement, null);
+    Object result = injector.getValue(this, null, PageManager.class, annotatedElement, mock(DisposalCallbackRegistry.class));
     assertNull(result);
   }
 

@@ -34,6 +34,7 @@ import com.google.common.collect.Iterators;
 
 import io.wcm.sling.commons.osgi.RankedServices.ChangeListener;
 
+@SuppressWarnings("deprecation")
 public class RankedServicesTest {
 
   private static final String SERVICE_1 = "service1";

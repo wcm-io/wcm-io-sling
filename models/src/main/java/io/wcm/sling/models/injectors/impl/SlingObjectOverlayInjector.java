@@ -25,10 +25,6 @@ import java.lang.reflect.Type;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.felix.scr.annotations.Component;
-import org.apache.felix.scr.annotations.Property;
-import org.apache.felix.scr.annotations.Reference;
-import org.apache.felix.scr.annotations.Service;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.Resource;
@@ -44,6 +40,8 @@ import org.apache.sling.models.spi.injectorspecific.AbstractInjectAnnotationProc
 import org.apache.sling.models.spi.injectorspecific.InjectAnnotationProcessor2;
 import org.apache.sling.models.spi.injectorspecific.StaticInjectAnnotationProcessorFactory;
 import org.osgi.framework.Constants;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 import io.wcm.sling.commons.request.RequestContext;
 
@@ -61,10 +59,10 @@ import io.wcm.sling.commons.request.RequestContext;
  * request-bound thread: resource resolver, current resource, request, response, sling script helper.
  * </p>
  */
-@Component
-@Service
-// use ranking MAX_VALUE - 10 to overlay the sling-object injector of sling which is registered to MAX_VALUE
-@Property(name = Constants.SERVICE_RANKING, intValue = Integer.MAX_VALUE - 10)
+@Component(service = { Injector.class, StaticInjectAnnotationProcessorFactory.class }, property = {
+    // use ranking MAX_VALUE - 10 to overlay the sling-object injector of sling which is registered to MAX_VALUE
+    Constants.SERVICE_RANKING + ":Integer=" + (Integer.MAX_VALUE - 10)
+})
 public final class SlingObjectOverlayInjector implements Injector, StaticInjectAnnotationProcessorFactory, AcceptsNullName {
 
   /**

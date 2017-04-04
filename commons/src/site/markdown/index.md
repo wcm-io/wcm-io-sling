@@ -15,13 +15,14 @@ Common Sling utility and helper functions.
 
 The Sling Commons library contains:
 
+* [Context-Aware Services][caservice] which pick the best-matching OSGi service implementation based on resource context.
+* `RequestContext` interface which supports getting the current request via a ThreadLocal
 * Helper `AdaptTo` class for adapting with non-null check
-* OSGi `RankedServices` class for making it easier consuming a list of services ordered by service ranking.
 * Helper classes for accessing typed request parameters and selectors from the current request
 * An `ImmutableValueMap` implementation with similar interface like Google Guava's `ImmutableMap`
-* `RequestContext` interface which supports getting the current request via a ThreadLocal
 * Other useful helper classes, see [API documentation][apidocs]
 
 
 [apidocs]: apidocs/
 [changelog]: changes-report.html
+[caservice]: context-aware-services.html

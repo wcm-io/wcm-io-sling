@@ -2,7 +2,7 @@
  * #%L
  * wcm.io
  * %%
- * Copyright (C) 2014 wcm.io
+ * Copyright (C) 2017 wcm.io
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,12 @@
  * limitations under the License.
  * #L%
  */
-/**
- * Helper classes around the Sling {@link org.apache.sling.api.adapter.Adaptable} concept.
- */
-@org.osgi.annotation.versioning.Version("1.0.0")
-package io.wcm.sling.commons.adapter;
+package io.wcm.sling.commons.caservice.impl;
+
+import io.wcm.sling.commons.caservice.ContextAwareService;
+
+interface DummySpi extends ContextAwareService {
+
+  // example SPI implementation
+
+}

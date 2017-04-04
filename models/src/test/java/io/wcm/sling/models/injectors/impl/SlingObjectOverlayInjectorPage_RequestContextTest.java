@@ -20,9 +20,11 @@
 package io.wcm.sling.models.injectors.impl;
 
 import static org.junit.Assert.assertSame;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import org.apache.sling.api.scripting.SlingScriptHelper;
+import org.apache.sling.models.spi.DisposalCallbackRegistry;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,7 +46,7 @@ public class SlingObjectOverlayInjectorPage_RequestContextTest extends SlingObje
   @Override
   @Test
   public void testInvalid() {
-    Object result = this.injector.getValue(new StringBuffer(), null, SlingScriptHelper.class, this.annotatedElement, null);
+    Object result = this.injector.getValue(new StringBuffer(), null, SlingScriptHelper.class, this.annotatedElement, mock(DisposalCallbackRegistry.class));
     assertSame(this.scriptHelper, result);
   }
 
