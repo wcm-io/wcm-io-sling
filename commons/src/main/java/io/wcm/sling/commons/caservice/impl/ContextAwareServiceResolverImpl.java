@@ -31,6 +31,8 @@ import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -48,6 +50,8 @@ import io.wcm.sling.commons.caservice.ContextAwareServiceResolver;
 public class ContextAwareServiceResolverImpl implements ContextAwareServiceResolver {
 
   private BundleContext bundleContext;
+
+  private static final Logger log = LoggerFactory.getLogger(ContextAwareServiceResolverImpl.class);
 
   // cache of service trackers for each SPI interface
   private final LoadingCache<String, ContextAwareServiceTracker> serviceTrackerCache = CacheBuilder.newBuilder()
@@ -78,6 +82,9 @@ public class ContextAwareServiceResolverImpl implements ContextAwareServiceResol
   @Override
   public <T extends ContextAwareService> T resolve(Class<T> serviceClass, Adaptable adaptable) {
     Resource resource = getResource(adaptable);
+    if (log.isTraceEnabled()) {
+      log.trace("Resolve {} for resource {}", serviceClass.getName(), (resource != null ? resource.getPath() : "null"));
+    }
     ContextAwareServiceTracker serviceTracker = getServiceTracker(serviceClass);
     return serviceTracker.resolve(resource)
         .map(serviceInfo -> (T)serviceInfo.getService())
@@ -88,6 +95,9 @@ public class ContextAwareServiceResolverImpl implements ContextAwareServiceResol
   @Override
   public <T extends ContextAwareService> ResolveAllResult<T> resolveAll(Class<T> serviceClass, Adaptable adaptable) {
     Resource resource = getResource(adaptable);
+    if (log.isTraceEnabled()) {
+      log.trace("Resolve all {} for resource {}", serviceClass.getName(), (resource != null ? resource.getPath() : "null"));
+    }
     ContextAwareServiceTracker serviceTracker = getServiceTracker(serviceClass);
     return new ResolveAllResultImpl(
         serviceTracker.resolve(resource).map(serviceInfo -> (T)serviceInfo.getService()),
