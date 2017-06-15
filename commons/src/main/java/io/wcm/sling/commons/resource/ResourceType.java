@@ -41,12 +41,16 @@ public final class ResourceType {
 
   /**
    * /apps prefix for resource types
+   * @deprecated Search paths are confurable and should not be hard-coded.
    */
+  @Deprecated
   public static final String APPS_PREFIX = "/apps/";
 
   /**
    * /libs prefix for resource types
+   * @deprecated Search paths are confurable and should not be hard-coded.
    */
+  @Deprecated
   public static final String LIBS_PREFIX = "/libs/";
 
   /**
@@ -84,13 +88,32 @@ public final class ResourceType {
   }
 
   /**
+   * Makes the given resource type relative by stripping off any search path prefix.
+   * In case the given resource type does not start with any of these prefixes it is returned unmodified.
+   * @param resourceType The resource type to make relative.
+   * @param resourceResolver Resource resolver
+   * @return Relative resource type
+   */
+  public static String makeRelative(String resourceType, ResourceResolver resourceResolver) {
+    String[] searchPaths = resourceResolver.getSearchPath();
+    for (String prefix : searchPaths) {
+      if (StringUtils.startsWith(resourceType, prefix)) {
+        return resourceType.substring(prefix.length());
+      }
+    }
+    return resourceType;
+  }
+
+  /**
    * Makes the given resource type relative by stripping off an /apps/ or /libs/ prefix.
    * In case the given resource type does not start with any of these prefixes it is returned unmodified.
    * This method does not take the real configured search paths into account, but in case of AEM usually only /apps/ and
    * /libs/ are used.
    * @param resourceType The resource type to make relative.
    * @return Relative resource type
+   * @deprecated Please use {@link #makeRelative(String, ResourceResolver)} instead.
    */
+  @Deprecated
   public static String makeRelative(String resourceType) {
     if (StringUtils.startsWith(resourceType, APPS_PREFIX)) {
       return resourceType.substring(APPS_PREFIX.length());
@@ -107,8 +130,23 @@ public final class ResourceType {
    * doing the comparison.
    * @param resourceType A resource type
    * @param anotherResourceType Another resource type to compare with
+   * @param resourceResolver Resource resolver
    * @return <code>true</code> if the resource type equals the given resource type.
    */
+  public static boolean equals(String resourceType, String anotherResourceType, ResourceResolver resourceResolver) {
+    return StringUtils.equals(makeRelative(resourceType, resourceResolver), makeRelative(anotherResourceType, resourceResolver));
+  }
+
+  /**
+   * Returns <code>true</code> if the given resource type are equal.
+   * In case the value of any of the given resource types starts with /apps/ or /libs/ prefix this is removed before
+   * doing the comparison.
+   * @param resourceType A resource type
+   * @param anotherResourceType Another resource type to compare with
+   * @return <code>true</code> if the resource type equals the given resource type.
+   * @deprecated Please use {@link #equals(String, String, ResourceResolver)} instead.
+   */
+  @Deprecated
   public static boolean equals(String resourceType, String anotherResourceType) {
     return StringUtils.equals(makeRelative(resourceType), makeRelative(anotherResourceType));
   }
