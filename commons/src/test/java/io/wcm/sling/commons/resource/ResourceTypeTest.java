@@ -65,6 +65,16 @@ public class ResourceTypeTest {
 
   @Test
   public void testMakeRelative() {
+    assertEquals("path1/path2", ResourceType.makeRelative("/apps/path1/path2", context.resourceResolver()));
+    assertEquals("path1/path2", ResourceType.makeRelative("/libs/path1/path2", context.resourceResolver()));
+    assertEquals("/any/path", ResourceType.makeRelative("/any/path", context.resourceResolver()));
+    assertEquals("", ResourceType.makeRelative("", context.resourceResolver()));
+    assertNull(ResourceType.makeRelative(null, context.resourceResolver()));
+  }
+
+  @SuppressWarnings("deprecation")
+  @Test
+  public void testMakeRelativeWithoutResourceResolver() {
     assertEquals("path1/path2", ResourceType.makeRelative("/apps/path1/path2"));
     assertEquals("path1/path2", ResourceType.makeRelative("/libs/path1/path2"));
     assertEquals("/any/path", ResourceType.makeRelative("/any/path"));
@@ -74,6 +84,24 @@ public class ResourceTypeTest {
 
   @Test
   public void testEquals() {
+    assertTrue(ResourceType.equals("/apps/path1/path2", "/apps/path1/path2", context.resourceResolver()));
+    assertTrue(ResourceType.equals("path1/path2", "/apps/path1/path2", context.resourceResolver()));
+    assertTrue(ResourceType.equals("/apps/path1/path2", "path1/path2", context.resourceResolver()));
+    assertTrue(ResourceType.equals("path1/path2", "path1/path2", context.resourceResolver()));
+    assertTrue(ResourceType.equals("/apps/path1/path2", "/libs/path1/path2", context.resourceResolver()));
+
+    assertFalse(ResourceType.equals("/apps/path1/path2", "/any/path1/path2", context.resourceResolver()));
+    assertFalse(ResourceType.equals("", "/apps/path1/path2", context.resourceResolver()));
+    assertFalse(ResourceType.equals("/apps/path1/path2", "", context.resourceResolver()));
+    assertFalse(ResourceType.equals("/apps/path1/path2", null, context.resourceResolver()));
+    assertFalse(ResourceType.equals(null, "/any/path1/path2", context.resourceResolver()));
+    assertTrue(ResourceType.equals("", "", context.resourceResolver()));
+    assertTrue(ResourceType.equals(null, null, context.resourceResolver()));
+  }
+
+  @SuppressWarnings("deprecation")
+  @Test
+  public void testEqualsWithoutResourceResolver() {
     assertTrue(ResourceType.equals("/apps/path1/path2", "/apps/path1/path2"));
     assertTrue(ResourceType.equals("path1/path2", "/apps/path1/path2"));
     assertTrue(ResourceType.equals("/apps/path1/path2", "path1/path2"));
