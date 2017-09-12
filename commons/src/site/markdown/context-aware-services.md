@@ -1,4 +1,4 @@
-## About Sling Commons Context-Aware Services
+## About Context-Aware Services
 
 OSGi-based applications and libraries offer SPI interfaces which allow to configure or customize the behavior. If multiple applications are deployed in an AEM instance it may be required to apply different customizations for different applications = content paths.
 
