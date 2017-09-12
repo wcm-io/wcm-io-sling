@@ -34,7 +34,7 @@ public interface ContextAwareServiceResolver {
 
   /**
    * Resolves the best-matching service implementation for the given resource context.
-   * Only implementations which accepts the given context resource path (via the service properties defined in
+   * Only implementations which accept the given context resource path (via the service properties defined in
    * {@link ContextAwareService}) are considered as candidates.
    * If multiple candidates exist the implementation with the highest service ranking is returned.
    * @param serviceClass Service interface or class
@@ -48,7 +48,7 @@ public interface ContextAwareServiceResolver {
 
   /**
    * Resolves all matching service implementations for the given resource context.
-   * Only implementations which accepts the given context resource path (via the service properties defined in
+   * Only implementations which accept the given context resource path (via the service properties defined in
    * {@link ContextAwareService}) are considered as candidates.
    * The candidates are returned ordered descending by their service ranking.
    * @param serviceClass Service interface or class
