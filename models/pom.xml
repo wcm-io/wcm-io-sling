@@ -36,6 +36,7 @@
 
   <name>AEM Sling Models Extensions</name>
   <description>AEM Object Injector for Sling Models.</description>
+  <url>${site.url}/${site.url.module.prefix}/</url>
 
   <scm>
     <connection>scm:git:https://github.com/wcm-io/wcm-io-sling.git</connection>

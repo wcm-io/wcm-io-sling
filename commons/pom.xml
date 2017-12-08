@@ -36,6 +36,7 @@
 
   <name>Sling Commons</name>
   <description>Common Sling utility and helper functions.</description>
+  <url>${site.url}/${site.url.module.prefix}/</url>
 
   <scm>
     <connection>scm:git:https://github.com/wcm-io/wcm-io-sling.git</connection>
