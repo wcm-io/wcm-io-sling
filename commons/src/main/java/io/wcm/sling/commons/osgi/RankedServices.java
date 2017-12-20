@@ -36,7 +36,7 @@ import org.osgi.annotation.versioning.ProviderType;
  * The services are ordered by service ranking and can be iterated directly using this object instance.
  * Implementation is thread-safe.
  * @param <T> Service type
- * @deprecated Please use {@link org.apache.sling.commons.osgi.RankedServices} instead.
+ * @deprecated Please use <code>org.apache.sling.commons.osgi.RankedServices</code> instead.
  */
 @Deprecated
 @ProviderType

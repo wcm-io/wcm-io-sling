@@ -34,12 +34,12 @@ public interface ContextAwareServiceResolver {
 
   /**
    * Resolves the best-matching service implementation for the given resource context.
-   * Only implementation which accepts the given context resource path (via the service properties defined in
+   * Only implementations which accept the given context resource path (via the service properties defined in
    * {@link ContextAwareService}) are considered as candidates.
    * If multiple candidates exist the implementation with the highest service ranking is returned.
    * @param serviceClass Service interface or class
    * @param adaptable Adaptable which is either a {@link Resource} or {@link SlingHttpServletRequest}.
-   *          A resource instances is used directly for matching, in case of request the associated resource is used.
+   *          A resource instance is used directly for matching, in case of request the associated resource is used.
    *          May be null if no context is available.
    * @param <T> Service interface or class
    * @return Service implementation or null if no match found.
@@ -48,12 +48,12 @@ public interface ContextAwareServiceResolver {
 
   /**
    * Resolves all matching service implementations for the given resource context.
-   * Only implementation which accepts the given context resource path (via the service properties defined in
+   * Only implementations which accept the given context resource path (via the service properties defined in
    * {@link ContextAwareService}) are considered as candidates.
    * The candidates are returned ordered descending by their service ranking.
    * @param serviceClass Service interface or class
    * @param adaptable Adaptable which is either a {@link Resource} or {@link SlingHttpServletRequest}.
-   *          A resource instances is used directly for matching, in case of request the associated resource is used.
+   *          A resource instance is used directly for matching, in case of request the associated resource is used.
    *          May be null if no context is available.
    * @param <T> Service interface or class
    * @return Collection of all matching services

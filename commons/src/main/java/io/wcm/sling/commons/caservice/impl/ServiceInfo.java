@@ -66,18 +66,13 @@ class ServiceInfo {
 
   private ContextAwareService validateAndGetService(ServiceReference<?> serviceReference, BundleContext bundleContext) {
     Object serviceObject = bundleContext.getService(serviceReference);
-    try {
-      if (serviceObject instanceof ContextAwareService) {
-        return (ContextAwareService)serviceObject;
-      }
-      log.warn("Service implementation " + serviceObject.getClass().getName() + " does not implement the ContextAwareService interface"
-          + " - service will be ignored for context-aware service resolution.");
-      valid = false;
-      return null;
+    if (serviceObject instanceof ContextAwareService) {
+      return (ContextAwareService)serviceObject;
     }
-    finally {
-      bundleContext.ungetService(serviceReference);
-    }
+    log.warn("Service implementation " + serviceObject.getClass().getName() + " does not implement the ContextAwareService interface"
+        + " - service will be ignored for context-aware service resolution.");
+    valid = false;
+    return null;
   }
 
   private Map<String, Object> propertiesToMap(ServiceReference<?> reference) {
