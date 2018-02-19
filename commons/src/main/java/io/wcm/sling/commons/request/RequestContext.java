@@ -20,10 +20,12 @@
 package io.wcm.sling.commons.request;
 
 import org.apache.sling.api.SlingHttpServletRequest;
+import org.osgi.annotation.versioning.ProviderType;
 
 /**
  * OSGi service interface for getting a sling request for the current thread.
  */
+@ProviderType
 public interface RequestContext {
 
   /**

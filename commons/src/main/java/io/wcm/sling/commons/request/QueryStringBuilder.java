@@ -24,11 +24,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.osgi.annotation.versioning.ProviderType;
+
 import io.wcm.sling.commons.util.Escape;
 
 /**
  * Builds a property URL-encoded query string.
  */
+@ProviderType
 public final class QueryStringBuilder {
 
   private static final String PARAM_SEPARATOR = "&";
