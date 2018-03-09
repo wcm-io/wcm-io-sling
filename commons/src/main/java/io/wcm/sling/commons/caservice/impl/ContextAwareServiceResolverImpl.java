@@ -31,6 +31,10 @@ import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.service.component.annotations.ReferencePolicyOption;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +46,7 @@ import com.google.common.cache.RemovalNotification;
 
 import io.wcm.sling.commons.caservice.ContextAwareService;
 import io.wcm.sling.commons.caservice.ContextAwareServiceResolver;
+import io.wcm.sling.commons.caservice.PathPreprocessor;
 
 /**
  * {@link ContextAwareServiceResolver} implementation.
@@ -49,33 +54,38 @@ import io.wcm.sling.commons.caservice.ContextAwareServiceResolver;
 @Component(service = ContextAwareServiceResolver.class, immediate = true)
 public class ContextAwareServiceResolverImpl implements ContextAwareServiceResolver {
 
+  @Reference(policy = ReferencePolicy.STATIC, cardinality = ReferenceCardinality.OPTIONAL, policyOption = ReferencePolicyOption.GREEDY)
+  private PathPreprocessor pathPreprocessor;
+
   private BundleContext bundleContext;
 
   private static final Logger log = LoggerFactory.getLogger(ContextAwareServiceResolverImpl.class);
 
   // cache of service trackers for each SPI interface
-  private final LoadingCache<String, ContextAwareServiceTracker> serviceTrackerCache = CacheBuilder.newBuilder()
-      .removalListener(new RemovalListener<String, ContextAwareServiceTracker>() {
-        @Override
-        public void onRemoval(RemovalNotification<String, ContextAwareServiceTracker> notification) {
-          notification.getValue().dispose();
-        }
-      })
-      .build(new CacheLoader<String, ContextAwareServiceTracker>() {
-        @Override
-        public ContextAwareServiceTracker load(String className) {
-          return new ContextAwareServiceTracker(className, bundleContext);
-        }
-      });
+  private LoadingCache<String, ContextAwareServiceTracker> serviceTrackerCache;
 
   @Activate
   private void activate(BundleContext context) {
     this.bundleContext = context;
+    this.serviceTrackerCache = CacheBuilder.newBuilder()
+        .removalListener(new RemovalListener<String, ContextAwareServiceTracker>() {
+          @Override
+          public void onRemoval(RemovalNotification<String, ContextAwareServiceTracker> notification) {
+            notification.getValue().dispose();
+          }
+        })
+        .build(new CacheLoader<String, ContextAwareServiceTracker>() {
+          @Override
+          public ContextAwareServiceTracker load(String className) {
+            return new ContextAwareServiceTracker(className, bundleContext, pathPreprocessor);
+          }
+        });
   }
 
   @Deactivate
   private void deactivate(BundleContext context) {
-    serviceTrackerCache.invalidateAll();
+    this.serviceTrackerCache.invalidateAll();
+    this.serviceTrackerCache = null;
   }
 
   @SuppressWarnings("unchecked")

@@ -27,6 +27,12 @@
       <action type="add" dev="sseifert">
         Add QueryStringBuilder.
       </action>
+      <action type="add" dev="sseifert" issue="WCON-49">
+        Add Context-Aware Services path preprocessor.
+      </action>
+      <action type="update" dev="sseifert">
+        Deprecate io.wcm.sling.commons.resource.ResourcePath in favor of io.wcm.wcm.commons.util.Path.
+      </action>
     </release>
 
     <release version="1.1.2" date="2017-12-20">
