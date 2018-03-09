@@ -2,7 +2,7 @@
  * #%L
  * wcm.io
  * %%
- * Copyright (C) 2017 wcm.io
+ * Copyright (C) 2018 wcm.io
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,24 @@
  * limitations under the License.
  * #L%
  */
-/**
- * Context-Aware services.
- */
-@org.osgi.annotation.versioning.Version("1.1.0")
 package io.wcm.sling.commons.caservice;
+
+import org.apache.sling.api.resource.ResourceResolver;
+import org.osgi.annotation.versioning.ConsumerType;
+
+/**
+ * Allows to preprocess a path before matching it against the regular experessions
+ * of the context-aware services.
+ */
+@ConsumerType
+public interface PathPreprocessor {
+
+  /**
+   * Preprocess a path.
+   * @param path Path (never null)
+   * @param resourceResolver Resource resolver
+   * @return Processed path or same path
+   */
+  String apply(String path, ResourceResolver resourceResolver);
+
+}

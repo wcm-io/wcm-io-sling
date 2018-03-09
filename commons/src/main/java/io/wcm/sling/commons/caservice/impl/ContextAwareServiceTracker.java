@@ -32,18 +32,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.wcm.sling.commons.caservice.ContextAwareService;
+import io.wcm.sling.commons.caservice.PathPreprocessor;
 
 class ContextAwareServiceTracker implements ServiceTrackerCustomizer<ContextAwareService, ServiceInfo> {
 
   private final BundleContext bundleContext;
+  private final PathPreprocessor pathPreprocessor;
   private final ServiceTracker<ContextAwareService, ServiceInfo> serviceTracker;
   private volatile RankedServices<ServiceInfo> rankedServices;
   private volatile long lastServiceChange;
 
   private static final Logger log = LoggerFactory.getLogger(ContextAwareServiceTracker.class);
 
-  ContextAwareServiceTracker(String serviceClassName, BundleContext bundleContext) {
+  ContextAwareServiceTracker(String serviceClassName, BundleContext bundleContext, PathPreprocessor pathPreprocessor) {
     this.bundleContext = bundleContext;
+    this.pathPreprocessor = pathPreprocessor;
     this.rankedServices = new RankedServices<ServiceInfo>(Order.DESCENDING);
     this.serviceTracker = new ServiceTracker<ContextAwareService, ServiceInfo>(bundleContext, serviceClassName, this);
     this.serviceTracker.open();
@@ -89,7 +92,19 @@ class ContextAwareServiceTracker implements ServiceTrackerCustomizer<ContextAwar
       return Stream.empty();
     }
     return rankedServices.getList().stream()
-        .filter(serviceInfo -> serviceInfo.matches(resource));
+        .filter(serviceInfo -> matchesResource(serviceInfo, resource));
+  }
+
+  private boolean matchesResource(ServiceInfo serviceInfo, Resource resource) {
+    String path = null;
+    if (resource != null) {
+      path = resource.getPath();
+      if (pathPreprocessor != null) {
+        // apply path preprocessor
+        path = pathPreprocessor.apply(path, resource.getResourceResolver());
+      }
+    }
+    return serviceInfo.matches(path);
   }
 
   public long getLastServiceChangeTimestamp() {
