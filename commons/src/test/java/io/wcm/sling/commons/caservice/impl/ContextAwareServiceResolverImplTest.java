@@ -26,6 +26,7 @@ import static org.junit.Assert.assertSame;
 
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.testing.mock.osgi.MockBundle;
 import org.junit.Before;
 import org.junit.Rule;
@@ -38,6 +39,7 @@ import com.google.common.collect.ImmutableMap;
 import io.wcm.sling.commons.caservice.ContextAwareService;
 import io.wcm.sling.commons.caservice.ContextAwareServiceResolver;
 import io.wcm.sling.commons.caservice.ContextAwareServiceResolver.ResolveAllResult;
+import io.wcm.sling.commons.caservice.PathPreprocessor;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
 public class ContextAwareServiceResolverImplTest {
@@ -156,6 +158,21 @@ public class ContextAwareServiceResolverImplTest {
 
     assertEquals(ImmutableList.of(contentDamImplWithBundleHeader, contentDamImpl, contentImpl),
         underTest.resolveAll(DummySpi.class, context.create().resource("/content/dam/test2")).getServices().collect(Collectors.toList()));
+  }
+
+  @Test
+  public void testWithPathPreProcessor() {
+    context.registerService(PathPreprocessor.class, (path, resourceResolver) -> StringUtils.removeStart(path, "/pathprefix"));
+    underTest = context.registerInjectActivateService(new ContextAwareServiceResolverImpl());
+
+    assertSame(contentImpl, underTest.resolve(DummySpi.class, context.create().resource("/pathprefix/content/test1")));
+    assertSame(contentSampleImpl, underTest.resolve(DummySpi.class, context.create().resource("/pathprefix/content/sample/test1")));
+    assertSame(contentImpl, underTest.resolve(DummySpi.class, context.create().resource("/pathprefix/content/sample/exclude/test1")));
+    assertSame(contentDamImpl, underTest.resolve(DummySpi.class, context.create().resource("/pathprefix/content/dam/test1")));
+    assertNull(underTest.resolve(DummySpi.class, context.create().resource("/pathprefix/etc/test1")));
+
+    assertEquals(ImmutableList.of(contentDamImpl, contentImpl),
+        underTest.resolveAll(DummySpi.class, context.create().resource("/pathprefix/content/dam/test2")).getServices().collect(Collectors.toList()));
   }
 
 }

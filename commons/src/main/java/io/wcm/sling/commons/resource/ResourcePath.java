@@ -23,7 +23,9 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * Helper methods for resource path handling.
+ * @deprecated Use <code>io.wcm.wcm.commons.util.Path</code> instead.
  */
+@Deprecated
 public final class ResourcePath {
 
   private ResourcePath() {

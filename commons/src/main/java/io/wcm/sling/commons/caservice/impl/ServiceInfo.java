@@ -32,7 +32,6 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.apache.sling.api.resource.Resource;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.slf4j.Logger;
@@ -141,22 +140,21 @@ class ServiceInfo {
   }
 
   /**
-   * Checks if this service im implementation accepts the given resource path.
-   * @param resource Resource
+   * Checks if this service implementation accepts the given resource path.
+   * @param resourcePath Resource path
    * @return true if the implementation matches and the configuration is not invalid.
    */
-  public boolean matches(Resource resource) {
+  public boolean matches(String resourcePath) {
     if (!valid) {
       return false;
     }
-    if (resource == null) {
+    if (resourcePath == null) {
       return acceptsContextPathEmpty;
     }
-    String path = resource.getPath();
-    if (contextPathRegex != null && !contextPathRegex.matcher(path).matches()) {
+    if (contextPathRegex != null && !contextPathRegex.matcher(resourcePath).matches()) {
       return false;
     }
-    if (contextPathBlacklistRegex != null && contextPathBlacklistRegex.matcher(path).matches()) {
+    if (contextPathBlacklistRegex != null && contextPathBlacklistRegex.matcher(resourcePath).matches()) {
       return false;
     }
     return true;
