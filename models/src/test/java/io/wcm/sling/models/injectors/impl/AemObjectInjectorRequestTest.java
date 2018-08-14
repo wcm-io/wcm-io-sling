@@ -65,6 +65,7 @@ import com.day.cq.wcm.api.designer.Style;
 import io.wcm.sling.commons.request.RequestContext;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
+@SuppressWarnings("null")
 public class AemObjectInjectorRequestTest {
 
   @Rule
