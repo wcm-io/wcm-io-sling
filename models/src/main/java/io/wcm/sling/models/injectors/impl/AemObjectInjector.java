@@ -35,6 +35,7 @@ import org.apache.sling.models.spi.Injector;
 import org.apache.sling.models.spi.injectorspecific.AbstractInjectAnnotationProcessor2;
 import org.apache.sling.models.spi.injectorspecific.InjectAnnotationProcessor2;
 import org.apache.sling.models.spi.injectorspecific.StaticInjectAnnotationProcessorFactory;
+import org.jetbrains.annotations.NotNull;
 import org.osgi.framework.Constants;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -74,7 +75,7 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
   /**
    * Injector name
    */
-  public static final String NAME = "wcm-io-aem-object";
+  public static final @NotNull String NAME = "wcm-io-aem-object";
 
   static final String RESOURCE_PAGE = "resourcePage";
   static final String USER_I18N = "userI18n";
@@ -85,13 +86,13 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
   private ModelsImplConfiguration modelsImplConfiguration;
 
   @Override
-  public String getName() {
+  public @NotNull String getName() {
     return NAME;
   }
 
   @Override
-  public Object getValue(final Object adaptable, final String name, final Type type, final AnnotatedElement element,
-      final DisposalCallbackRegistry callbackRegistry) {
+  public Object getValue(@NotNull final Object adaptable, final String name, @NotNull final Type type,
+      @NotNull final AnnotatedElement element, @NotNull final DisposalCallbackRegistry callbackRegistry) {
 
     // only class types are supported
     if (!(type instanceof Class<?>)) {
@@ -324,6 +325,7 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
     return request;
   }
 
+  @SuppressWarnings({ "null", "unused" })
   @Override
   public InjectAnnotationProcessor2 createAnnotationProcessor(final AnnotatedElement element) {
     // check if the element has the expected annotation

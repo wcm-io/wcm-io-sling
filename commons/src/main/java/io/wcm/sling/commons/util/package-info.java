@@ -20,5 +20,5 @@
 /**
  * Miscellaneous helper classes.
  */
-@org.osgi.annotation.versioning.Version("1.0.0")
+@org.osgi.annotation.versioning.Version("1.0.1")
 package io.wcm.sling.commons.util;

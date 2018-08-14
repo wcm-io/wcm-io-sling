@@ -32,6 +32,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import com.day.cq.wcm.api.PageManager;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
+@SuppressWarnings("null")
 public class AemObjectInjectorResourceResolver_RequestContextTest extends AemObjectInjectorRequestTest {
 
   @Before

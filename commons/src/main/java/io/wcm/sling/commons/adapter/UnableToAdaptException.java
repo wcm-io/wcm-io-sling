@@ -20,6 +20,7 @@
 package io.wcm.sling.commons.adapter;
 
 import org.apache.sling.api.adapter.Adaptable;
+import org.jetbrains.annotations.NotNull;
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -30,14 +31,14 @@ public final class UnableToAdaptException extends RuntimeException {
 
   private static final long serialVersionUID = 1L;
 
-  private final Adaptable adaptable;
-  private final Class<?> type;
+  private final @NotNull Adaptable adaptable;
+  private final @NotNull Class<?> type;
 
   /**
    * @param adaptable Adaptable object instance
    * @param type Interface to adapt to
    */
-  public UnableToAdaptException(Adaptable adaptable, Class<?> type) {
+  public UnableToAdaptException(@NotNull Adaptable adaptable, @NotNull Class<?> type) {
     super("Unable to adapt " + adaptable + " to " + type.getName());
     this.adaptable = adaptable;
     this.type = type;
@@ -46,14 +47,14 @@ public final class UnableToAdaptException extends RuntimeException {
   /**
    * @return Adaptable object instance
    */
-  public Adaptable getAdaptable() {
+  public @NotNull Adaptable getAdaptable() {
     return adaptable;
   }
 
   /**
    * @return Interface to adapt to
    */
-  public Class<?> getType() {
+  public @NotNull Class<?> getType() {
     return type;
   }
 

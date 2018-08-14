@@ -42,6 +42,7 @@ import io.wcm.sling.commons.caservice.ContextAwareServiceResolver.ResolveAllResu
 import io.wcm.sling.commons.caservice.PathPreprocessor;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
+@SuppressWarnings("null")
 public class ContextAwareServiceResolverImplTest {
 
   @Rule

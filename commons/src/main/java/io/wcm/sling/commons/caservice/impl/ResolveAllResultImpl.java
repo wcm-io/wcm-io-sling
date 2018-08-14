@@ -22,9 +22,12 @@ package io.wcm.sling.commons.caservice.impl;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import org.jetbrains.annotations.NotNull;
+
 import io.wcm.sling.commons.caservice.ContextAwareService;
 import io.wcm.sling.commons.caservice.ContextAwareServiceResolver.ResolveAllResult;
 
+@SuppressWarnings("null")
 class ResolveAllResultImpl<T extends ContextAwareService> implements ResolveAllResult<T> {
 
   private final Stream<T> services;
@@ -36,12 +39,12 @@ class ResolveAllResultImpl<T extends ContextAwareService> implements ResolveAllR
   }
 
   @Override
-  public Stream<T> getServices() {
+  public @NotNull Stream<T> getServices() {
     return services;
   }
 
   @Override
-  public String getCombinedKey() {
+  public @NotNull String getCombinedKey() {
     return combinedKey.get();
   }
 

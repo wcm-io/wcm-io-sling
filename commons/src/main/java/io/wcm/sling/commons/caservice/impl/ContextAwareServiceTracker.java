@@ -95,6 +95,7 @@ class ContextAwareServiceTracker implements ServiceTrackerCustomizer<ContextAwar
         .filter(serviceInfo -> matchesResource(serviceInfo, resource));
   }
 
+  @SuppressWarnings("null")
   private boolean matchesResource(ServiceInfo serviceInfo, Resource resource) {
     String path = null;
     if (resource != null) {
