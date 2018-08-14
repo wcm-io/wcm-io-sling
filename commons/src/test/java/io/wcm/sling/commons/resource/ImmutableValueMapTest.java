@@ -33,6 +33,7 @@ import org.junit.Test;
 
 import com.google.common.collect.ImmutableMap;
 
+@SuppressWarnings("null")
 public class ImmutableValueMapTest {
 
   private static final Map<String, Object> SAMPLE_PROPS = ImmutableMap.<String, Object>builder()

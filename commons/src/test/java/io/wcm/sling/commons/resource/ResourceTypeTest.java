@@ -30,11 +30,13 @@ import org.junit.Test;
 
 import io.wcm.testing.mock.aem.junit.AemContext;
 
+@SuppressWarnings("null")
 public class ResourceTypeTest {
 
   @Rule
   public AemContext context = new AemContext();
 
+  @SuppressWarnings("unused")
   @Test
   public void testMakeAbsolute_Invalid() {
     assertNull(ResourceType.makeAbsolute(null, context.resourceResolver()));

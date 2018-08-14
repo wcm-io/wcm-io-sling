@@ -20,6 +20,7 @@
 package io.wcm.sling.commons.resource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Helper methods for resource path handling.
@@ -37,7 +38,7 @@ public final class ResourcePath {
    * @param path Path
    * @return level &gt;= 0 if path is value, -1 if path is invalid
    */
-  public static int getAbsoluteLevel(String path) {
+  public static int getAbsoluteLevel(@NotNull String path) {
     if (StringUtils.isEmpty(path) || StringUtils.equals(path, "/")) {
       return -1;
     }

@@ -19,6 +19,7 @@
  */
 package io.wcm.sling.commons.caservice;
 
+import org.jetbrains.annotations.NotNull;
 import org.osgi.annotation.versioning.ConsumerType;
 
 /**
@@ -50,6 +51,7 @@ public interface ContextAwareService {
    * Only if the path is matching the service is considered as candidate.
    * If the property is not set all resource paths are accepted.
    */
+  @NotNull
   String PROPERTY_CONTEXT_PATH_PATTERN = "Wcmio-CAService-ContextPathRegex";
 
   /**
@@ -58,6 +60,7 @@ public interface ContextAwareService {
    * If the path is matching the service is not considered as candidate.
    * If the property is not set no resource paths are blacklisted.
    */
+  @NotNull
   String PROPERTY_CONTEXT_PATH_BLACKLIST_PATTERN = "Wcmio-CAService-ContextPathBlacklistRegex";
 
   /**
@@ -66,6 +69,7 @@ public interface ContextAwareService {
    * be considered as candidate if no context resource exists and thus the context path is empty (null).
    * If the property is not set the implementation is not considered as candidate for empty resource paths.
    */
+  @NotNull
   String PROPERTY_ACCEPTS_CONTEXT_PATH_EMPTY = "Wcmio-CASService-AcceptsContextPathEmpty";
 
 }

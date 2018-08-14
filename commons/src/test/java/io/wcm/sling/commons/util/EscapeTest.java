@@ -30,6 +30,7 @@ import org.junit.Test;
 /**
  * Test {@link Escape} class.
  */
+@SuppressWarnings("null")
 public class EscapeTest {
 
   @Test

@@ -24,6 +24,8 @@ import java.util.stream.Stream;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.adapter.Adaptable;
 import org.apache.sling.api.resource.Resource;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -44,7 +46,7 @@ public interface ContextAwareServiceResolver {
    * @param <T> Service interface or class
    * @return Service implementation or null if no match found.
    */
-  <T extends ContextAwareService> T resolve(Class<T> serviceClass, Adaptable adaptable);
+  <T extends ContextAwareService> @Nullable T resolve(@NotNull Class<T> serviceClass, @NotNull Adaptable adaptable);
 
   /**
    * Resolves all matching service implementations for the given resource context.
@@ -58,7 +60,7 @@ public interface ContextAwareServiceResolver {
    * @param <T> Service interface or class
    * @return Collection of all matching services
    */
-  <T extends ContextAwareService> ResolveAllResult<T> resolveAll(Class<T> serviceClass, Adaptable adaptable);
+  <T extends ContextAwareService> @NotNull ResolveAllResult<T> resolveAll(@NotNull Class<T> serviceClass, @NotNull Adaptable adaptable);
 
   /**
    * Result of the {@link ContextAwareServiceResolver#resolveAll(Class, Adaptable)} method.
@@ -71,6 +73,7 @@ public interface ContextAwareServiceResolver {
      * Gets all matching services
      * @return Context-Aware services
      */
+    @NotNull
     Stream<T> getServices();
 
     /**
@@ -82,6 +85,7 @@ public interface ContextAwareServiceResolver {
      * services always the same result as long as they are registered.
      * @return Key string
      */
+    @NotNull
     String getCombinedKey();
 
   }

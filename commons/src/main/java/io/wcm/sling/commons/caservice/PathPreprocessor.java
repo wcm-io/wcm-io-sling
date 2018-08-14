@@ -20,6 +20,7 @@
 package io.wcm.sling.commons.caservice;
 
 import org.apache.sling.api.resource.ResourceResolver;
+import org.jetbrains.annotations.NotNull;
 import org.osgi.annotation.versioning.ConsumerType;
 
 /**
@@ -35,6 +36,7 @@ public interface PathPreprocessor {
    * @param resourceResolver Resource resolver
    * @return Processed path or same path
    */
-  String apply(String path, ResourceResolver resourceResolver);
+  @NotNull
+  String apply(@NotNull String path, @NotNull ResourceResolver resourceResolver);
 
 }

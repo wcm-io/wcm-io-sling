@@ -21,6 +21,7 @@ package io.wcm.sling.commons.request;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
+import org.jetbrains.annotations.NotNull;
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -39,7 +40,7 @@ public final class RequestPath {
    * @param expectedSelector Selector string to check for.
    * @return true if the selector was found
    */
-  public static boolean hasSelector(SlingHttpServletRequest request, String expectedSelector) {
+  public static boolean hasSelector(@NotNull SlingHttpServletRequest request, @NotNull String expectedSelector) {
     String[] selectors = request.getRequestPathInfo().getSelectors();
     return ArrayUtils.contains(selectors, expectedSelector);
   }
@@ -50,7 +51,8 @@ public final class RequestPath {
    * @param expectedSelectors Selectors string to check for.
    * @return true if the selector was found
    */
-  public static boolean hasAnySelector(SlingHttpServletRequest request, String... expectedSelectors) {
+  @SuppressWarnings("null")
+  public static boolean hasAnySelector(@NotNull SlingHttpServletRequest request, @NotNull String @NotNull... expectedSelectors) {
     String[] selectors = request.getRequestPathInfo().getSelectors();
     if (selectors != null && expectedSelectors != null) {
       for (String expectedSelector : expectedSelectors) {

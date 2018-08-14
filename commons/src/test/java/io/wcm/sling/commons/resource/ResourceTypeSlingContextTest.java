@@ -26,11 +26,13 @@ import org.apache.sling.testing.mock.sling.junit.SlingContext;
 import org.junit.Rule;
 import org.junit.Test;
 
+@SuppressWarnings("null")
 public class ResourceTypeSlingContextTest {
 
   @Rule
   public SlingContext context = new SlingContext();
 
+  @SuppressWarnings("unused")
   @Test
   public void testMakeAbsolute_Invalid() {
     assertNull(ResourceType.makeAbsolute(null, context.resourceResolver()));

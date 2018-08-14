@@ -20,6 +20,7 @@
 package io.wcm.sling.commons.adapter;
 
 import org.apache.sling.api.adapter.Adaptable;
+import org.jetbrains.annotations.NotNull;
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -40,7 +41,7 @@ public final class AdaptTo {
    * @return Adaption result (not null)
    * @throws UnableToAdaptException if the adaption was not successful
    */
-  public static <T> T notNull(Adaptable adaptable, Class<T> type) {
+  public static <T> @NotNull T notNull(@NotNull Adaptable adaptable, @NotNull Class<T> type) {
     T object = adaptable.adaptTo(type);
     if (object == null) {
       throw new UnableToAdaptException(adaptable, type);

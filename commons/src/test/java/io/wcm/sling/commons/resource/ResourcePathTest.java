@@ -25,7 +25,7 @@ import org.junit.Test;
 
 import com.day.jcr.vault.util.Text;
 
-@SuppressWarnings("deprecation")
+@SuppressWarnings({ "deprecation", "null" })
 public class ResourcePathTest {
 
   @Test
