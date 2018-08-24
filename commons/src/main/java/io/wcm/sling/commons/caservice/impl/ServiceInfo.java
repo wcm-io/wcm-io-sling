@@ -68,7 +68,8 @@ class ServiceInfo {
     if (serviceObject instanceof ContextAwareService) {
       return (ContextAwareService)serviceObject;
     }
-    log.warn("Service implementation " + serviceObject.getClass().getName() + " does not implement the ContextAwareService interface"
+    log.warn("Service implementation " + (serviceObject != null ? serviceObject.getClass().getName() : "")
+        + " does not implement the ContextAwareService interface"
         + " - service will be ignored for context-aware service resolution.");
     valid = false;
     return null;

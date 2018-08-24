@@ -30,7 +30,6 @@ import com.google.common.collect.ImmutableSortedSet;
 
 import io.wcm.sling.commons.util.Escape;
 
-@SuppressWarnings("null")
 public class QueryStringBuilderTest {
 
   private static final String SPECIAL_CHARS = "a!:$&=";

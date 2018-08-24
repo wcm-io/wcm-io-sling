@@ -53,7 +53,6 @@ import com.day.cq.wcm.api.designer.Style;
 import io.wcm.sling.commons.request.RequestContext;
 
 @RunWith(MockitoJUnitRunner.class)
-@SuppressWarnings("null")
 public class AemObjectInjectorResourceResolverTest {
 
   @Rule

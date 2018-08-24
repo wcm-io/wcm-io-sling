@@ -51,7 +51,6 @@ import com.day.cq.wcm.api.Page;
 import io.wcm.sling.commons.request.RequestContext;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
-@SuppressWarnings("null")
 public class SlingObjectOverlayInjectorRequestTest {
 
   @Rule

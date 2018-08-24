@@ -75,7 +75,6 @@ public final class QueryStringBuilder {
    *          If a value is an array or {@link Iterable} the value items will be added as separate parameters.
    * @return this
    */
-  @SuppressWarnings("null")
   public @NotNull QueryStringBuilder params(@NotNull Map<String, Object> values) {
     for (Map.Entry<String, Object> entry : values.entrySet()) {
       param(entry.getKey(), entry.getValue());

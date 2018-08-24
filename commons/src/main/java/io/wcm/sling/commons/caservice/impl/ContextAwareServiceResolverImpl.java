@@ -90,7 +90,7 @@ public class ContextAwareServiceResolverImpl implements ContextAwareServiceResol
     this.serviceTrackerCache = null;
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "null" })
   @Override
   public <T extends ContextAwareService> T resolve(@NotNull Class<T> serviceClass, @NotNull Adaptable adaptable) {
     Resource resource = getResource(adaptable);

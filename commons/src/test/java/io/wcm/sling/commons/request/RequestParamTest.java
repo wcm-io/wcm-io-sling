@@ -35,7 +35,6 @@ import org.junit.Test;
 
 import com.google.common.collect.ImmutableMap;
 
-@SuppressWarnings("null")
 public class RequestParamTest {
 
   @Rule

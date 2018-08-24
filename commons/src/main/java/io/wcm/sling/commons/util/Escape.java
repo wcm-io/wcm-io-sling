@@ -46,7 +46,6 @@ public final class Escape {
    * @return URL-encoded string - or empty string if the specified value was null
    * @throws RuntimeException in the very unlikely case that UTF-8 is not supported on the current system
    */
-  @SuppressWarnings("null")
   public static @NotNull String urlEncode(@Nullable String value) {
     if (value == null) {
       return "";
@@ -64,7 +63,6 @@ public final class Escape {
    * @param value String to be labelized.
    * @return The labelized string.
    */
-  @SuppressWarnings("null")
   public static @NotNull String validName(@NotNull String value) {
 
     // convert to lowercase
@@ -93,7 +91,6 @@ public final class Escape {
    * @param value Filename
    * @return Valid filename
    */
-  @SuppressWarnings("null")
   public static @NotNull String validFilename(@NotNull String value) {
     String fileExtension = StringUtils.substringAfterLast(value, ".");
     String fileName = StringUtils.substringBeforeLast(value, ".");

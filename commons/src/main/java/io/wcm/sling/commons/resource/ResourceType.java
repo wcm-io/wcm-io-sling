@@ -97,7 +97,6 @@ public final class ResourceType {
    * @param resourceResolver Resource resolver
    * @return Relative resource type
    */
-  @SuppressWarnings("null")
   public static @NotNull String makeRelative(@NotNull String resourceType, @NotNull ResourceResolver resourceResolver) {
     String[] searchPaths = resourceResolver.getSearchPath();
     for (String prefix : searchPaths) {
@@ -117,7 +116,6 @@ public final class ResourceType {
    * @return Relative resource type
    * @deprecated Please use {@link #makeRelative(String, ResourceResolver)} instead.
    */
-  @SuppressWarnings("null")
   @Deprecated
   public static @NotNull String makeRelative(@NotNull String resourceType) {
     if (StringUtils.startsWith(resourceType, APPS_PREFIX)) {
@@ -169,7 +167,6 @@ public final class ResourceType {
    *         type. <code>false</code> is also returned if <code>resource</code> or<code>resourceType</code> are
    *         <code>null</code>.
    */
-  @SuppressWarnings("null")
   public static boolean is(@Nullable Resource resource, @Nullable String resourceType) {
     if (resource == null || resourceType == null) {
       return false;

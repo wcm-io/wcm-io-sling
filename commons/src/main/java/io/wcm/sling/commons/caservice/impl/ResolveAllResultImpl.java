@@ -27,7 +27,6 @@ import org.jetbrains.annotations.NotNull;
 import io.wcm.sling.commons.caservice.ContextAwareService;
 import io.wcm.sling.commons.caservice.ContextAwareServiceResolver.ResolveAllResult;
 
-@SuppressWarnings("null")
 class ResolveAllResultImpl<T extends ContextAwareService> implements ResolveAllResult<T> {
 
   private final Stream<T> services;

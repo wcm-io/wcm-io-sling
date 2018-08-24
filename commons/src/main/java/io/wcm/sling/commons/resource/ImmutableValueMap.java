@@ -176,7 +176,6 @@ public final class ImmutableValueMap implements ValueMap {
    * and maintainability of your code.
    * @return ImmutableValueMap
    */
-  @SuppressWarnings("null")
   public static @NotNull ImmutableValueMap of() {
     return new ImmutableValueMap(ValueMap.EMPTY);
   }
@@ -190,7 +189,6 @@ public final class ImmutableValueMap implements ValueMap {
    * @param v1 Value 1
    * @return ImmutableValueMap
    */
-  @SuppressWarnings("null")
   public static @NotNull ImmutableValueMap of(@NotNull String k1, @NotNull Object v1) {
     return new ImmutableValueMap(ImmutableMap.<String, Object>of(k1, v1));
   }
@@ -204,7 +202,6 @@ public final class ImmutableValueMap implements ValueMap {
    * @return ImmutableValueMap
    * @throws IllegalArgumentException if duplicate keys are provided
    */
-  @SuppressWarnings("null")
   public static @NotNull ImmutableValueMap of(@NotNull String k1, @NotNull Object v1,
       @NotNull String k2, @NotNull Object v2) {
     return new ImmutableValueMap(ImmutableMap.<String, Object>of(k1, v1, k2, v2));
@@ -221,7 +218,6 @@ public final class ImmutableValueMap implements ValueMap {
    * @return ImmutableValueMap
    * @throws IllegalArgumentException if duplicate keys are provided
    */
-  @SuppressWarnings("null")
   public static @NotNull ImmutableValueMap of(
       @NotNull String k1, @NotNull Object v1,
       @NotNull String k2, @NotNull Object v2,
@@ -242,7 +238,6 @@ public final class ImmutableValueMap implements ValueMap {
    * @return ImmutableValueMap
    * @throws IllegalArgumentException if duplicate keys are provided
    */
-  @SuppressWarnings("null")
   public static @NotNull ImmutableValueMap of( //NOPMD
       @NotNull String k1, @NotNull Object v1,
       @NotNull String k2, @NotNull Object v2,
@@ -266,7 +261,6 @@ public final class ImmutableValueMap implements ValueMap {
    * @return ImmutableValueMap
    * @throws IllegalArgumentException if duplicate keys are provided
    */
-  @SuppressWarnings("null")
   public static ImmutableValueMap of( //NOPMD
       @NotNull String k1, @NotNull Object v1,
       @NotNull String k2, @NotNull Object v2,
@@ -333,7 +327,6 @@ public final class ImmutableValueMap implements ValueMap {
      * @param entry Entry
      * @return this
      */
-    @SuppressWarnings("null")
     public @NotNull Builder put(@NotNull Entry<String, Object> entry) {
       return put(entry.getKey(), entry.getValue());
     }
