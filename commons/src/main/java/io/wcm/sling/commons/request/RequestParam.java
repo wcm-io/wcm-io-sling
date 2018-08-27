@@ -28,6 +28,8 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -44,7 +46,7 @@ public final class RequestParam {
    * If such a form parameter is set in a request the {@link org.apache.sling.api.SlingHttpServletRequest} automatically
    * transcodes all parameters to this encoding.
    */
-  public static final String PARAMETER_FORMENCODING = "_charset_";
+  public static final @NotNull String PARAMETER_FORMENCODING = "_charset_";
 
   private RequestParam() {
     // Utility class - no instancing allowed
@@ -58,7 +60,7 @@ public final class RequestParam {
    * @param param Parameter name.
    * @return Parameter value or null if it is not set.
    */
-  public static String get(ServletRequest request, String param) {
+  public static @Nullable String get(@NotNull ServletRequest request, @NotNull String param) {
     return get(request, param, null);
   }
 
@@ -71,7 +73,7 @@ public final class RequestParam {
    * @param defaultValue Default value.
    * @return Parameter value or the default value if it is not set.
    */
-  public static String get(ServletRequest request, String param, String defaultValue) {
+  public static @Nullable String get(@NotNull ServletRequest request, @NotNull String param, @Nullable String defaultValue) {
     String value = request.getParameter(param);
     if (value != null) {
       // convert encoding to UTF-8 if not form encoding parameter is set
@@ -93,7 +95,7 @@ public final class RequestParam {
    * @param param Parameter name.
    * @return Parameter value array value or null if it is not set.
    */
-  public static String[] getMultiple(ServletRequest request, String param) {
+  public static String @Nullable [] getMultiple(@NotNull ServletRequest request, @NotNull String param) {
     String[] values = request.getParameterValues(param);
     if (values == null) {
       return null;
@@ -121,7 +123,7 @@ public final class RequestParam {
    * @param param Parameter name.
    * @return Parameter value or null if it is not set.
    */
-  public static String get(Map<String, String[]> requestMap, String param) {
+  public static @Nullable String get(@NotNull Map<String, String[]> requestMap, @NotNull String param) {
     String value = null;
     String[] valueArray = requestMap.get(param);
     if (valueArray != null && valueArray.length > 0) {
@@ -140,7 +142,7 @@ public final class RequestParam {
    * @param param Parameter name.
    * @return Parameter value or 0 if it does not exist or is not a number.
    */
-  public static int getInt(ServletRequest request, String param) {
+  public static int getInt(@NotNull ServletRequest request, @NotNull String param) {
     return getInt(request, param, 0);
   }
 
@@ -151,7 +153,7 @@ public final class RequestParam {
    * @param defaultValue Default value.
    * @return Parameter value or default value if it does not exist or is not a number.
    */
-  public static int getInt(ServletRequest request, String param, int defaultValue) {
+  public static int getInt(@NotNull ServletRequest request, @NotNull String param, int defaultValue) {
     String value = request.getParameter(param);
     return NumberUtils.toInt(value, defaultValue);
   }
@@ -162,7 +164,7 @@ public final class RequestParam {
    * @param param Parameter name.
    * @return Parameter value or 0 if it does not exist or is not a number.
    */
-  public static long getLong(ServletRequest request, String param) {
+  public static long getLong(@NotNull ServletRequest request, @NotNull String param) {
     return getLong(request, param, 0L);
   }
 
@@ -173,7 +175,7 @@ public final class RequestParam {
    * @param defaultValue Default value.
    * @return Parameter value or default value if it does not exist or is not a number.
    */
-  public static long getLong(ServletRequest request, String param, long defaultValue) {
+  public static long getLong(@NotNull ServletRequest request, @NotNull String param, long defaultValue) {
     String value = request.getParameter(param);
     return NumberUtils.toLong(value, defaultValue);
   }
@@ -184,7 +186,7 @@ public final class RequestParam {
    * @param param Parameter name.
    * @return Parameter value or 0 if it does not exist or is not a number.
    */
-  public static float getFloat(ServletRequest request, String param) {
+  public static float getFloat(@NotNull ServletRequest request, @NotNull String param) {
     return getFloat(request, param, 0f);
   }
 
@@ -195,7 +197,7 @@ public final class RequestParam {
    * @param defaultValue Default value.
    * @return Parameter value or default value if it does not exist or is not a number.
    */
-  public static float getFloat(ServletRequest request, String param, float defaultValue) {
+  public static float getFloat(@NotNull ServletRequest request, @NotNull String param, float defaultValue) {
     String value = request.getParameter(param);
     return NumberUtils.toFloat(value, defaultValue);
   }
@@ -206,7 +208,7 @@ public final class RequestParam {
    * @param param Parameter name.
    * @return Parameter value or 0 if it does not exist or is not a number.
    */
-  public static double getDouble(ServletRequest request, String param) {
+  public static double getDouble(@NotNull ServletRequest request, @NotNull String param) {
     return getDouble(request, param, 0d);
   }
 
@@ -217,7 +219,7 @@ public final class RequestParam {
    * @param defaultValue Default value.
    * @return Parameter value or default value if it does not exist or is not a number.
    */
-  public static double getDouble(ServletRequest request, String param, double defaultValue) {
+  public static double getDouble(@NotNull ServletRequest request, @NotNull String param, double defaultValue) {
     String value = request.getParameter(param);
     return NumberUtils.toDouble(value, defaultValue);
   }
@@ -228,7 +230,7 @@ public final class RequestParam {
    * @param param Parameter name.
    * @return Parameter value or <code>false</code> if it does not exist or cannot be interpreted as boolean.
    */
-  public static boolean getBoolean(ServletRequest request, String param) {
+  public static boolean getBoolean(@NotNull ServletRequest request, @NotNull String param) {
     return getBoolean(request, param, false);
   }
 
@@ -240,7 +242,7 @@ public final class RequestParam {
    * @return Parameter value or default value if it does not exist or <code>false</code> if it cannot be interpreted as
    *         boolean.
    */
-  public static boolean getBoolean(ServletRequest request, String param, boolean defaultValue) {
+  public static boolean getBoolean(@NotNull ServletRequest request, @NotNull String param, boolean defaultValue) {
     String value = request.getParameter(param);
     return BooleanUtils.toBoolean(value);
   }
@@ -253,7 +255,7 @@ public final class RequestParam {
    * @param enumClass Enum class
    * @return Parameter value or null if it is not set or an invalid enum value.
    */
-  public static <T extends Enum> T getEnum(ServletRequest request, String param, Class<T> enumClass) {
+  public static <T extends Enum> @Nullable T getEnum(@NotNull ServletRequest request, @NotNull String param, @NotNull Class<T> enumClass) {
     return getEnum(request, param, enumClass, null);
   }
 
@@ -267,7 +269,8 @@ public final class RequestParam {
    * @return Parameter value or the default value if it is not set or an invalid enum value.
    */
   @SuppressWarnings("unchecked")
-  public static <T extends Enum> T getEnum(ServletRequest request, String param, Class<T> enumClass, T defaultValue) {
+  public static <T extends Enum> @Nullable T getEnum(@NotNull ServletRequest request, @NotNull String param, @NotNull Class<T> enumClass,
+      @Nullable T defaultValue) {
     String value = RequestParam.get(request, param);
     if (StringUtils.isNotEmpty(value)) {
       try {
@@ -284,7 +287,7 @@ public final class RequestParam {
    * @param request Servlet request
    * @return Checks if form encoding parameter is set
    */
-  private static boolean hasFormEncodingParam(ServletRequest request) {
+  private static boolean hasFormEncodingParam(@NotNull ServletRequest request) {
     return StringUtils.isNotEmpty(request.getParameter(PARAMETER_FORMENCODING));
   }
 
@@ -292,7 +295,7 @@ public final class RequestParam {
    * @param requestMap Request map
    * @return Checks if form encoding parameter is set
    */
-  private static boolean hasFormEncodingParam(Map<String, String[]> requestMap) {
+  private static boolean hasFormEncodingParam(@NotNull Map<String, String[]> requestMap) {
     String[] valueArray = requestMap.get(PARAMETER_FORMENCODING);
     return valueArray != null && valueArray.length > 0;
   }

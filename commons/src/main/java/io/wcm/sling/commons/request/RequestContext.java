@@ -20,6 +20,7 @@
 package io.wcm.sling.commons.request;
 
 import org.apache.sling.api.SlingHttpServletRequest;
+import org.jetbrains.annotations.Nullable;
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -33,6 +34,7 @@ public interface RequestContext {
    * The request is stored in a threadlocal set by a servlet filter.
    * @return Sling request or null if none is associated.
    */
+  @Nullable
   SlingHttpServletRequest getThreadRequest();
 
 }

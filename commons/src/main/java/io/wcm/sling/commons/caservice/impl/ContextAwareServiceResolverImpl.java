@@ -27,6 +27,7 @@ import java.util.stream.Stream;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.adapter.Adaptable;
 import org.apache.sling.api.resource.Resource;
+import org.jetbrains.annotations.NotNull;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -69,6 +70,7 @@ public class ContextAwareServiceResolverImpl implements ContextAwareServiceResol
     this.bundleContext = context;
     this.serviceTrackerCache = CacheBuilder.newBuilder()
         .removalListener(new RemovalListener<String, ContextAwareServiceTracker>() {
+          @SuppressWarnings("null")
           @Override
           public void onRemoval(RemovalNotification<String, ContextAwareServiceTracker> notification) {
             notification.getValue().dispose();
@@ -88,9 +90,9 @@ public class ContextAwareServiceResolverImpl implements ContextAwareServiceResol
     this.serviceTrackerCache = null;
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "null" })
   @Override
-  public <T extends ContextAwareService> T resolve(Class<T> serviceClass, Adaptable adaptable) {
+  public <T extends ContextAwareService> T resolve(@NotNull Class<T> serviceClass, @NotNull Adaptable adaptable) {
     Resource resource = getResource(adaptable);
     if (log.isTraceEnabled()) {
       log.trace("Resolve {} for resource {}", serviceClass.getName(), (resource != null ? resource.getPath() : "null"));
@@ -103,7 +105,7 @@ public class ContextAwareServiceResolverImpl implements ContextAwareServiceResol
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T extends ContextAwareService> ResolveAllResult<T> resolveAll(Class<T> serviceClass, Adaptable adaptable) {
+  public <T extends ContextAwareService> @NotNull ResolveAllResult<T> resolveAll(@NotNull Class<T> serviceClass, @NotNull Adaptable adaptable) {
     Resource resource = getResource(adaptable);
     if (log.isTraceEnabled()) {
       log.trace("Resolve all {} for resource {}", serviceClass.getName(), (resource != null ? resource.getPath() : "null"));

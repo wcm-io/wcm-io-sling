@@ -25,6 +25,8 @@ import java.net.URLEncoder;
 import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.jackrabbit.util.Text;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -44,7 +46,7 @@ public final class Escape {
    * @return URL-encoded string - or empty string if the specified value was null
    * @throws RuntimeException in the very unlikely case that UTF-8 is not supported on the current system
    */
-  public static String urlEncode(String value) {
+  public static @NotNull String urlEncode(@Nullable String value) {
     if (value == null) {
       return "";
     }
@@ -61,7 +63,7 @@ public final class Escape {
    * @param value String to be labelized.
    * @return The labelized string.
    */
-  public static String validName(String value) {
+  public static @NotNull String validName(@NotNull String value) {
 
     // convert to lowercase
     String text = value.toLowerCase();
@@ -89,7 +91,7 @@ public final class Escape {
    * @param value Filename
    * @return Valid filename
    */
-  public static String validFilename(String value) {
+  public static @NotNull String validFilename(@NotNull String value) {
     String fileExtension = StringUtils.substringAfterLast(value, ".");
     String fileName = StringUtils.substringBeforeLast(value, ".");
     if (StringUtils.isEmpty(fileExtension)) {
@@ -104,7 +106,8 @@ public final class Escape {
    * @param value Any string.
    * @return A valid JCR query string literal, including enclosing quotes.
    */
-  public static String jcrQueryLiteral(String value) {
+  @SuppressWarnings({ "unused", "null" })
+  public static @NotNull String jcrQueryLiteral(@NotNull String value) {
     if (value == null) {
       throw new IllegalArgumentException("Invalid query string value: " + value);
     }
@@ -119,7 +122,8 @@ public final class Escape {
    * @param value Any string.
    * @return A valid string literal suitable for use in JCR contains clauses, including enclosing quotes.
    */
-  public static String jcrQueryContainsExpr(String value) {
+  @SuppressWarnings("null")
+  public static @NotNull String jcrQueryContainsExpr(@NotNull String value) {
     if (value == null || value.isEmpty()) {
       throw new IllegalArgumentException("Invalid query string value: " + value);
     }

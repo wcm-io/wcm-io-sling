@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.osgi.annotation.versioning.ProviderType;
 
 import io.wcm.sling.commons.util.Escape;
@@ -47,7 +49,7 @@ public final class QueryStringBuilder {
    * @return this
    */
   @SuppressWarnings("unchecked")
-  public QueryStringBuilder param(String name, Object value) {
+  public @NotNull QueryStringBuilder param(@NotNull String name, @Nullable Object value) {
     if (value instanceof Iterable) {
       Iterable<Object> valueItems = (Iterable)value;
       for (Object valueItem : valueItems) {
@@ -73,7 +75,7 @@ public final class QueryStringBuilder {
    *          If a value is an array or {@link Iterable} the value items will be added as separate parameters.
    * @return this
    */
-  public QueryStringBuilder params(Map<String, Object> values) {
+  public @NotNull QueryStringBuilder params(@NotNull Map<String, Object> values) {
     for (Map.Entry<String, Object> entry : values.entrySet()) {
       param(entry.getKey(), entry.getValue());
     }
@@ -84,7 +86,7 @@ public final class QueryStringBuilder {
    * Build query string.
    * @return Query string or null if query string contains no parameters at all.
    */
-  public String build() {
+  public @Nullable String build() {
     StringBuilder queryString = new StringBuilder();
 
     for (NameValuePair param : params) {

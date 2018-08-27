@@ -26,6 +26,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingException;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.day.cq.wcm.api.components.Component;
 import com.day.cq.wcm.api.components.ComponentManager;
@@ -60,7 +62,8 @@ public final class ResourceType {
    * @param resourceResolver Resource resolver
    * @return Absolute resource type
    */
-  public static String makeAbsolute(String resourceType, ResourceResolver resourceResolver) {
+  @SuppressWarnings({ "null", "unused" })
+  public static @NotNull String makeAbsolute(@NotNull String resourceType, @NotNull ResourceResolver resourceResolver) {
     if (StringUtils.isEmpty(resourceType) || StringUtils.startsWith(resourceType, "/")) {
       return resourceType;
     }
@@ -94,7 +97,7 @@ public final class ResourceType {
    * @param resourceResolver Resource resolver
    * @return Relative resource type
    */
-  public static String makeRelative(String resourceType, ResourceResolver resourceResolver) {
+  public static @NotNull String makeRelative(@NotNull String resourceType, @NotNull ResourceResolver resourceResolver) {
     String[] searchPaths = resourceResolver.getSearchPath();
     for (String prefix : searchPaths) {
       if (StringUtils.startsWith(resourceType, prefix)) {
@@ -114,7 +117,7 @@ public final class ResourceType {
    * @deprecated Please use {@link #makeRelative(String, ResourceResolver)} instead.
    */
   @Deprecated
-  public static String makeRelative(String resourceType) {
+  public static @NotNull String makeRelative(@NotNull String resourceType) {
     if (StringUtils.startsWith(resourceType, APPS_PREFIX)) {
       return resourceType.substring(APPS_PREFIX.length());
     }
@@ -133,7 +136,8 @@ public final class ResourceType {
    * @param resourceResolver Resource resolver
    * @return <code>true</code> if the resource type equals the given resource type.
    */
-  public static boolean equals(String resourceType, String anotherResourceType, ResourceResolver resourceResolver) {
+  public static boolean equals(@NotNull String resourceType, @NotNull String anotherResourceType,
+      @NotNull ResourceResolver resourceResolver) {
     return StringUtils.equals(makeRelative(resourceType, resourceResolver), makeRelative(anotherResourceType, resourceResolver));
   }
 
@@ -147,7 +151,7 @@ public final class ResourceType {
    * @deprecated Please use {@link #equals(String, String, ResourceResolver)} instead.
    */
   @Deprecated
-  public static boolean equals(String resourceType, String anotherResourceType) {
+  public static boolean equals(@NotNull String resourceType, @NotNull String anotherResourceType) {
     return StringUtils.equals(makeRelative(resourceType), makeRelative(anotherResourceType));
   }
 
@@ -163,7 +167,7 @@ public final class ResourceType {
    *         type. <code>false</code> is also returned if <code>resource</code> or<code>resourceType</code> are
    *         <code>null</code>.
    */
-  public static boolean is(Resource resource, String resourceType) {
+  public static boolean is(@Nullable Resource resource, @Nullable String resourceType) {
     if (resource == null || resourceType == null) {
       return false;
     }

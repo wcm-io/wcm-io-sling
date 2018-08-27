@@ -39,6 +39,7 @@ import org.apache.sling.models.spi.Injector;
 import org.apache.sling.models.spi.injectorspecific.AbstractInjectAnnotationProcessor2;
 import org.apache.sling.models.spi.injectorspecific.InjectAnnotationProcessor2;
 import org.apache.sling.models.spi.injectorspecific.StaticInjectAnnotationProcessorFactory;
+import org.jetbrains.annotations.NotNull;
 import org.osgi.framework.Constants;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -68,7 +69,7 @@ public final class SlingObjectOverlayInjector implements Injector, StaticInjectA
   /**
    * Injector name
    */
-  public static final String NAME = "sling-object";
+  public static final @NotNull String NAME = "sling-object";
 
   @Reference
   private RequestContext requestContext;
@@ -76,13 +77,13 @@ public final class SlingObjectOverlayInjector implements Injector, StaticInjectA
   private ModelsImplConfiguration modelsImplConfiguration;
 
   @Override
-  public String getName() {
+  public @NotNull String getName() {
     return NAME;
   }
 
   @Override
-  public Object getValue(final Object adaptable, final String name, final Type type, final AnnotatedElement element,
-      final DisposalCallbackRegistry callbackRegistry) {
+  public Object getValue(@NotNull final Object adaptable, final String name, @NotNull final Type type,
+      @NotNull final AnnotatedElement element, @NotNull final DisposalCallbackRegistry callbackRegistry) {
 
     // let the original sling object injector step in if the thread-local request feature is deactivated
     if (!modelsImplConfiguration.isRequestThreadLocal()) {
@@ -161,6 +162,7 @@ public final class SlingObjectOverlayInjector implements Injector, StaticInjectA
     return null;
   }
 
+  @SuppressWarnings({ "null", "unused" })
   @Override
   public InjectAnnotationProcessor2 createAnnotationProcessor(final AnnotatedElement element) {
     // check if the element has the expected annotation

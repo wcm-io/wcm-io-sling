@@ -28,6 +28,7 @@ import java.util.SortedMap;
 
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.wrappers.ValueMapDecorator;
+import org.jetbrains.annotations.NotNull;
 import org.osgi.annotation.versioning.ProviderType;
 
 import com.google.common.base.Joiner;
@@ -51,14 +52,14 @@ public final class ImmutableValueMap implements ValueMap {
   /**
    * @param map Value map
    */
-  ImmutableValueMap(ValueMap map) {
+  ImmutableValueMap(@NotNull ValueMap map) {
     this.map = map;
   }
 
   /**
    * @param map Map
    */
-  ImmutableValueMap(Map<String, Object> map) {
+  ImmutableValueMap(@NotNull Map<String, Object> map) {
     this.map = new ValueMapDecorator(map);
   }
 
@@ -175,7 +176,7 @@ public final class ImmutableValueMap implements ValueMap {
    * and maintainability of your code.
    * @return ImmutableValueMap
    */
-  public static ImmutableValueMap of() {
+  public static @NotNull ImmutableValueMap of() {
     return new ImmutableValueMap(ValueMap.EMPTY);
   }
 
@@ -188,7 +189,7 @@ public final class ImmutableValueMap implements ValueMap {
    * @param v1 Value 1
    * @return ImmutableValueMap
    */
-  public static ImmutableValueMap of(String k1, Object v1) {
+  public static @NotNull ImmutableValueMap of(@NotNull String k1, @NotNull Object v1) {
     return new ImmutableValueMap(ImmutableMap.<String, Object>of(k1, v1));
   }
 
@@ -201,7 +202,8 @@ public final class ImmutableValueMap implements ValueMap {
    * @return ImmutableValueMap
    * @throws IllegalArgumentException if duplicate keys are provided
    */
-  public static ImmutableValueMap of(String k1, Object v1, String k2, Object v2) {
+  public static @NotNull ImmutableValueMap of(@NotNull String k1, @NotNull Object v1,
+      @NotNull String k2, @NotNull Object v2) {
     return new ImmutableValueMap(ImmutableMap.<String, Object>of(k1, v1, k2, v2));
   }
 
@@ -216,8 +218,10 @@ public final class ImmutableValueMap implements ValueMap {
    * @return ImmutableValueMap
    * @throws IllegalArgumentException if duplicate keys are provided
    */
-  public static ImmutableValueMap of(
-      String k1, Object v1, String k2, Object v2, String k3, Object v3) {
+  public static @NotNull ImmutableValueMap of(
+      @NotNull String k1, @NotNull Object v1,
+      @NotNull String k2, @NotNull Object v2,
+      @NotNull String k3, @NotNull Object v3) {
     return new ImmutableValueMap(ImmutableMap.<String, Object>of(k1, v1, k2, v2, k3, v3));
   }
 
@@ -234,8 +238,11 @@ public final class ImmutableValueMap implements ValueMap {
    * @return ImmutableValueMap
    * @throws IllegalArgumentException if duplicate keys are provided
    */
-  public static ImmutableValueMap of( //NOPMD
-      String k1, Object v1, String k2, Object v2, String k3, Object v3, String k4, Object v4) {
+  public static @NotNull ImmutableValueMap of( //NOPMD
+      @NotNull String k1, @NotNull Object v1,
+      @NotNull String k2, @NotNull Object v2,
+      @NotNull String k3, @NotNull Object v3,
+      @NotNull String k4, @NotNull Object v4) {
     return new ImmutableValueMap(ImmutableMap.<String, Object>of(k1, v1, k2, v2, k3, v3, k4, v4));
   }
 
@@ -255,7 +262,11 @@ public final class ImmutableValueMap implements ValueMap {
    * @throws IllegalArgumentException if duplicate keys are provided
    */
   public static ImmutableValueMap of( //NOPMD
-      String k1, Object v1, String k2, Object v2, String k3, Object v3, String k4, Object v4, String k5, Object v5) {
+      @NotNull String k1, @NotNull Object v1,
+      @NotNull String k2, @NotNull Object v2,
+      @NotNull String k3, @NotNull Object v3,
+      @NotNull String k4, @NotNull Object v4,
+      @NotNull String k5, @NotNull Object v5) {
     return new ImmutableValueMap(ImmutableMap.<String, Object>of(k1, v1, k2, v2, k3, v3, k4, v4, k5, v5));
   }
 
@@ -266,7 +277,7 @@ public final class ImmutableValueMap implements ValueMap {
    * created by the {@link Builder} constructor.
    * @return Builder
    */
-  public static Builder builder() {
+  public static @NotNull Builder builder() {
     return new Builder();
   }
 
@@ -282,7 +293,7 @@ public final class ImmutableValueMap implements ValueMap {
    * @return ImmutableValueMap
    * @throws NullPointerException if any key or value in {@code map} is null
    */
-  public static ImmutableValueMap copyOf(Map<String, Object> map) {
+  public static @NotNull ImmutableValueMap copyOf(@NotNull Map<String, Object> map) {
     if (map instanceof ValueMap) {
       return new ImmutableValueMap((ValueMap)map);
     }
@@ -296,7 +307,7 @@ public final class ImmutableValueMap implements ValueMap {
    */
   public static final class Builder {
 
-    private final Map<String, Object> map = new HashMap<>();
+    private final @NotNull Map<String, Object> map = new HashMap<>();
 
     /**
      * Associates {@code key} with {@code value} in the built map. Duplicate
@@ -305,7 +316,7 @@ public final class ImmutableValueMap implements ValueMap {
      * @param value value
      * @return this
      */
-    public Builder put(String key, Object value) {
+    public @NotNull Builder put(@NotNull String key, @NotNull Object value) {
       map.put(key, value);
       return this;
     }
@@ -316,7 +327,7 @@ public final class ImmutableValueMap implements ValueMap {
      * @param entry Entry
      * @return this
      */
-    public Builder put(Entry<String, Object> entry) {
+    public @NotNull Builder put(@NotNull Entry<String, Object> entry) {
       return put(entry.getKey(), entry.getValue());
     }
 
@@ -327,7 +338,7 @@ public final class ImmutableValueMap implements ValueMap {
      * @return this
      * @throws NullPointerException if any key or value in {@code map} is null
      */
-    public Builder putAll(Map<String, Object> value) {
+    public @NotNull Builder putAll(@NotNull Map<String, Object> value) {
       map.putAll(value);
       return this;
     }
@@ -337,7 +348,7 @@ public final class ImmutableValueMap implements ValueMap {
      * @return ImmutableValueMap
      * @throws IllegalArgumentException if duplicate keys were added
      */
-    public ImmutableValueMap build() {
+    public @NotNull ImmutableValueMap build() {
       if (map.isEmpty()) {
         return ImmutableValueMap.of();
       }
