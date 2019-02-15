@@ -29,7 +29,7 @@ The available service property name/bundle header names are defined in [`io.wcm.
 
 ### Usage example
 
-[wcm.io Handler][wcmio-handler] makes use of Context-aware services for it's SPI.
+[wcm.io Handler][wcmio-handler] makes use of Context-Aware Services for it's SPI.
 
 The [wcm.io Sample Application][wcmio-samples] uses the Handler infrastructure and implements some SPI implementations with setting the path context in the bundle headers.
 
