@@ -113,11 +113,29 @@ public class ContextAwareServiceResolverImplTest {
         Constants.SERVICE_RANKING, Integer.MIN_VALUE,
         ContextAwareService.PROPERTY_ACCEPTS_CONTEXT_PATH_EMPTY, true);
 
-    context.currentResource(context.create().resource("/content/test1"));
-    assertSame(contentImpl, underTest.resolve(DummySpi.class, context.request()));
+    context.currentResource(context.create().resource("/content/sample/test1"));
+    assertSame(contentSampleImpl, underTest.resolve(DummySpi.class, context.request()));
 
-    assertEquals(ImmutableList.of(contentImpl, defaultImpl),
-        underTest.resolveAll(DummySpi.class, context.create().resource("/content/test2")).getServices().collect(Collectors.toList()));
+    assertEquals(ImmutableList.of(contentSampleImpl, contentImpl, defaultImpl),
+        underTest.resolveAll(DummySpi.class, context.request()).getServices().collect(Collectors.toList()));
+  }
+
+  /**
+   * Simulate an experience fragment resource included in a page.
+   * Context-aware service resolver should take the current page as context to resolve, not the current resource.
+   */
+  @Test
+  public void testWithSlingHttpServletRequest_ResourceOtherContext() {
+    DummySpi defaultImpl = context.registerService(DummySpi.class, new DummySpiImpl(),
+        Constants.SERVICE_RANKING, Integer.MIN_VALUE,
+        ContextAwareService.PROPERTY_ACCEPTS_CONTEXT_PATH_EMPTY, true);
+
+    context.currentPage(context.create().page("/content/sample/test1"));
+    context.currentResource(context.create().resource("/content/experience-fragments/test1"));
+    assertSame(contentSampleImpl, underTest.resolve(DummySpi.class, context.request()));
+
+    assertEquals(ImmutableList.of(contentSampleImpl, contentImpl, defaultImpl),
+        underTest.resolveAll(DummySpi.class, context.request()).getServices().collect(Collectors.toList()));
   }
 
   @Test
