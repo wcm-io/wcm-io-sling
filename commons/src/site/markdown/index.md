@@ -7,6 +7,7 @@ Common Sling utility and helper functions.
 
 ### Documentation
 
+* [Context-Aware Services][caservice]
 * [API documentation][apidocs]
 * [Changelog][changelog]
 

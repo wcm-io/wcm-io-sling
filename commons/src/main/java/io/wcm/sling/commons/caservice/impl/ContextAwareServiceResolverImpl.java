@@ -39,6 +39,8 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.day.cq.wcm.api.components.ComponentContext;
+import com.day.cq.wcm.commons.WCMUtils;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -126,7 +128,16 @@ public class ContextAwareServiceResolverImpl implements ContextAwareServiceResol
       return (Resource)adaptable;
     }
     else if (adaptable instanceof SlingHttpServletRequest) {
-      return ((SlingHttpServletRequest)adaptable).getResource();
+      // if request has a current page prefer the page content resource as context resource
+      // because otherwise included resource e.g. from experience fragments lead to wrong contexts
+      SlingHttpServletRequest request = (SlingHttpServletRequest)adaptable;
+      ComponentContext wcmComponentContext = WCMUtils.getComponentContext(request);
+      if (wcmComponentContext != null && wcmComponentContext.getPage() != null) {
+        return wcmComponentContext.getPage().getContentResource();
+      }
+      else {
+        return request.getResource();
+      }
     }
     return null;
   }

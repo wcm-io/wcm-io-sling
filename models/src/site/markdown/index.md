@@ -27,6 +27,14 @@ The AEM Object Injector for Sling Models provides:
 See [Injector API documentation][apidocs-aemobjectinjector] for details.
 
 
+### Dependencies
+
+To use this module you have to deploy also:
+
+|---|---|---|
+| [wcm.io Sling Commons](https://maven-badges.herokuapp.com/maven-central/io.wcm/io.wcm.sling.commons) | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.wcm/io.wcm.sling.commons/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.wcm/io.wcm.sling.commons) |
+
+
 ### Comparison to ACS Commons
 
 The [ACS AEM Commons][acs-commons] project also contains an implementation of an [AEM Object Injector][acs-commons-aem-object-injrecotr].
@@ -41,18 +49,3 @@ The wcm.io AEM Object injector use class-based injection, making it easier to us
 [changelog]: changes-report.html
 [acs-commons]: http://adobe-consulting-services.github.io/acs-aem-commons/
 [acs-commons-aem-object-injrecotr]: http://adobe-consulting-services.github.io/acs-aem-commons/features/aem-sling-models-injectors.html
-
-
-### Maven Dependency for CQ5
-
-Although wcm.io generally targets only AEM6, for this package a version for CQ55 and CQ56 is published as well:
-
-```xml
-<dependency>
-  <groupId>io.wcm.cq5</groupId>
-  <artifactId>io.wcm.cq5.sling.models</artifactId>
-  <version>1.0.0</version>
-</dependency>
-```
-
-It supports the same features, only the Authoring UI mode detection is not available.
