@@ -24,6 +24,15 @@ The Sling Commons library contains:
 * Other useful helper classes, see [API documentation][apidocs]
 
 
+### AEM Version Support Matrix
+
+|wcm.io Sling Commons version |AEM version supported
+|-----------------------------|----------------------
+|1.3.x or higher              |AEM 6.2 or up
+|1.0.x - 1.2.x                |AEM 6.1 or up
+|0.x                          |AEM 6.0 or up
+
+
 [apidocs]: apidocs/
 [changelog]: changes-report.html
 [caservice]: context-aware-services.html
