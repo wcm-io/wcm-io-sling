@@ -19,32 +19,32 @@
  */
 package io.wcm.sling.commons.resource;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.sling.api.resource.Resource;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-import io.wcm.testing.mock.aem.junit.AemContext;
+import io.wcm.testing.mock.aem.junit5.AemContext;
+import io.wcm.testing.mock.aem.junit5.AemContextExtension;
 
+@ExtendWith(AemContextExtension.class)
 @SuppressWarnings("null")
-public class ResourceTypeTest {
+class ResourceTypeTest {
 
-  @Rule
-  public AemContext context = new AemContext();
+  private final AemContext context = new AemContext();
 
-  @SuppressWarnings("unused")
   @Test
-  public void testMakeAbsolute_Invalid() {
+  void testMakeAbsolute_Invalid() {
     assertNull(ResourceType.makeAbsolute(null, context.resourceResolver()));
     assertEquals("", ResourceType.makeAbsolute("", context.resourceResolver()));
   }
 
   @Test
-  public void testMakeAbsolute_ExistingAppsResource() {
+  void testMakeAbsolute_ExistingAppsResource() {
     context.create().resource("/apps/any/path");
 
     assertEquals("/any/path", ResourceType.makeAbsolute("/any/path", context.resourceResolver()));
@@ -52,7 +52,7 @@ public class ResourceTypeTest {
   }
 
   @Test
-  public void testMakeAbsolute_ExistingLibsResource() {
+  void testMakeAbsolute_ExistingLibsResource() {
     context.create().resource("/libs/any/path");
 
     assertEquals("/any/path", ResourceType.makeAbsolute("/any/path", context.resourceResolver()));
@@ -60,13 +60,13 @@ public class ResourceTypeTest {
   }
 
   @Test
-  public void testMakeAbsolute_NonExistingResource() {
+  void testMakeAbsolute_NonExistingResource() {
     assertEquals("/any/path", ResourceType.makeAbsolute("/any/path", context.resourceResolver()));
     assertEquals("any/path", ResourceType.makeAbsolute("any/path", context.resourceResolver()));
   }
 
   @Test
-  public void testMakeRelative() {
+  void testMakeRelative() {
     assertEquals("path1/path2", ResourceType.makeRelative("/apps/path1/path2", context.resourceResolver()));
     assertEquals("path1/path2", ResourceType.makeRelative("/libs/path1/path2", context.resourceResolver()));
     assertEquals("/any/path", ResourceType.makeRelative("/any/path", context.resourceResolver()));
@@ -76,7 +76,7 @@ public class ResourceTypeTest {
 
   @SuppressWarnings("deprecation")
   @Test
-  public void testMakeRelativeWithoutResourceResolver() {
+  void testMakeRelativeWithoutResourceResolver() {
     assertEquals("path1/path2", ResourceType.makeRelative("/apps/path1/path2"));
     assertEquals("path1/path2", ResourceType.makeRelative("/libs/path1/path2"));
     assertEquals("/any/path", ResourceType.makeRelative("/any/path"));
@@ -85,7 +85,7 @@ public class ResourceTypeTest {
   }
 
   @Test
-  public void testEquals() {
+  void testEquals() {
     assertTrue(ResourceType.equals("/apps/path1/path2", "/apps/path1/path2", context.resourceResolver()));
     assertTrue(ResourceType.equals("path1/path2", "/apps/path1/path2", context.resourceResolver()));
     assertTrue(ResourceType.equals("/apps/path1/path2", "path1/path2", context.resourceResolver()));
@@ -103,7 +103,7 @@ public class ResourceTypeTest {
 
   @SuppressWarnings("deprecation")
   @Test
-  public void testEqualsWithoutResourceResolver() {
+  void testEqualsWithoutResourceResolver() {
     assertTrue(ResourceType.equals("/apps/path1/path2", "/apps/path1/path2"));
     assertTrue(ResourceType.equals("path1/path2", "/apps/path1/path2"));
     assertTrue(ResourceType.equals("/apps/path1/path2", "path1/path2"));
@@ -120,7 +120,7 @@ public class ResourceTypeTest {
   }
 
   @Test
-  public void testIs() {
+  void testIs() {
     context.create().resource("/apps/app1/type1");
     context.create().resource("/apps/app1/type2", "sling:resourceSuperType", "/apps/app1/type1");
     context.create().resource("/apps/app1/type3", "sling:resourceSuperType", "/apps/app1/type2");

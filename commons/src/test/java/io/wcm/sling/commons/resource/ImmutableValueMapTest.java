@@ -19,21 +19,22 @@
  */
 package io.wcm.sling.commons.resource;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Map;
 
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.wrappers.ValueMapDecorator;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.ImmutableMap;
 
-public class ImmutableValueMapTest {
+class ImmutableValueMapTest {
 
   private static final Map<String, Object> SAMPLE_PROPS = ImmutableMap.<String, Object>builder()
       .put("prop1", "value1")
@@ -42,24 +43,24 @@ public class ImmutableValueMapTest {
 
   private ValueMap underTest;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     underTest = ImmutableValueMap.copyOf(SAMPLE_PROPS);
   }
 
   @Test
-  public void testProperties() {
+  void testProperties() {
     assertEquals("value1", underTest.get("prop1", String.class));
     assertEquals((Integer)55, underTest.get("prop2", Integer.class));
   }
 
   @Test
-  public void testDefault() {
+  void testDefault() {
     assertEquals("def", underTest.get("prop3", "def"));
   }
 
   @Test
-  public void testMapAccessMethods() {
+  void testMapAccessMethods() {
     assertEquals(2, underTest.size());
     assertFalse(underTest.isEmpty());
     assertTrue(underTest.containsKey("prop1"));
@@ -70,44 +71,52 @@ public class ImmutableValueMapTest {
     assertEquals(2, underTest.entrySet().size());
   }
 
-  @Test(expected = UnsupportedOperationException.class)
-  public void testMapClear() {
-    underTest.clear();
-  }
-
-  @Test(expected = UnsupportedOperationException.class)
-  public void testMapRemove() {
-    underTest.remove("prop2");
-  }
-
-  @Test(expected = UnsupportedOperationException.class)
-  public void testMapPut() {
-    underTest.put("prop3", "value3");
-  }
-
-  @Test(expected = UnsupportedOperationException.class)
-  public void testMapPutAll() {
-    underTest.putAll(ImmutableMap.<String, Object>builder()
-        .put("prop4", 25)
-        .put("prop5", 33)
-        .build());
+  @Test
+  void testMapClear() {
+    assertThrows(UnsupportedOperationException.class, () -> {
+      underTest.clear();
+    });
   }
 
   @Test
-  public void testOf() {
+  void testMapRemove() {
+    assertThrows(UnsupportedOperationException.class, () -> {
+      underTest.remove("prop2");
+    });
+  }
+
+  @Test
+  void testMapPut() {
+    assertThrows(UnsupportedOperationException.class, () -> {
+      underTest.put("prop3", "value3");
+    });
+  }
+
+  @Test
+  void testMapPutAll() {
+    assertThrows(UnsupportedOperationException.class, () -> {
+      underTest.putAll(ImmutableMap.<String, Object>builder()
+          .put("prop4", 25)
+          .put("prop5", 33)
+          .build());
+    });
+  }
+
+  @Test
+  void testOf() {
     ValueMap map = ImmutableValueMap.of();
     assertTrue(map.isEmpty());
   }
 
   @Test
-  public void testOfx1() {
+  void testOfx1() {
     ValueMap map = ImmutableValueMap.of("p1", "v1");
     assertEquals(1, map.size());
     assertEquals("v1", map.get("p1"));
   }
 
   @Test
-  public void testOfx2() {
+  void testOfx2() {
     ValueMap map = ImmutableValueMap.of("p1", "v1", "p2", "v2");
     assertEquals(2, map.size());
     assertEquals("v1", map.get("p1"));
@@ -115,7 +124,7 @@ public class ImmutableValueMapTest {
   }
 
   @Test
-  public void testOfx3() {
+  void testOfx3() {
     ValueMap map = ImmutableValueMap.of("p1", "v1", "p2", "v2", "p3", "v3");
     assertEquals(3, map.size());
     assertEquals("v1", map.get("p1"));
@@ -124,7 +133,7 @@ public class ImmutableValueMapTest {
   }
 
   @Test
-  public void testOfx4() {
+  void testOfx4() {
     ValueMap map = ImmutableValueMap.of("p1", "v1", "p2", "v2", "p3", "v3", "p4", "v4");
     assertEquals(4, map.size());
     assertEquals("v1", map.get("p1"));
@@ -134,7 +143,7 @@ public class ImmutableValueMapTest {
   }
 
   @Test
-  public void testOfx5() {
+  void testOfx5() {
     ValueMap map = ImmutableValueMap.of("p1", "v1", "p2", "v2", "p3", "v3", "p4", "v4", "p5", "v5");
     assertEquals(5, map.size());
     assertEquals("v1", map.get("p1"));
@@ -145,7 +154,7 @@ public class ImmutableValueMapTest {
   }
 
   @Test
-  public void testBuilder() {
+  void testBuilder() {
     ValueMap map = ImmutableValueMap.builder()
         .put("p1", "v1")
         .putAll(ImmutableMap.<String, Object>of("p2", "v2", "p3", "v3"))
@@ -161,20 +170,20 @@ public class ImmutableValueMapTest {
   }
 
   @Test
-  public void testBuilderEmpty() {
+  void testBuilderEmpty() {
     ValueMap map = ImmutableValueMap.builder().build();
     assertTrue(map.isEmpty());
   }
 
   @Test
-  public void testCopyOfValueMap() {
+  void testCopyOfValueMap() {
     ValueMap valueMap = new ValueMapDecorator(SAMPLE_PROPS);
     ValueMap map = ImmutableValueMap.copyOf(valueMap);
     assertEquals(map.size(), SAMPLE_PROPS.size());
   }
 
   @Test
-  public void testEquals() {
+  void testEquals() {
     ValueMap map1 = ImmutableValueMap.builder()
         .put("prop1", "value1")
         .put("prop2", 55)
@@ -195,7 +204,7 @@ public class ImmutableValueMapTest {
   }
 
   @Test
-  public void testToString() {
+  void testToString() {
     ValueMap map = ImmutableValueMap.builder()
         .put("prop1", "value1")
         .put("prop2", 55)

@@ -19,10 +19,10 @@
  */
 package io.wcm.sling.commons.request;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSortedMap;
@@ -30,17 +30,17 @@ import com.google.common.collect.ImmutableSortedSet;
 
 import io.wcm.sling.commons.util.Escape;
 
-public class QueryStringBuilderTest {
+class QueryStringBuilderTest {
 
   private static final String SPECIAL_CHARS = "a!:$&=";
 
   @Test
-  public void testEmpty() {
+  void testEmpty() {
     assertNull(new QueryStringBuilder().build());
   }
 
   @Test
-  public void testSimple() {
+  void testSimple() {
     assertEquals("p1=value1&p2=123&p3=true&p4=", new QueryStringBuilder()
         .param("p1", "value1")
         .param("p2", 123)
@@ -50,7 +50,7 @@ public class QueryStringBuilderTest {
   }
 
   @Test
-  public void testUrlEncoding() {
+  void testUrlEncoding() {
     assertEquals("p1=" + Escape.urlEncode(SPECIAL_CHARS) + "&" + Escape.urlEncode(SPECIAL_CHARS) + "=value2", new QueryStringBuilder()
         .param("p1", SPECIAL_CHARS)
         .param(SPECIAL_CHARS, "value2")
@@ -58,7 +58,7 @@ public class QueryStringBuilderTest {
   }
 
   @Test
-  public void testMulti() {
+  void testMulti() {
     assertEquals("p1=value1&p1=value2&p1=&p2=1&p2=2&p3=false&p3=true&p4=abc", new QueryStringBuilder()
         .param("p1", new String[] { "value1", "value2", null })
         .param("p2", ImmutableList.of(1, 2))
@@ -68,7 +68,7 @@ public class QueryStringBuilderTest {
   }
 
   @Test
-  public void testMap() {
+  void testMap() {
     assertEquals("p1=value1&p1=value2&p1=&p2=1&p2=2&p3=false&p3=true&p4=abc", new QueryStringBuilder()
         .params(ImmutableSortedMap.of(
             "p1", new String[] { "value1", "value2", null },

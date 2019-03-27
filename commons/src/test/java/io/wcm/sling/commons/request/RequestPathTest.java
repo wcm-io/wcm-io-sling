@@ -19,34 +19,34 @@
  */
 package io.wcm.sling.commons.request;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.request.RequestPathInfo;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 @SuppressWarnings("null")
-public class RequestPathTest {
+class RequestPathTest {
 
   @Mock
   private SlingHttpServletRequest request;
   @Mock
   private RequestPathInfo requestPathInfo;
 
-  @Before
-  public void setUp() throws Exception {
+  @BeforeEach
+  void setUp() throws Exception {
     when(request.getRequestPathInfo()).thenReturn(requestPathInfo);
   }
 
   @Test
-  public void testHasSelector() {
+  void testHasSelector() {
     when(requestPathInfo.getSelectors()).thenReturn(new String[] {
         "sel1", "sel2"
     });
@@ -56,7 +56,7 @@ public class RequestPathTest {
   }
 
   @Test
-  public void testHasSelector_NoPresent() {
+  void testHasSelector_NoPresent() {
     when(requestPathInfo.getSelectors()).thenReturn(new String[0]);
     assertFalse(RequestPath.hasSelector(request, "sel1"));
     assertFalse(RequestPath.hasSelector(request, "sel2"));
@@ -64,7 +64,7 @@ public class RequestPathTest {
   }
 
   @Test
-  public void testHasSelector_NullArray() {
+  void testHasSelector_NullArray() {
     when(requestPathInfo.getSelectors()).thenReturn(null);
     assertFalse(RequestPath.hasSelector(request, "sel1"));
     assertFalse(RequestPath.hasSelector(request, "sel2"));
@@ -72,7 +72,7 @@ public class RequestPathTest {
   }
 
   @Test
-  public void testHasSelector_InvalidArgs() {
+  void testHasSelector_InvalidArgs() {
     when(requestPathInfo.getSelectors()).thenReturn(new String[] {
         "sel1", "sel2"
     });
@@ -81,7 +81,7 @@ public class RequestPathTest {
   }
 
   @Test
-  public void testHasAnySelector() {
+  void testHasAnySelector() {
     when(requestPathInfo.getSelectors()).thenReturn(new String[] {
         "sel1", "sel2"
     });
@@ -93,7 +93,7 @@ public class RequestPathTest {
   }
 
   @Test
-  public void testHasAnySelector_NoPresent() {
+  void testHasAnySelector_NoPresent() {
     when(requestPathInfo.getSelectors()).thenReturn(new String[0]);
     assertFalse(RequestPath.hasAnySelector(request, "sel1"));
     assertFalse(RequestPath.hasAnySelector(request, "sel2"));
@@ -101,7 +101,7 @@ public class RequestPathTest {
   }
 
   @Test
-  public void testHasAnySelector_NullArray() {
+  void testHasAnySelector_NullArray() {
     when(requestPathInfo.getSelectors()).thenReturn(null);
     assertFalse(RequestPath.hasAnySelector(request, "sel1"));
     assertFalse(RequestPath.hasAnySelector(request, "sel2"));
@@ -109,7 +109,7 @@ public class RequestPathTest {
   }
 
   @Test
-  public void testHasAnySelector_InvalidArgs() {
+  void testHasAnySelector_InvalidArgs() {
     when(requestPathInfo.getSelectors()).thenReturn(new String[] {
         "sel1", "sel2"
     });

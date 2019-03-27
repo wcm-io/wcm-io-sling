@@ -19,18 +19,18 @@
  */
 package io.wcm.sling.commons.caservice.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.testing.mock.osgi.MockBundle;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.osgi.framework.Constants;
 
 import com.google.common.collect.ImmutableList;
@@ -40,13 +40,14 @@ import io.wcm.sling.commons.caservice.ContextAwareService;
 import io.wcm.sling.commons.caservice.ContextAwareServiceResolver;
 import io.wcm.sling.commons.caservice.ContextAwareServiceResolver.ResolveAllResult;
 import io.wcm.sling.commons.caservice.PathPreprocessor;
-import io.wcm.testing.mock.aem.junit.AemContext;
+import io.wcm.testing.mock.aem.junit5.AemContext;
+import io.wcm.testing.mock.aem.junit5.AemContextExtension;
 
+@ExtendWith(AemContextExtension.class)
 @SuppressWarnings("null")
-public class ContextAwareServiceResolverImplTest {
+class ContextAwareServiceResolverImplTest {
 
-  @Rule
-  public AemContext context = new AemContext();
+  private final AemContext context = new AemContext();
 
   private DummySpi contentImpl;
   private DummySpi contentDamImpl;
@@ -54,8 +55,8 @@ public class ContextAwareServiceResolverImplTest {
 
   private ContextAwareServiceResolver underTest;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     contentImpl = context.registerService(DummySpi.class, new DummySpiImpl(),
         ContextAwareService.PROPERTY_CONTEXT_PATH_PATTERN, "^/content(/.*)?$",
         Constants.SERVICE_RANKING, 100);
@@ -80,7 +81,7 @@ public class ContextAwareServiceResolverImplTest {
   }
 
   @Test
-  public void testWithDefaultImpl() {
+  void testWithDefaultImpl() {
     DummySpi defaultImpl = context.registerService(DummySpi.class, new DummySpiImpl(),
         Constants.SERVICE_RANKING, Integer.MIN_VALUE,
         ContextAwareService.PROPERTY_ACCEPTS_CONTEXT_PATH_EMPTY, true);
@@ -96,7 +97,7 @@ public class ContextAwareServiceResolverImplTest {
   }
 
   @Test
-  public void testWithoutDefaultImpl() {
+  void testWithoutDefaultImpl() {
     assertSame(contentImpl, underTest.resolve(DummySpi.class, context.create().resource("/content/test1")));
     assertSame(contentSampleImpl, underTest.resolve(DummySpi.class, context.create().resource("/content/sample/test1")));
     assertSame(contentImpl, underTest.resolve(DummySpi.class, context.create().resource("/content/sample/exclude/test1")));
@@ -108,7 +109,7 @@ public class ContextAwareServiceResolverImplTest {
   }
 
   @Test
-  public void testWithSlingHttpServletRequest() {
+  void testWithSlingHttpServletRequest() {
     DummySpi defaultImpl = context.registerService(DummySpi.class, new DummySpiImpl(),
         Constants.SERVICE_RANKING, Integer.MIN_VALUE,
         ContextAwareService.PROPERTY_ACCEPTS_CONTEXT_PATH_EMPTY, true);
@@ -125,7 +126,7 @@ public class ContextAwareServiceResolverImplTest {
    * Context-aware service resolver should take the current page as context to resolve, not the current resource.
    */
   @Test
-  public void testWithSlingHttpServletRequest_ResourceOtherContext() {
+  void testWithSlingHttpServletRequest_ResourceOtherContext() {
     DummySpi defaultImpl = context.registerService(DummySpi.class, new DummySpiImpl(),
         Constants.SERVICE_RANKING, Integer.MIN_VALUE,
         ContextAwareService.PROPERTY_ACCEPTS_CONTEXT_PATH_EMPTY, true);
@@ -139,7 +140,7 @@ public class ContextAwareServiceResolverImplTest {
   }
 
   @Test
-  public void testWithNull() {
+  void testWithNull() {
     DummySpi defaultImpl = context.registerService(DummySpi.class, new DummySpiImpl(),
         Constants.SERVICE_RANKING, Integer.MIN_VALUE,
         ContextAwareService.PROPERTY_ACCEPTS_CONTEXT_PATH_EMPTY, true);
@@ -150,7 +151,7 @@ public class ContextAwareServiceResolverImplTest {
   }
 
   @Test
-  public void testResolveAllCombindedKey() {
+  void testResolveAllCombindedKey() {
     ResolveAllResult result1 = underTest.resolveAll(DummySpi.class, context.create().resource("/content/dam/test1"));
     ResolveAllResult result2 = underTest.resolveAll(DummySpi.class, context.create().resource("/content/dam/test2"));
     ResolveAllResult result3 = underTest.resolveAll(DummySpi.class, context.create().resource("/content/sample/test3"));
@@ -160,7 +161,7 @@ public class ContextAwareServiceResolverImplTest {
   }
 
   @Test
-  public void testWithBundleHeader() {
+  void testWithBundleHeader() {
 
     // service gets path pattern from bundle header instead of service property
     ((MockBundle)context.bundleContext().getBundle()).setHeaders(ImmutableMap.of(
@@ -180,7 +181,7 @@ public class ContextAwareServiceResolverImplTest {
   }
 
   @Test
-  public void testWithPathPreProcessor() {
+  void testWithPathPreProcessor() {
     context.registerService(PathPreprocessor.class, (path, resourceResolver) -> StringUtils.removeStart(path, "/pathprefix"));
     underTest = context.registerInjectActivateService(new ContextAwareServiceResolverImpl());
 

@@ -19,26 +19,28 @@
  */
 package io.wcm.sling.commons.request;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 import org.apache.commons.lang3.CharEncoding;
 import org.apache.sling.servlethelpers.MockSlingHttpServletRequest;
-import org.apache.sling.testing.mock.sling.junit.SlingContext;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.google.common.collect.ImmutableMap;
 
-public class RequestParamTest {
+import io.wcm.testing.mock.aem.junit5.AemContext;
+import io.wcm.testing.mock.aem.junit5.AemContextExtension;
 
-  @Rule
-  public SlingContext context = new SlingContext();
+@ExtendWith(AemContextExtension.class)
+class RequestParamTest {
+
+  private final AemContext context = new AemContext();
 
   private static final String PARAM_NONEXISTING = "paramNonExisting";
   protected static final String STRING_PARAM = "stringParam";
@@ -63,8 +65,8 @@ public class RequestParamTest {
   private Map<String, Object> paramMap;
   private MockSlingHttpServletRequest request;
 
-  @Before
-  public void setUp() throws Exception {
+  @BeforeEach
+  void setUp() throws Exception {
     request = context.request();
     paramMap = getParamMap();
     request.setParameterMap(paramMap);
@@ -101,91 +103,91 @@ public class RequestParamTest {
         .build();
   }
 
-  public enum SAMPLE_ENUM {
+  enum SAMPLE_ENUM {
     ENUM_VALUE1,
     ENUM_VALUE2
   }
 
   @Test
-  public void testGet() {
+  void testGet() {
     assertEquals(STRING_VALUE, RequestParam.get(request, STRING_PARAM));
     assertNull(RequestParam.get(request, PARAM_NONEXISTING));
   }
 
   @Test
-  public void testGetDefault() {
+  void testGetDefault() {
     assertEquals(STRING_VALUE, RequestParam.get(request, STRING_PARAM, "defValue"));
     assertEquals("defValue", RequestParam.get(request, PARAM_NONEXISTING, "defValue"));
   }
 
   @Test
-  public void testGetMultiple() {
+  void testGetMultiple() {
     assertArrayEquals(MULTI_STRING_VALUE, RequestParam.getMultiple(request, MULTI_STRING_PARAM));
     assertNull(RequestParam.get(request, PARAM_NONEXISTING));
   }
 
   @Test
-  public void testGetMap() {
+  void testGetMap() {
     assertEquals(STRING_VALUE, RequestParam.get(request.getParameterMap(), STRING_PARAM));
     assertNull(RequestParam.get(request.getParameterMap(), PARAM_NONEXISTING));
   }
 
   @Test
-  public void testGetInt() {
+  void testGetInt() {
     assertEquals(INTEGER_VALUE, RequestParam.getInt(request, INTEGER_PARAM));
     assertEquals(0, RequestParam.getInt(request, PARAM_NONEXISTING));
   }
 
   @Test
-  public void testGetIntDefault() {
+  void testGetIntDefault() {
     assertEquals(INTEGER_VALUE, RequestParam.getInt(request, INTEGER_PARAM, 25));
     assertEquals(25, RequestParam.getInt(request, PARAM_NONEXISTING, 25));
   }
 
   @Test
-  public void testGetLong() {
+  void testGetLong() {
     assertEquals(LONG_VALUE, RequestParam.getLong(request, LONG_PARAM));
     assertEquals(0L, RequestParam.getLong(request, PARAM_NONEXISTING));
   }
 
   @Test
-  public void testGetLongDefault() {
+  void testGetLongDefault() {
     assertEquals(LONG_VALUE, RequestParam.getLong(request, LONG_PARAM, 33L));
     assertEquals(33L, RequestParam.getLong(request, PARAM_NONEXISTING, 33L));
   }
 
   @Test
-  public void testGetFloat() {
+  void testGetFloat() {
     assertEquals(FLOAT_VALUE, RequestParam.getFloat(request, FLOAT_PARAM), 0.0001f);
     assertEquals(0f, RequestParam.getFloat(request, PARAM_NONEXISTING), 0.0001f);
   }
 
   @Test
-  public void testGetFloatDefault() {
+  void testGetFloatDefault() {
     assertEquals(FLOAT_VALUE, RequestParam.getFloat(request, FLOAT_PARAM, 1.234f), 0.0001f);
     assertEquals(1.234f, RequestParam.getFloat(request, PARAM_NONEXISTING, 1.234f), 0.0001f);
   }
 
   @Test
-  public void testGetDouble() {
+  void testGetDouble() {
     assertEquals(DOUBLE_VALUE, RequestParam.getDouble(request, DOUBLE_PARAM), 0.0001d);
     assertEquals(0d, RequestParam.getDouble(request, PARAM_NONEXISTING), 0.0001d);
   }
 
   @Test
-  public void testGetDoubleDefault() {
+  void testGetDoubleDefault() {
     assertEquals(DOUBLE_VALUE, RequestParam.getDouble(request, DOUBLE_PARAM, 2.4456d), 0.0001d);
     assertEquals(2.4456d, RequestParam.getDouble(request, PARAM_NONEXISTING, 2.4456d), 0.0001d);
   }
 
   @Test
-  public void testGetEnum() {
+  void testGetEnum() {
     assertEquals(ENUM_VALUE, RequestParam.getEnum(request, ENUM_PARAM, SAMPLE_ENUM.class));
     assertNull(RequestParam.getEnum(request, PARAM_NONEXISTING, SAMPLE_ENUM.class));
   }
 
   @Test
-  public void testGetEnumDefault() {
+  void testGetEnumDefault() {
     assertEquals(ENUM_VALUE, RequestParam.getEnum(request, ENUM_PARAM, SAMPLE_ENUM.class, SAMPLE_ENUM.ENUM_VALUE1));
     assertEquals(SAMPLE_ENUM.ENUM_VALUE1, RequestParam.getEnum(request, PARAM_NONEXISTING, SAMPLE_ENUM.class, SAMPLE_ENUM.ENUM_VALUE1));
   }
