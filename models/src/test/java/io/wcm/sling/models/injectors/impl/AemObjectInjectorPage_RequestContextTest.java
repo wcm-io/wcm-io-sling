@@ -19,23 +19,26 @@
  */
 package io.wcm.sling.models.injectors.impl;
 
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import org.apache.sling.models.spi.DisposalCallbackRegistry;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import com.day.cq.wcm.api.PageManager;
 
-@RunWith(MockitoJUnitRunner.Silent.class)
-public class AemObjectInjectorPage_RequestContextTest extends AemObjectInjectorRequestTest {
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+class AemObjectInjectorPage_RequestContextTest extends AemObjectInjectorRequestTest {
 
-  @Before
-  public void setupRequestContext() {
+  @BeforeEach
+  void setupRequestContext() {
     when(requestContext.getThreadRequest()).thenReturn(request);
   }
 
@@ -46,7 +49,7 @@ public class AemObjectInjectorPage_RequestContextTest extends AemObjectInjectorR
 
   @Override
   @Test
-  public void testInvalid() {
+  void testInvalid() {
     Object result = injector.getValue(new StringBuffer(), null, PageManager.class, annotatedElement, mock(DisposalCallbackRegistry.class));
     assertSame(pageManager, result);
   }

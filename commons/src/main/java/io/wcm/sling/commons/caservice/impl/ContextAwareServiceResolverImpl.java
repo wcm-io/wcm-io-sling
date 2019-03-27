@@ -87,7 +87,7 @@ public class ContextAwareServiceResolverImpl implements ContextAwareServiceResol
   }
 
   @Deactivate
-  private void deactivate(BundleContext context) {
+  private void deactivate() {
     this.serviceTrackerCache.invalidateAll();
     this.serviceTrackerCache = null;
   }

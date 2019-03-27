@@ -19,27 +19,27 @@
  */
 package io.wcm.sling.commons.adapter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 
 import org.apache.sling.api.adapter.Adaptable;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 @SuppressWarnings("null")
-public class AdaptToTest {
+class AdaptToTest {
 
   @Mock
   private Adaptable adaptable;
 
   @Test
-  public void testAdaptSuccess() {
+  void testAdaptSuccess() {
     final String SAMPLE = "sampleString";
     when(adaptable.adaptTo(Comparable.class)).thenReturn(SAMPLE);
 
@@ -47,7 +47,7 @@ public class AdaptToTest {
   }
 
   @Test
-  public void testAdaptNotSuccess() {
+  void testAdaptNotSuccess() {
     when(adaptable.adaptTo(Comparable.class)).thenReturn(null);
 
     try {

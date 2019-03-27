@@ -29,6 +29,7 @@ import java.util.SortedMap;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.wrappers.ValueMapDecorator;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.osgi.annotation.versioning.ProviderType;
 
 import com.google.common.base.Joiner;
@@ -64,12 +65,12 @@ public final class ImmutableValueMap implements ValueMap {
   }
 
   @Override
-  public <T> T get(String name, Class<T> type) {
+  public @Nullable <T> T get(@NotNull String name, @NotNull Class<T> type) {
     return this.map.get(name, type);
   }
 
   @Override
-  public <T> T get(String name, T defaultValue) {
+  public <T> T get(@NotNull String name, T defaultValue) {
     return this.map.get(name, defaultValue);
   }
 

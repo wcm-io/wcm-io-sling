@@ -19,8 +19,8 @@
  */
 package io.wcm.sling.models.injectors.impl;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -29,13 +29,13 @@ import java.lang.reflect.AnnotatedElement;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.models.spi.DisposalCallbackRegistry;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
-import org.apache.sling.testing.mock.sling.junit.SlingContext;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import com.adobe.granite.workflow.WorkflowSession;
 import com.adobe.granite.xss.XSSAPI;
@@ -51,12 +51,16 @@ import com.day.cq.wcm.api.designer.Designer;
 import com.day.cq.wcm.api.designer.Style;
 
 import io.wcm.sling.commons.request.RequestContext;
+import io.wcm.testing.mock.aem.junit5.AemContext;
+import io.wcm.testing.mock.aem.junit5.AemContextExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class AemObjectInjectorResourceResolverTest {
+@ExtendWith(AemContextExtension.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+@SuppressWarnings("deprecation")
+class AemObjectInjectorResourceResolverTest {
 
-  @Rule
-  public SlingContext context = new SlingContext(ResourceResolverType.RESOURCERESOLVER_MOCK);
+  private final AemContext context = new AemContext(ResourceResolverType.RESOURCERESOLVER_MOCK);
 
   @Mock
   private AnnotatedElement annotatedElement;
@@ -75,8 +79,9 @@ public class AemObjectInjectorResourceResolverTest {
 
   private AemObjectInjector injector;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  @SuppressWarnings("null")
+  void setUp() {
     context.registerService(RequestContext.class, requestContext);
     context.registerInjectActivateService(new ModelsImplConfiguration(),
         "requestThreadLocal", true);
@@ -90,85 +95,85 @@ public class AemObjectInjectorResourceResolverTest {
   }
 
   @Test
-  public void testPageManager() {
+  void testPageManager() {
     Object result = injector.getValue(resourceResolver, null, PageManager.class, annotatedElement, mock(DisposalCallbackRegistry.class));
     assertSame(pageManager, result);
   }
 
   @Test
-  public void testCurrentPage() {
+  void testCurrentPage() {
     Object result = injector.getValue(resourceResolver, null, Page.class, annotatedElement, mock(DisposalCallbackRegistry.class));
     assertNull(result);
   }
 
   @Test
-  public void testResourcePage() {
+  void testResourcePage() {
     Object result = injector.getValue(resourceResolver, "resourcePage", Page.class, annotatedElement, mock(DisposalCallbackRegistry.class));
     assertNull(result);
   }
 
   @Test
-  public void testWcmMode() {
+  void testWcmMode() {
     Object result = injector.getValue(resourceResolver, null, WCMMode.class, annotatedElement, mock(DisposalCallbackRegistry.class));
     assertNull(result);
   }
 
   @Test
-  public void testAuthoringUiMode() {
+  void testAuthoringUiMode() {
     Object result = injector.getValue(resourceResolver, null, AuthoringUIMode.class, annotatedElement, mock(DisposalCallbackRegistry.class));
     assertNull(result);
   }
 
   @Test
-  public void testComponentContext() {
+  void testComponentContext() {
     Object result = injector.getValue(resourceResolver, null, ComponentContext.class, annotatedElement, mock(DisposalCallbackRegistry.class));
     assertNull(result);
   }
 
   @Test
-  public void testDesigner() {
+  void testDesigner() {
     Object result = injector.getValue(resourceResolver, null, Designer.class, annotatedElement, mock(DisposalCallbackRegistry.class));
     assertSame(designer, result);
   }
 
   @Test
-  public void testTagManager() {
+  void testTagManager() {
     Object result = injector.getValue(resourceResolver, null, TagManager.class, annotatedElement, mock(DisposalCallbackRegistry.class));
     assertSame(tagManager, result);
   }
 
   @Test
-  public void testDesign() {
+  void testDesign() {
     Object result = injector.getValue(resourceResolver, null, Design.class, annotatedElement, mock(DisposalCallbackRegistry.class));
     assertNull(result);
   }
 
   @Test
-  public void testStyle() {
+  void testStyle() {
     Object result = injector.getValue(resourceResolver, null, Style.class, annotatedElement, mock(DisposalCallbackRegistry.class));
     assertNull(result);
   }
 
   @Test
-  public void testXssApi() {
+  void testXssApi() {
     Object result = injector.getValue(resourceResolver, null, XSSAPI.class, annotatedElement, mock(DisposalCallbackRegistry.class));
     assertNull(result);
   }
 
   @Test
-  public void testI18n() {
+  void testI18n() {
     Object result = injector.getValue(resourceResolver, null, I18n.class, annotatedElement, mock(DisposalCallbackRegistry.class));
     assertNull(result);
   }
 
   @Test
-  public void testWorkflowSession() {
+  void testWorkflowSession() {
     Object result = injector.getValue(resourceResolver, null, WorkflowSession.class, annotatedElement, mock(DisposalCallbackRegistry.class));
     assertSame(workflowSession, result);
   }
 
   @Test
-  public void testInvalid() {
+  void testInvalid() {
     Object result = injector.getValue(this, null, PageManager.class, annotatedElement, mock(DisposalCallbackRegistry.class));
     assertNull(result);
   }

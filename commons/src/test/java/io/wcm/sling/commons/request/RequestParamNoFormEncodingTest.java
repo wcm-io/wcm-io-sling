@@ -25,8 +25,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.CharEncoding;
 
-
-public class RequestParamNoFormEncodingTest extends RequestParamTest {
+class RequestParamNoFormEncodingTest extends RequestParamTest {
 
   @Override
   protected Map<String, Object> getParamMap() throws UnsupportedEncodingException {
