@@ -70,6 +70,7 @@ import io.wcm.sling.models.annotations.AemObject;
      */
     Constants.SERVICE_RANKING + ":Integer=" + 4400
 })
+@SuppressWarnings("deprecation")
 public final class AemObjectInjector implements Injector, StaticInjectAnnotationProcessorFactory, AcceptsNullName {
 
   /**
@@ -184,7 +185,6 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
     return null;
   }
 
-  @SuppressWarnings("null")
   private Resource getResource(final Object adaptable) {
     if (adaptable instanceof Resource) {
       return (Resource)adaptable;
@@ -199,7 +199,6 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
     return null;
   }
 
-  @SuppressWarnings("null")
   private PageManager getPageManager(final Object adaptable) {
     ResourceResolver resolver = getResourceResolver(adaptable);
     if (resolver != null) {
@@ -208,7 +207,6 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
     return null;
   }
 
-  @SuppressWarnings("null")
   private Designer getDesigner(final Object adaptable) {
     ResourceResolver resolver = getResourceResolver(adaptable);
     if (resolver != null) {
@@ -272,7 +270,6 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
     return null;
   }
 
-  @SuppressWarnings("null")
   private XSSAPI getXssApi(final SlingHttpServletRequest request) {
     return request.adaptTo(XSSAPI.class);
   }
@@ -290,7 +287,6 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
     return new I18n(getI18nEnabledRequest(request));
   }
 
-  @SuppressWarnings("null")
   private TagManager getTagManager(final Object adaptable) {
     ResourceResolver resolver = getResourceResolver(adaptable);
     if (resolver != null) {
@@ -299,7 +295,6 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
     return null;
   }
 
-  @SuppressWarnings("null")
   private WorkflowSession getWorkflowSession(final Object adaptable) {
     ResourceResolver resolver = getResourceResolver(adaptable);
     if (resolver != null) {
@@ -357,7 +352,6 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public Boolean isOptional() {
       return annotation.optional();
     }

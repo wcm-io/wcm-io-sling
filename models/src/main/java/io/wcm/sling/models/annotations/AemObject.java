@@ -185,6 +185,7 @@ import io.wcm.sling.models.injectors.impl.AemObjectInjector;
 @Retention(RUNTIME)
 @InjectAnnotation
 @Source(AemObjectInjector.NAME)
+@SuppressWarnings({ "deprecation", "javadoc" })
 public @interface AemObject {
 
   /**
