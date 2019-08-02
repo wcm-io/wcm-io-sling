@@ -38,6 +38,7 @@ import java.util.ResourceBundle;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.api.scripting.SlingBindings;
 import org.apache.sling.models.spi.DisposalCallbackRegistry;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,6 +49,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
+import com.adobe.cq.sightly.WCMBindings;
 import com.adobe.granite.workflow.WorkflowSession;
 import com.adobe.granite.xss.XSSAPI;
 import com.day.cq.i18n.I18n;
@@ -198,9 +200,23 @@ class AemObjectInjectorRequestTest {
   }
 
   @Test
-  void testStyle() {
+  void testStyle_FromDesigner() {
     Object result = injector.getValue(adaptable(), null, Style.class, annotatedElement, mock(DisposalCallbackRegistry.class));
     assertSame(style, result);
+  }
+
+  @Test
+  @SuppressWarnings("null")
+  void testStyle_FromSlingBindings() {
+    Style styleFromBindings = mock(Style.class);
+
+    SlingBindings slingBindings = new SlingBindings();
+    slingBindings.setRequest(context.request());
+    slingBindings.put(WCMBindings.CURRENT_STYLE, styleFromBindings);
+    when(request.getAttribute(SlingBindings.class.getName())).thenReturn(slingBindings);
+
+    Object result = injector.getValue(adaptable(), null, Style.class, annotatedElement, mock(DisposalCallbackRegistry.class));
+    assertSame(styleFromBindings, result);
   }
 
   @Test

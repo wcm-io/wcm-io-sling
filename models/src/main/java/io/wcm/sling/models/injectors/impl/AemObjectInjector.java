@@ -41,6 +41,7 @@ import org.osgi.framework.Constants;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
+import com.adobe.cq.sightly.WCMBindings;
 import com.adobe.granite.workflow.WorkflowSession;
 import com.adobe.granite.xss.XSSAPI;
 import com.day.cq.i18n.I18n;
@@ -263,12 +264,21 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
   }
 
   private @Nullable Style getStyle(@NotNull final SlingHttpServletRequest request) {
-    Design currentDesign = getCurrentDesign(request);
-    ComponentContext componentContext = getComponentContext(request);
-    if (currentDesign != null && componentContext != null) {
-      return currentDesign.getStyle(componentContext.getCell());
+    Style style = null;
+    // first try to get from sling bindings
+    SlingBindings slingBindings = getSlingBindings(request);
+    if (slingBindings != null) {
+      style = (Style)slingBindings.get(WCMBindings.CURRENT_STYLE);
     }
-    return null;
+    if (style == null) {
+      // fallback to current design
+      Design currentDesign = getCurrentDesign(request);
+      ComponentContext componentContext = getComponentContext(request);
+      if (currentDesign != null && componentContext != null) {
+        style = currentDesign.getStyle(componentContext.getCell());
+      }
+    }
+    return style;
   }
 
   private @Nullable XSSAPI getXssApi(@NotNull final SlingHttpServletRequest request) {
