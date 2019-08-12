@@ -41,6 +41,7 @@ public final class AdaptTo {
    * @return Adaption result (not null)
    * @throws UnableToAdaptException if the adaption was not successful
    */
+  @SuppressWarnings("null")
   public static <T> @NotNull T notNull(@NotNull Adaptable adaptable, @NotNull Class<T> type) {
     T object = adaptable.adaptTo(type);
     if (object == null) {

@@ -19,17 +19,17 @@
  */
 package io.wcm.sling.commons.resource;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.day.jcr.vault.util.Text;
 
 @SuppressWarnings({ "deprecation", "null" })
-public class ResourcePathTest {
+class ResourcePathTest {
 
   @Test
-  public void testGetAbsoluteLevel() {
+  void testGetAbsoluteLevel() {
     assertEquals("/a", Text.getAbsoluteParent("/a/b/c/d", ResourcePath.getAbsoluteLevel("/a")));
     assertEquals("/a/b", Text.getAbsoluteParent("/a/b/c/d", ResourcePath.getAbsoluteLevel("/a/b")));
     assertEquals("/a/b/c", Text.getAbsoluteParent("/a/b/c/d", ResourcePath.getAbsoluteLevel("/a/b/c")));

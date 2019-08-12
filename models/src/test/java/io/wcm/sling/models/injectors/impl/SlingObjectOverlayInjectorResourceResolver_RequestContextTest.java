@@ -19,22 +19,25 @@
  */
 package io.wcm.sling.models.injectors.impl;
 
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import org.apache.sling.api.scripting.SlingScriptHelper;
 import org.apache.sling.models.spi.DisposalCallbackRegistry;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
-@RunWith(MockitoJUnitRunner.Silent.class)
-public class SlingObjectOverlayInjectorResourceResolver_RequestContextTest extends SlingObjectOverlayInjectorRequestTest {
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+class SlingObjectOverlayInjectorResourceResolver_RequestContextTest extends SlingObjectOverlayInjectorRequestTest {
 
-  @Before
-  public void setupRequestContext() {
+  @BeforeEach
+  void setupRequestContext() {
     when(this.requestContext.getThreadRequest()).thenReturn(this.request);
   }
 
@@ -45,7 +48,7 @@ public class SlingObjectOverlayInjectorResourceResolver_RequestContextTest exten
 
   @Override
   @Test
-  public void testInvalid() {
+  void testInvalid() {
     Object result = this.injector.getValue(new StringBuffer(), null, SlingScriptHelper.class, this.annotatedElement, mock(DisposalCallbackRegistry.class));
     assertSame(this.scriptHelper, result);
   }

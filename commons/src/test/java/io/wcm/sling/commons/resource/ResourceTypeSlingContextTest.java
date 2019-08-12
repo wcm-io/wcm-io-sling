@@ -19,28 +19,29 @@
  */
 package io.wcm.sling.commons.resource;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-import org.apache.sling.testing.mock.sling.junit.SlingContext;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
+import io.wcm.testing.mock.aem.junit5.AemContext;
+import io.wcm.testing.mock.aem.junit5.AemContextExtension;
+
+@ExtendWith(AemContextExtension.class)
 @SuppressWarnings("null")
-public class ResourceTypeSlingContextTest {
+class ResourceTypeSlingContextTest {
 
-  @Rule
-  public SlingContext context = new SlingContext();
+  private final AemContext context = new AemContext();
 
-  @SuppressWarnings("unused")
   @Test
-  public void testMakeAbsolute_Invalid() {
+  void testMakeAbsolute_Invalid() {
     assertNull(ResourceType.makeAbsolute(null, context.resourceResolver()));
     assertEquals("", ResourceType.makeAbsolute("", context.resourceResolver()));
   }
 
   @Test
-  public void testMakeAbsolute_ExistingAppsResource() {
+  void testMakeAbsolute_ExistingAppsResource() {
     context.create().resource("/apps/any/path");
 
     assertEquals("/any/path", ResourceType.makeAbsolute("/any/path", context.resourceResolver()));
@@ -48,7 +49,7 @@ public class ResourceTypeSlingContextTest {
   }
 
   @Test
-  public void testMakeAbsolute_ExistingLibsResource() {
+  void testMakeAbsolute_ExistingLibsResource() {
     context.create().resource("/libs/any/path");
 
     assertEquals("/any/path", ResourceType.makeAbsolute("/any/path", context.resourceResolver()));
@@ -56,7 +57,7 @@ public class ResourceTypeSlingContextTest {
   }
 
   @Test
-  public void testMakeAbsolute_NonExistingResource() {
+  void testMakeAbsolute_NonExistingResource() {
     assertEquals("/any/path", ResourceType.makeAbsolute("/any/path", context.resourceResolver()));
     assertEquals("any/path", ResourceType.makeAbsolute("any/path", context.resourceResolver()));
   }

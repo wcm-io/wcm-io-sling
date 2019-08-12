@@ -62,7 +62,6 @@ public final class ResourceType {
    * @param resourceResolver Resource resolver
    * @return Absolute resource type
    */
-  @SuppressWarnings({ "null", "unused" })
   public static @NotNull String makeAbsolute(@NotNull String resourceType, @NotNull ResourceResolver resourceResolver) {
     if (StringUtils.isEmpty(resourceType) || StringUtils.startsWith(resourceType, "/")) {
       return resourceType;

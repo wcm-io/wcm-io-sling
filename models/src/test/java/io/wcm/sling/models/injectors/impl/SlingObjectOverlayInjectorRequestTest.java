@@ -19,8 +19,8 @@
  */
 package io.wcm.sling.models.injectors.impl;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -38,23 +38,26 @@ import org.apache.sling.api.scripting.SlingScriptHelper;
 import org.apache.sling.models.annotations.injectorspecific.SlingObject;
 import org.apache.sling.models.spi.DisposalCallbackRegistry;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
-import org.apache.sling.testing.mock.sling.junit.SlingContext;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import com.day.cq.wcm.api.Page;
 
 import io.wcm.sling.commons.request.RequestContext;
+import io.wcm.testing.mock.aem.junit5.AemContext;
+import io.wcm.testing.mock.aem.junit5.AemContextExtension;
 
-@RunWith(MockitoJUnitRunner.Silent.class)
-public class SlingObjectOverlayInjectorRequestTest {
+@ExtendWith(AemContextExtension.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+class SlingObjectOverlayInjectorRequestTest {
 
-  @Rule
-  public SlingContext context = new SlingContext(ResourceResolverType.RESOURCERESOLVER_MOCK);
+  private final AemContext context = new AemContext(ResourceResolverType.RESOURCERESOLVER_MOCK);
 
   @Mock
   protected AnnotatedElement annotatedElement;
@@ -75,8 +78,9 @@ public class SlingObjectOverlayInjectorRequestTest {
 
   protected SlingObjectOverlayInjector injector;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  @SuppressWarnings("null")
+  void setUp() {
     context.registerService(RequestContext.class, requestContext);
     context.registerInjectActivateService(new ModelsImplConfiguration(),
         "requestThreadLocal", true);
@@ -99,13 +103,13 @@ public class SlingObjectOverlayInjectorRequestTest {
   }
 
   @Test
-  public void testResourceResolver() {
+  void testResourceResolver() {
     Object result = this.injector.getValue(adaptable(), null, ResourceResolver.class, this.annotatedElement, mock(DisposalCallbackRegistry.class));
     assertSame(this.resourceResolver, result);
   }
 
   @Test
-  public void testResource() {
+  void testResource() {
     Object result = this.injector.getValue(adaptable(), null, Resource.class, this.annotatedElement, mock(DisposalCallbackRegistry.class));
     assertNull(result);
 
@@ -115,7 +119,7 @@ public class SlingObjectOverlayInjectorRequestTest {
   }
 
   @Test
-  public void testRequest() {
+  void testRequest() {
     Object result = this.injector.getValue(adaptable(), null, SlingHttpServletRequest.class,
         this.annotatedElement, mock(DisposalCallbackRegistry.class));
     assertSame(this.request, result);
@@ -125,7 +129,7 @@ public class SlingObjectOverlayInjectorRequestTest {
   }
 
   @Test
-  public void testResponse() {
+  void testResponse() {
     Object result = this.injector.getValue(adaptable(), null, SlingHttpServletResponse.class, this.annotatedElement, mock(DisposalCallbackRegistry.class));
     assertSame(this.response, result);
 
@@ -134,13 +138,13 @@ public class SlingObjectOverlayInjectorRequestTest {
   }
 
   @Test
-  public void testScriptHelper() {
+  void testScriptHelper() {
     Object result = this.injector.getValue(adaptable(), null, SlingScriptHelper.class, this.annotatedElement, mock(DisposalCallbackRegistry.class));
     assertSame(this.scriptHelper, result);
   }
 
   @Test
-  public void testInvalid() {
+  void testInvalid() {
     Object result = this.injector.getValue(new StringBuffer(), null, SlingScriptHelper.class, this.annotatedElement, mock(DisposalCallbackRegistry.class));
     assertNull(result);
   }

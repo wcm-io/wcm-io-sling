@@ -36,5 +36,5 @@ The [wcm.io Sample Application][wcmio-samples] uses the Handler infrastructure a
 
 [ContextAwareService]: apidocs/io/wcm/sling/commons/caservice/ContextAwareService.html
 [ContextAwareServiceResolver]: apidocs/io/wcm/sling/commons/caservice/ContextAwareServiceResolver.html
-[wcmio-handler]: http://wcm.io/handler/
-[wcmio-samples]: http://wcm.io/samples/
+[wcmio-handler]: https://wcm.io/handler/
+[wcmio-samples]: https://wcm.io/samples/

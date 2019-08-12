@@ -19,14 +19,14 @@
  */
 package io.wcm.sling.commons.osgi;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import java.util.Map;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.osgi.framework.Constants;
 
 import com.google.common.collect.ImmutableMap;
@@ -35,7 +35,7 @@ import com.google.common.collect.Iterators;
 import io.wcm.sling.commons.osgi.RankedServices.ChangeListener;
 
 @SuppressWarnings({ "deprecation", "null" })
-public class RankedServicesTest {
+class RankedServicesTest {
 
   private static final String SERVICE_1 = "service1";
   private static final Map<String, Object> SERVICE_1_PROPS = ImmutableMap.<String, Object>builder()
@@ -48,7 +48,7 @@ public class RankedServicesTest {
       .put(Constants.SERVICE_RANKING, 100).put(Constants.SERVICE_ID, 3L).build();
 
   @Test
-  public void testSortedServices() {
+  void testSortedServices() {
 
     RankedServices<Comparable> underTest = new RankedServices<>();
     assertEquals(0, underTest.get().size());
@@ -75,7 +75,7 @@ public class RankedServicesTest {
   }
 
   @Test
-  public void testChangeListener() {
+  void testChangeListener() {
     ChangeListener changeListener = mock(ChangeListener.class);
 
     RankedServices<Comparable> underTest = new RankedServices<>(changeListener);

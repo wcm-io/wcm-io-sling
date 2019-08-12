@@ -19,9 +19,9 @@
  */
 package io.wcm.sling.commons.request.impl;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 
@@ -32,14 +32,14 @@ import javax.servlet.ServletResponse;
 
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class RequestContextFilterImplTest {
+@ExtendWith(MockitoExtension.class)
+class RequestContextFilterImplTest {
 
   @Mock
   private SlingHttpServletRequest request;
@@ -50,13 +50,13 @@ public class RequestContextFilterImplTest {
 
   private RequestContextFilterImpl underTest;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     underTest = new RequestContextFilterImpl();
   }
 
   @Test
-  public void testFilter() throws Exception {
+  void testFilter() throws Exception {
     assertNull(underTest.getThreadRequest());
 
     underTest.doFilter(request, response, new FilterChain() {
@@ -70,7 +70,7 @@ public class RequestContextFilterImplTest {
   }
 
   @Test
-  public void testFilterNested() throws Exception {
+  void testFilterNested() throws Exception {
     assertNull(underTest.getThreadRequest());
 
     underTest.doFilter(request, response, new FilterChain() {
@@ -97,7 +97,7 @@ public class RequestContextFilterImplTest {
   }
 
   @Test
-  public void testWithExeption() throws Exception {
+  void testWithExeption() throws Exception {
     assertNull(underTest.getThreadRequest());
 
     try {

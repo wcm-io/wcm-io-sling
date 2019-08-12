@@ -19,22 +19,23 @@
  */
 package io.wcm.sling.commons.util;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import org.apache.commons.lang3.CharEncoding;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test {@link Escape} class.
  */
 @SuppressWarnings("null")
-public class EscapeTest {
+class EscapeTest {
 
   @Test
-  public void testUrlEncode() throws UnsupportedEncodingException {
+  void testUrlEncode() throws UnsupportedEncodingException {
     assertEquals(URLEncoder.encode("abc", CharEncoding.UTF_8), Escape.urlEncode("abc"));
     assertEquals(URLEncoder.encode("Abc_äöüÄÖÜß", CharEncoding.UTF_8), Escape.urlEncode("Abc_äöüÄÖÜß"));
     assertEquals(URLEncoder.encode("Der Jodelkaiser", CharEncoding.UTF_8), Escape.urlEncode("Der Jodelkaiser"));
@@ -43,7 +44,7 @@ public class EscapeTest {
   }
 
   @Test
-  public void testValidName() {
+  void testValidName() {
     assertEquals("abc", Escape.validName("abc"));
     assertEquals("abc_aeoeueaeoeuess", Escape.validName("Abc_äöüÄÖÜß"));
     assertEquals("der-jodelkaiser", Escape.validName("Der Jodelkaiser"));
@@ -54,7 +55,7 @@ public class EscapeTest {
   }
 
   @Test
-  public void testValidFilename() {
+  void testValidFilename() {
     assertEquals("abc", Escape.validFilename("abc"));
     assertEquals("abc_aeoeueaeoeuess", Escape.validFilename("Abc_äöüÄÖÜß"));
     assertEquals("der-jodelkaiser", Escape.validFilename("Der Jodelkaiser"));
@@ -65,7 +66,7 @@ public class EscapeTest {
   }
 
   @Test
-  public void testJcrQueryLiteral() {
+  void testJcrQueryLiteral() {
     assertEquals("''", Escape.jcrQueryLiteral(""));
     assertEquals("'abc'", Escape.jcrQueryLiteral("abc"));
     assertEquals("'a''bc'", Escape.jcrQueryLiteral("a'bc"));
@@ -73,27 +74,33 @@ public class EscapeTest {
     assertEquals("'abc?'", Escape.jcrQueryLiteral("abc?"));
   }
 
-  @Test(expected = IllegalArgumentException.class)
-  public void testJcrQueryLiteralNull() {
-    Escape.jcrQueryLiteral(null);
+  @Test
+  void testJcrQueryLiteralNull() {
+    assertThrows(IllegalArgumentException.class, () -> {
+      Escape.jcrQueryLiteral(null);
+    });
   }
 
   @Test
-  public void testJcrQueryContainsExpr() throws Exception {
+  void testJcrQueryContainsExpr() throws Exception {
     assertEquals("'abc'", Escape.jcrQueryContainsExpr("abc"));
     assertEquals("'a''bc'", Escape.jcrQueryContainsExpr("a'bc"));
     assertEquals("'a''bc'''''", Escape.jcrQueryContainsExpr("a'bc''"));
     assertEquals("'abc\\?'", Escape.jcrQueryContainsExpr("abc?"));
   }
 
-  @Test(expected = IllegalArgumentException.class)
-  public void testJcrQueryContainsExprNull() {
-    Escape.jcrQueryContainsExpr(null);
+  @Test
+  void testJcrQueryContainsExprNull() {
+    assertThrows(IllegalArgumentException.class, () -> {
+      Escape.jcrQueryContainsExpr(null);
+    });
   }
 
-  @Test(expected = IllegalArgumentException.class)
-  public void testJcrQueryContainsExprEmpty() {
-    Escape.jcrQueryContainsExpr("");
+  @Test
+  void testJcrQueryContainsExprEmpty() {
+    assertThrows(IllegalArgumentException.class, () -> {
+      Escape.jcrQueryContainsExpr("");
+    });
   }
 
 }

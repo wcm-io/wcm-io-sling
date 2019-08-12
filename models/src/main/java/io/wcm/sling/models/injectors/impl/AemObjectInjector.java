@@ -36,10 +36,12 @@ import org.apache.sling.models.spi.injectorspecific.AbstractInjectAnnotationProc
 import org.apache.sling.models.spi.injectorspecific.InjectAnnotationProcessor2;
 import org.apache.sling.models.spi.injectorspecific.StaticInjectAnnotationProcessorFactory;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.osgi.framework.Constants;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
+import com.adobe.cq.sightly.WCMBindings;
 import com.adobe.granite.workflow.WorkflowSession;
 import com.adobe.granite.xss.XSSAPI;
 import com.day.cq.i18n.I18n;
@@ -70,6 +72,7 @@ import io.wcm.sling.models.annotations.AemObject;
      */
     Constants.SERVICE_RANKING + ":Integer=" + 4400
 })
+@SuppressWarnings("deprecation")
 public final class AemObjectInjector implements Injector, StaticInjectAnnotationProcessorFactory, AcceptsNullName {
 
   /**
@@ -154,7 +157,7 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
     return null;
   }
 
-  private SlingHttpServletRequest getRequest(final Object adaptable) {
+  private @Nullable SlingHttpServletRequest getRequest(@NotNull final Object adaptable) {
     if (adaptable instanceof SlingHttpServletRequest) {
       return (SlingHttpServletRequest)adaptable;
     }
@@ -167,7 +170,7 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
   }
 
   @SuppressWarnings("null")
-  private ResourceResolver getResourceResolver(final Object adaptable) {
+  private @Nullable ResourceResolver getResourceResolver(@NotNull final Object adaptable) {
     if (adaptable instanceof ResourceResolver) {
       return (ResourceResolver)adaptable;
     }
@@ -184,8 +187,7 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
     return null;
   }
 
-  @SuppressWarnings("null")
-  private Resource getResource(final Object adaptable) {
+  private @Nullable Resource getResource(@NotNull final Object adaptable) {
     if (adaptable instanceof Resource) {
       return (Resource)adaptable;
     }
@@ -199,8 +201,7 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
     return null;
   }
 
-  @SuppressWarnings("null")
-  private PageManager getPageManager(final Object adaptable) {
+  private @Nullable PageManager getPageManager(@NotNull final Object adaptable) {
     ResourceResolver resolver = getResourceResolver(adaptable);
     if (resolver != null) {
       return resolver.adaptTo(PageManager.class);
@@ -208,8 +209,7 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
     return null;
   }
 
-  @SuppressWarnings("null")
-  private Designer getDesigner(final Object adaptable) {
+  private @Nullable Designer getDesigner(@NotNull final Object adaptable) {
     ResourceResolver resolver = getResourceResolver(adaptable);
     if (resolver != null) {
       return resolver.adaptTo(Designer.class);
@@ -217,7 +217,7 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
     return null;
   }
 
-  private Page getCurrentPage(final Object adaptable) {
+  private @Nullable Page getCurrentPage(@NotNull final Object adaptable) {
     SlingHttpServletRequest request = getRequest(adaptable);
     if (request != null) {
       ComponentContext context = getComponentContext(request);
@@ -228,7 +228,7 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
     return getResourcePage(adaptable);
   }
 
-  private Page getResourcePage(final Object adaptable) {
+  private @Nullable Page getResourcePage(@NotNull final Object adaptable) {
     PageManager pageManager = getPageManager(adaptable);
     Resource resource = getResource(adaptable);
     if (pageManager != null && resource != null) {
@@ -237,11 +237,11 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
     return null;
   }
 
-  private WCMMode getWcmMode(final SlingHttpServletRequest request) {
+  private @NotNull WCMMode getWcmMode(@NotNull final SlingHttpServletRequest request) {
     return WCMMode.fromRequest(request);
   }
 
-  private AuthoringUIMode getAuthoringUiMode(final SlingHttpServletRequest request) {
+  private @NotNull AuthoringUIMode getAuthoringUiMode(@NotNull final SlingHttpServletRequest request) {
     AuthoringUIMode mode = AuthoringUIMode.fromRequest(request);
     if (mode == null) {
       // if no mode is set (e.g. if WCMMode is disabled) default to Touch UI
@@ -250,11 +250,11 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
     return mode;
   }
 
-  private ComponentContext getComponentContext(final SlingHttpServletRequest request) {
+  private @Nullable ComponentContext getComponentContext(@NotNull final SlingHttpServletRequest request) {
     return WCMUtils.getComponentContext(request);
   }
 
-  private Design getCurrentDesign(final Object adaptable) {
+  private @Nullable Design getCurrentDesign(final Object adaptable) {
     Page currentPage = getCurrentPage(adaptable);
     Designer designer = getDesigner(adaptable);
     if (currentPage != null && designer != null) {
@@ -263,21 +263,29 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
     return null;
   }
 
-  private Style getStyle(final SlingHttpServletRequest request) {
-    Design currentDesign = getCurrentDesign(request);
-    ComponentContext componentContext = getComponentContext(request);
-    if (currentDesign != null && componentContext != null) {
-      return currentDesign.getStyle(componentContext.getCell());
+  private @Nullable Style getStyle(@NotNull final SlingHttpServletRequest request) {
+    Style style = null;
+    // first try to get from sling bindings
+    SlingBindings slingBindings = getSlingBindings(request);
+    if (slingBindings != null) {
+      style = (Style)slingBindings.get(WCMBindings.CURRENT_STYLE);
     }
-    return null;
+    if (style == null) {
+      // fallback to current design
+      Design currentDesign = getCurrentDesign(request);
+      ComponentContext componentContext = getComponentContext(request);
+      if (currentDesign != null && componentContext != null) {
+        style = currentDesign.getStyle(componentContext.getCell());
+      }
+    }
+    return style;
   }
 
-  @SuppressWarnings("null")
-  private XSSAPI getXssApi(final SlingHttpServletRequest request) {
+  private @Nullable XSSAPI getXssApi(@NotNull final SlingHttpServletRequest request) {
     return request.adaptTo(XSSAPI.class);
   }
 
-  private I18n getResourceI18n(final SlingHttpServletRequest request) {
+  private @Nullable I18n getResourceI18n(@NotNull final SlingHttpServletRequest request) {
     Page currentPage = getCurrentPage(request);
     if (currentPage != null) {
       Locale currentLocale = currentPage.getLanguage(false);
@@ -286,12 +294,11 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
     return null;
   }
 
-  private I18n getUserI18n(final SlingHttpServletRequest request) {
+  private @NotNull I18n getUserI18n(@NotNull final SlingHttpServletRequest request) {
     return new I18n(getI18nEnabledRequest(request));
   }
 
-  @SuppressWarnings("null")
-  private TagManager getTagManager(final Object adaptable) {
+  private @Nullable TagManager getTagManager(@NotNull final Object adaptable) {
     ResourceResolver resolver = getResourceResolver(adaptable);
     if (resolver != null) {
       return resolver.adaptTo(TagManager.class);
@@ -299,8 +306,7 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
     return null;
   }
 
-  @SuppressWarnings("null")
-  private WorkflowSession getWorkflowSession(final Object adaptable) {
+  private @Nullable WorkflowSession getWorkflowSession(@NotNull final Object adaptable) {
     ResourceResolver resolver = getResourceResolver(adaptable);
     if (resolver != null) {
       return resolver.adaptTo(WorkflowSession.class);
@@ -318,10 +324,13 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
    * @param request Original request
    * @return Request from sling bindings
    */
-  private SlingHttpServletRequest getI18nEnabledRequest(SlingHttpServletRequest request) {
-    SlingBindings bindings = (SlingBindings)request.getAttribute(SlingBindings.class.getName());
+  private @NotNull SlingHttpServletRequest getI18nEnabledRequest(@NotNull SlingHttpServletRequest request) {
+    SlingBindings bindings = getSlingBindings(request);
     if (bindings != null) {
-      return bindings.getRequest();
+      SlingHttpServletRequest bindingsRequest = bindings.getRequest();
+      if (bindingsRequest != null) {
+        return bindingsRequest;
+      }
     }
     if (modelsImplConfiguration.isRequestThreadLocal()) {
       SlingHttpServletRequest threadLocalRequest = requestContext.getThreadRequest();
@@ -330,6 +339,10 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
       }
     }
     return request;
+  }
+
+  private @Nullable SlingBindings getSlingBindings(@NotNull SlingHttpServletRequest request) {
+    return (SlingBindings)request.getAttribute(SlingBindings.class.getName());
   }
 
   @SuppressWarnings({ "null", "unused" })
@@ -357,7 +370,6 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public Boolean isOptional() {
       return annotation.optional();
     }
