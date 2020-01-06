@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import com.day.jcr.vault.util.Text;
+import com.day.text.Text;
 
 @SuppressWarnings({ "deprecation", "null" })
 class ResourcePathTest {
