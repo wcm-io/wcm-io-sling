@@ -63,6 +63,7 @@ class ServiceInfo {
     this.key = buildKey();
   }
 
+  @SuppressWarnings("PMD.GuardLogStatement")
   private ContextAwareService validateAndGetService(ServiceReference<?> serviceReference, BundleContext bundleContext) {
     Object serviceObject = bundleContext.getService(serviceReference);
     if (serviceObject instanceof ContextAwareService) {
@@ -91,6 +92,7 @@ class ServiceInfo {
     return value;
   }
 
+  @SuppressWarnings("PMD.GuardLogStatement")
   private Pattern validateAndParsePattern(ServiceReference<?> serviceReference, String patternPropertyName) {
     Object value = lookupServicePropertyBundleHeader(serviceReference, patternPropertyName);
     if (value == null || value instanceof String) {
