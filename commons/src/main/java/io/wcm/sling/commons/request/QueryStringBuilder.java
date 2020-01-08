@@ -39,7 +39,7 @@ public final class QueryStringBuilder {
   private static final String PARAM_SEPARATOR = "&";
   private static final String VALUE_SEPARATOR = "=";
 
-  private List<NameValuePair> params = new ArrayList<>();
+  private final List<NameValuePair> params = new ArrayList<>();
 
   /**
    * Add parameter to query string.

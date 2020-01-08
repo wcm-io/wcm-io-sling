@@ -169,7 +169,6 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
     }
   }
 
-  @SuppressWarnings("null")
   private @Nullable ResourceResolver getResourceResolver(@NotNull final Object adaptable) {
     if (adaptable instanceof ResourceResolver) {
       return (ResourceResolver)adaptable;
@@ -178,7 +177,10 @@ public final class AemObjectInjector implements Injector, StaticInjectAnnotation
       return ((Resource)adaptable).getResourceResolver();
     }
     if (adaptable instanceof Page) {
-      return ((Page)adaptable).adaptTo(Resource.class).getResourceResolver();
+      Resource resource = ((Page)adaptable).adaptTo(Resource.class);
+      if (resource != null) {
+        return resource.getResourceResolver();
+      }
     }
     SlingHttpServletRequest request = getRequest(adaptable);
     if (request != null) {
