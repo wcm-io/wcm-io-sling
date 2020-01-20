@@ -27,6 +27,9 @@
       <action type="update" dev="sseifert">
         Switch to AEM 6.3 as minimum version.
       </action>
+      <action type="fix" dev="sseifert">
+        Make ContextAwareServiceResolverImpl deactivation more robust for (probably misconfigured) unit tests.
+      </action>
     </release>
 
     <release version="1.2.4" date="2019-02-22">
