@@ -52,6 +52,7 @@ import io.wcm.sling.models.injectors.impl.AemObjectInjector;
  * class.
  * <p>
  * Supports the following objects:
+ * </p>
  * <table>
  * <caption>Supported objects</caption>
  * <tr>

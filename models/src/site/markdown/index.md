@@ -31,9 +31,10 @@ See [Injector API documentation][apidocs-aemobjectinjector] for details.
 
 |wcm.io AEM Sling Models Extensions version |AEM version supported
 |-------------------------------------------|----------------------
-|1.5.x or higher                            |AEM 6.2 and up
-|1.0.x - 1.4.x                              |AEM 6.1 and up
-|0.x                                        |AEM 6.0 and up
+|1.6.x or higher                            |AEM 6.3+
+|1.5.x                                      |AEM 6.2+
+|1.0.x - 1.4.x                              |AEM 6.1+
+|0.x                                        |AEM 6.0+
 
 
 ### Dependencies

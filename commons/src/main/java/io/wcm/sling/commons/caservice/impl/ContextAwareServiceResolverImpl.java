@@ -89,7 +89,6 @@ public class ContextAwareServiceResolverImpl implements ContextAwareServiceResol
   @Deactivate
   private void deactivate() {
     this.serviceTrackerCache.invalidateAll();
-    this.serviceTrackerCache = null;
   }
 
   @SuppressWarnings({ "unchecked", "null" })
