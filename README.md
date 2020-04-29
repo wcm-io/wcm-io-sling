@@ -8,7 +8,8 @@ wcm.io extensions for [Apache Sling](http://sling.apache.org/) features.
 Documentation: https://wcm.io/sling/<br/>
 Issues: https://wcm-io.atlassian.net/browse/WSLI<br/>
 Wiki: https://wcm-io.atlassian.net/wiki/<br/>
-Continuous Integration: https://travis-ci.org/wcm-io/wcm-io-sling/
+Continuous Integration: https://travis-ci.org/wcm-io/wcm-io-sling/<br/>
+Commercial support: https://wcm.io/commercial-support.html
 
 
 ## Build from sources
