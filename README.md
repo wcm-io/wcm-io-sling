@@ -1,6 +1,6 @@
 <img src="https://wcm.io/images/favicon-16@2x.png"/> wcm.io Sling Extensions
 ======
-[![Build Status](https://travis-ci.org/wcm-io/wcm-io-sling.png?branch=develop)](https://travis-ci.org/wcm-io/wcm-io-sling)
+[![Build Status](https://travis-ci.com/wcm-io/wcm-io-sling.png?branch=develop)](https://travis-ci.com/wcm-io/wcm-io-sling)
 [![Code Coverage](https://codecov.io/gh/wcm-io/wcm-io-sling/branch/develop/graph/badge.svg)](https://codecov.io/gh/wcm-io/wcm-io-sling)
 
 wcm.io extensions for [Apache Sling](http://sling.apache.org/) features.
@@ -8,7 +8,8 @@ wcm.io extensions for [Apache Sling](http://sling.apache.org/) features.
 Documentation: https://wcm.io/sling/<br/>
 Issues: https://wcm-io.atlassian.net/browse/WSLI<br/>
 Wiki: https://wcm-io.atlassian.net/wiki/<br/>
-Continuous Integration: https://travis-ci.org/wcm-io/wcm-io-sling/
+Continuous Integration: https://travis-ci.com/wcm-io/wcm-io-sling/<br/>
+Commercial support: https://wcm.io/commercial-support.html
 
 
 ## Build from sources
