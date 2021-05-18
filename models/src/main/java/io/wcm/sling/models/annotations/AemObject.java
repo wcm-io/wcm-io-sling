@@ -145,7 +145,7 @@ import io.wcm.sling.models.injectors.impl.AemObjectInjector;
  * </tr>
  * <tr style="background-color:#eee">
  * <td>{@link I18n}</td>
- * <td>I18n object for the current resource/page context. Default to be inejctes for {@link I18n} types.</td>
+ * <td>I18n object for the current resource/page context. Default to be injected for {@link I18n} types.</td>
  * <td>resourceI18n</td>
  * <td style="text-align:center">X</td>
  * <td style="text-align:center">X*</td>
