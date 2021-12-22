@@ -20,5 +20,5 @@
 /**
  * Helper classes around the Sling {@link org.apache.sling.api.resource.Resource} concept.
  */
-@org.osgi.annotation.versioning.Version("1.1.2")
+@org.osgi.annotation.versioning.Version("1.1.3")
 package io.wcm.sling.commons.resource;

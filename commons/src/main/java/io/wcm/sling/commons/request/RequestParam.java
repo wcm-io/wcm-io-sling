@@ -19,13 +19,12 @@
  */
 package io.wcm.sling.commons.request;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
 
 import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.jetbrains.annotations.NotNull;
@@ -306,13 +305,7 @@ public final class RequestParam {
    * @return UTF-8 value
    */
   private static String convertISO88591toUTF8(String value) {
-    try {
-      return new String(value.getBytes(CharEncoding.ISO_8859_1), CharEncoding.UTF_8);
-    }
-    catch (UnsupportedEncodingException ex) {
-      // ignore and fallback to original encoding
-      return value;
-    }
+    return new String(value.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
   }
 
 }

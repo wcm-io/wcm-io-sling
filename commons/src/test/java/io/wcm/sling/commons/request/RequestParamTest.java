@@ -23,10 +23,9 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-import org.apache.commons.lang3.CharEncoding;
 import org.apache.sling.servlethelpers.MockSlingHttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -73,7 +72,7 @@ class RequestParamTest {
   }
 
   @SuppressWarnings("unused")
-  protected Map<String, Object> getParamMap() throws UnsupportedEncodingException {
+  protected Map<String, Object> getParamMap() {
     return ImmutableMap.<String, Object>builder()
         .put(STRING_PARAM, new String[] {
             STRING_VALUE
@@ -98,7 +97,7 @@ class RequestParamTest {
             ENUM_VALUE.name()
         })
         .put(RequestParam.PARAMETER_FORMENCODING, new String[] {
-            CharEncoding.UTF_8
+            StandardCharsets.UTF_8.name()
         })
         .build();
   }

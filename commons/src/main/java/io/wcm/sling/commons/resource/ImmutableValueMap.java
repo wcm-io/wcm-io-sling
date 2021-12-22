@@ -70,7 +70,7 @@ public final class ImmutableValueMap implements ValueMap {
   }
 
   @Override
-  public <T> T get(@NotNull String name, T defaultValue) {
+  public @NotNull <T> T get(@NotNull String name, @NotNull T defaultValue) {
     return this.map.get(name, defaultValue);
   }
 

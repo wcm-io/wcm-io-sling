@@ -21,8 +21,8 @@ package io.wcm.sling.commons.util;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
-import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.jackrabbit.util.Text;
 import org.jetbrains.annotations.NotNull;
@@ -51,7 +51,7 @@ public final class Escape {
       return "";
     }
     try {
-      return URLEncoder.encode(value, CharEncoding.UTF_8);
+      return URLEncoder.encode(value, StandardCharsets.UTF_8.name());
     }
     catch (UnsupportedEncodingException ex) {
       throw new RuntimeException(ex);

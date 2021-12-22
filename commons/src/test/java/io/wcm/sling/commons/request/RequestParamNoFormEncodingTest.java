@@ -19,16 +19,14 @@
  */
 package io.wcm.sling.commons.request;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.commons.lang3.CharEncoding;
 
 class RequestParamNoFormEncodingTest extends RequestParamTest {
 
   @Override
-  protected Map<String, Object> getParamMap() throws UnsupportedEncodingException {
+  protected Map<String, Object> getParamMap() {
     Map<String, Object> paramMap = new HashMap<>();
 
     for (Map.Entry<String, Object> entry : super.getParamMap().entrySet()) {
@@ -52,11 +50,11 @@ class RequestParamNoFormEncodingTest extends RequestParamTest {
     return paramMap;
   }
 
-  private static String convertUTF8toISO88591(String value) throws UnsupportedEncodingException {
+  private static String convertUTF8toISO88591(String value) {
     if (value == null) {
       return null;
     }
-    return new String(value.getBytes(CharEncoding.UTF_8), CharEncoding.ISO_8859_1);
+    return new String(value.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
   }
 
 

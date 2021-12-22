@@ -38,6 +38,7 @@ class ResourceTypeTest {
   private final AemContext context = new AemContext();
 
   @Test
+  @SuppressWarnings("unused")
   void testMakeAbsolute_Invalid() {
     assertNull(ResourceType.makeAbsolute(null, context.resourceResolver()));
     assertEquals("", ResourceType.makeAbsolute("", context.resourceResolver()));
